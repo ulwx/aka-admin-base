@@ -1,0 +1,105 @@
+html,body{
+    width: 100%;
+    height: 100%;
+    margin: 0; 
+    padding: 0;
+    font-family: "微软雅黑",sans-serif;
+    color:black;
+    font-size:13px;
+     
+}
+
+.easyui-layout .north{
+	
+	background: #F6F4EC top repeat-x;
+	margin:0;
+	padding:0;
+	overflow:hidden;
+}
+
+/********** start menu list style ************/
+.mymenu {
+/* 	overflow: auto!important; */
+  background:white;
+}
+.mymenu a{
+	display:block;
+	height:25px;
+
+	line-height:25px;
+	font-size:13px;
+	color:#15428b;
+	text-align:left;
+	text-decoration:none;
+	padding-top:3px;
+ 	padding-left:30px; 
+
+}
+.mymenu a:hover{
+	background:#EFEFEF center repeat-x;
+	text-decoration:none;
+}
+
+.mymenu a.clicked{
+	display:block;
+	font-size:13px;
+	text-align:left;
+	text-decoration:none;
+	background:#EFEFEF; 
+	position:relative; 
+	padding-top:3px;
+
+	
+}
+.mymenu a.clicked:after{
+	display: inline-block;
+	content:'';
+	margin-top:3px;
+	position:absolute;
+	left:150px;
+	top:3px;
+	border:green;
+	width:16px;
+	height:16px;
+	background: url("../images/ulwxbase.sys/arrow_all.png")  no-repeat scroll -16px -32px
+}
+
+.mymenu div a img{
+	margin-right:5px;
+	margin-left:5px;
+}
+.north .myspan{
+	position: absolute;
+	bottom: 4px;
+	right: 10px;
+}
+.north a{
+	text-align : left;
+/* 	color : white; */
+	font-size : 13px;
+	text-decoration: none;
+}
+
+.north a:hover{
+	color : blue;
+	text-decoration: none;
+}
+
+
+/********** end menu list style ************/
+
+.layout-button-up {
+  background: url('../images/ulwxbase.sys/arrow_all.png') no-repeat -48px -16px;
+}
+/*
+.layout-button-down {
+  background: url('../images/ulwxbase.sys/arrow_all.png') no-repeat -32px -16px;
+}*/
+.layout-button-left {
+  background: url('../images/ulwxbase.sys/arrow_all.png') no-repeat 0 -16px;
+}
+/*
+.layout-button-right {
+  background: url('../images/ulwxbase.sys/arrow_all.png') no-repeat 16 -16px;
+}*/
+

@@ -1,0 +1,426 @@
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * General page setup
+ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        background: transparent;
+}
+html, body {
+	font-family: "Microsoft yahei", "SimSun", sans-serif;
+	width:100%;
+
+	font-size:13px;
+}
+input[type="checkbox" i]{
+	margin:0;
+}
+*{
+	box-sizing:border-box;
+}
+td{
+	padding:0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+ul,ol{
+	list-style:none;
+	padding:0;
+	margin:0;
+}
+li{
+	display:block;
+	margin:0;
+	padding:0;
+	list-style: none;
+}
+p{
+	margin:0;
+}
+h1,h2,h3,h4,h5,h6{
+	margin:0;
+	padding:0;
+}
+
+input.validatebox-invalid {
+	background-color: #fff3f3;
+}
+
+.button, button {
+	background-image: -webkit-linear-gradient(top, #ECF2F6, #83BCF4);
+	background-image: -moz-linear-gradient(top, #ECF2F6, #83BCF4);
+	background-image: -o-linear-gradient(top, #ECF2F6, #83BCF4);
+	border: 1px #5F88B7 solid;
+	border-radius: 4px;
+	padding: 3px 8px;
+}
+
+textarea {
+	border: 1px solid #A4BED4;
+	background-color: white;
+	outline: medium;
+	font-size: 13px;
+}
+
+.table {
+	width: 98%;
+	border-collapse: collapse;
+	margin: 0 auto;
+	height: 100%;
+	font-size: 13px;
+}
+
+.table td.first {
+	width: 110px;
+	padding-left: 15px;
+	text-align: left;
+	background-color: #F6F4EC;
+	border-bottom: 1px #99bbe8 dotted;
+}
+
+.table td.second {
+	background-color: #EAF3F9;
+	text-align: left;
+	border-bottom: 1px #99bbe8 dotted;
+}
+
+.table td.third {
+	word-break: keep-all;
+	background-color: #EAF3F9;
+	text-align: left;
+	border-bottom: 1px #99bbe8 dotted;
+}
+
+.table td {
+	border-bottom: #99bbe8 1px dotted;
+	padding-left: 2px;
+}
+
+.table tr.odd {
+	background-color: white;
+	height: 30px;
+}
+
+.table input {
+	padding-left: 2px;
+	border: 1px solid #A4BED4;
+	outline: medium;
+	font-size: 13px;
+}
+
+.table tr.even {
+	background-color: white;
+	height: 30px;
+}
+
+.page-bottombar {
+	height: 40px;
+	background-color: #F6F4EC;
+	text-align: center
+}
+
+.page-window {
+	padding: 2px;
+	width: 100%;
+	height: 100%
+}
+
+
+
+img {
+	border: 0;
+}
+
+a:focus {
+	outline: none;
+	-moz-outline: none;
+}
+
+a {
+	color: #666666;
+	text-decoration: none;
+}
+
+a:visited {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+a:active {
+	color: #BA2636;
+}
+
+.field_tip_class {
+	color: #999999;
+	font-size: 13px;
+	font-family: verdana, sans-serif;
+}
+
+.my-tab-title-clz   .panel-tool {
+	font-size: 13px;
+	height: 20px;
+	line-height: 20px;
+	margin-top: -12px;
+	overflow: visible;
+}
+
+/***************************#5E85BB******/
+.mybgColor {
+	background-color: #fce5cd;
+}
+
+/***12宫格*********************************/
+.NetGrid {
+	position: relative;
+	min-width: 800px;
+}
+
+.NetGrid .col {
+	border: 0px solid rgba(0, 0, 0, 0);
+	float: left;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-moz-background-clip: padding-box !important;
+	-webkit-background-clip: padding-box !important;
+	background-clip: padding-box !important;
+	border-left-width: 4px;
+	padding: 0 1px;
+}
+
+@media screen and (min-width: 0px) {
+	.NetGrid .row {
+		margin-left: -4px;
+		clear: both;
+		overflow: hidden;
+		*zoom: 1;
+	}
+	.NetGrid .col1 {
+		width: 8.33333333333%;
+	}
+	.NetGrid .col2 {
+		width: 16.6666666667%;
+	}
+	.NetGrid .col3 {
+		width: 25.0%;
+	}
+	.NetGrid .col4 {
+		width: 33.3333333333%;
+	}
+	.NetGrid .col5 {
+		width: 41.6666666667%;
+	}
+	.NetGrid .col6 {
+		width: 50.0%;
+	}
+	.NetGrid .col7 {
+		width: 58.3333333333%;
+	}
+	.NetGrid .col8 {
+		width: 66.6666666667%;
+	}
+	.NetGrid .col9 {
+		width: 75.0%;
+	}
+	.NetGrid .col10 {
+		width: 83.3333333333%;
+	}
+	.NetGrid .col11 {
+		width: 91.6666666667%;
+	}
+	.NetGrid .col12 {
+		margin-left: 0;
+		width: 100%;
+	}
+
+	.NetGrid .col_left1 {
+		float: none !important;
+		position: absolute;
+		left: 8.33333333333%;
+	}
+	
+	.NetGrid .col_left2 {
+		float: none !important;
+		position: absolute;
+		left: 16.6666666667%;
+	}
+
+	
+	.NetGrid .col_left3 {
+		float: none !important;
+		position: absolute;
+		left: 25.0%;;
+	}
+
+	
+	.NetGrid .col_left4 {
+		float: none !important;
+		position: absolute;
+		left: 33.3333333333%;
+	}
+	
+	.NetGrid .col_left5 {
+		float: none !important;
+		position: absolute;
+		left: 41.6666666667%;
+	}
+	
+	.NetGrid .col_left6 {
+		float: none !important;
+		position: absolute;
+		left: 50.0%;;
+	}
+	
+	.NetGrid .col_left7 {
+		float: none !important;
+		position: absolute;
+		left: 58.3333333333%;
+	}
+	
+	.NetGrid .col_left8 {
+		float: none !important;
+		position: absolute;
+		left: 66.6666666667%;
+	}
+	
+	.NetGrid .col_left9 {
+		float: none !important;
+		position: absolute;
+		left: 75.0%;
+	}
+	
+	.NetGrid .col_left10 {
+		float: none !important;
+		position: absolute;
+		left: 83.3333333333%;
+	}
+	
+	.NetGrid .col_left11 {
+		float: none !important;
+		position: absolute;
+		left: 91.6666666667%;
+	}
+	
+	.NetGrid .col_left12 {
+		float: none !important;
+		position: absolute;
+		left: 100%;
+	}
+}
+
+/* .layout-split-north { */
+/* 	border: none; */
+/* } */
+
+/****************************************/
+.tools-box{
+
+}
+
+.tools-box .searchForm {
+  	padding:6px 0 6px 10px;
+	background:#fff;
+}
+
+.tools-box .search-params {
+	margin-right: 10px;
+	display:inline-block;
+	height:32px;
+}
+
+.searchForm .search-params>input {
+	padding-left: 15px;
+	border-radius: 4px;
+}
+
+
+.oper-tool-box {
+	margin: 5px 30px 5px 40px;
+}
+
+.oper-tool-box .easyui-linkbutton {
+	float: right;
+	margin-right: 10px;
+}
+
+.oper-tool-box:after {
+	display: block;
+	content: '';
+	clear: both;
+}
+
+
+
+
+ .error-message{
+     margin: 0;
+     padding: 0;
+     color: red;
+     position:absolute;
+     left:130px;
+     height: 20px;
+	line-height: 20px;
+	font-size: 13px;
+ }
+ 
+ .commonForm{
+ 	margin: 0;
+ 	padding: 20px 70px 20px 50px;
+ 	width:520px;
+ }
+
+ .commonForm-items{
+ 	margin-bottom: 10px;
+ 	position: relative;
+ }
+ .commonForm-items .form-item__label{
+  width:80px;
+  float:left;
+ }
+  .commonForm-items  .form-item__content{
+   width:100%;
+   margin-left:80px;
+  }
+ .commonForm-items .form-tips{
+	display:inline-block;
+	color:#bbb;
+	margin-left: 90px     
+}
+
+.commonForm-items  .error-tips{
+	position:absolute;
+	left:126px;
+	bottom:-18px;
+	color:#e4393c;
+	font-size:13px;
+	
+}
+ .commonForm-items>input{
+ 	width:300px;
+ }
+ .btns{
+ 	text-align: center;
+ }
+ 
+
+
+
+

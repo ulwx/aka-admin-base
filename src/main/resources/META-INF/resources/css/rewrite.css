@@ -1,0 +1,434 @@
+/*********************
+覆盖easyui默认样式
+
+**********************/
+
+.panel-body {
+  font-size: 13px;
+}
+.panel-title {
+  font-size: 13px;
+}
+.l-btn-text {
+
+  font-size: 13px;
+
+}
+
+.textbox .textbox-text {
+  font-size: 13px;
+}
+
+.textbox .textbox-prompt {
+  font-size: 13px;
+}
+
+.tabs-title {
+  font-size: 13px;
+}
+
+.datagrid-cell,
+.datagrid-cell-group,
+.datagrid-header-rownumber,
+.datagrid-cell-rownumber {
+  font-size: 13px;
+}
+.datagrid-header .datagrid-cell span {
+  font-size: 13px;
+}
+
+
+.datagrid-view .datagrid-editable-input {
+
+  font-size: 13px;
+
+}
+
+.pagination-info {
+
+  font-size: 13px;
+}
+.pagination span {
+  font-size: 13px;
+}
+
+.calendar table {
+  font-size: 13px;
+}
+.calendar table td,
+.calendar table th {
+  font-size: 13px;
+}
+
+.calendar-title span {
+
+  font-size: 13px;
+
+}
+
+.calendar-menu {
+
+  font-size: 13px;
+
+}
+
+.calendar-menu-year {
+
+  font-size: 13px;
+
+}
+
+.datebox-button a {
+
+  font-size: 13px;
+}
+
+.progressbar-text {
+  font-size: 13px;
+}
+
+.slider-tip {
+
+  font-size: 13px;
+
+}
+
+.slider-rulelabel span {
+  font-size: 13px;
+}
+
+
+.menu-text,
+.menu-text span {
+  font-size: 13px;
+}
+
+.tree-title {
+  font-size: 13px;
+
+}
+.tree-node-proxy {
+  font-size: 13px;
+
+}
+
+.tree-editor {
+
+  font-size: 13px;
+
+}
+
+.tooltip-content {
+  font-size: 13px;
+}
+
+.switchbutton-on,
+.switchbutton-off,
+.switchbutton-handle {
+
+  font-size: 13px;
+
+}
+
+.datagrid-btable td,td div{
+	
+	 white-space: nowrap;
+}
+
+.messager-body div{
+	float:left;
+	width:320px;
+	margin-left:10px;
+}
+
+.messager-body .messager-icon{
+	
+	width:32px;
+	margin:0px;
+}
+/******改写easyui linkbutton样式***/
+.dialog-button .l-btn,
+.easyui-linkbutton.l-btn {
+  background: #3C6197;
+  color:white!important;
+  border: 1px solid #3C6197;
+  background: -webkit-linear-gradient(top,#3C6197 0,#3C6197 100%);
+  background: -moz-linear-gradient(top,#3C6197 0,#3C6197 100%);
+  background: -o-linear-gradient(top,#3C6197 0,#3C6197 100%);
+  background: linear-gradient(to bottom,#3C6197 0,#3C6197 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#3C6197,endColorstr=#3C6197,GradientType=0);
+  padding: 1px;
+
+}
+
+.dialog-button .l-btn:hover,
+.easyui-linkbutton.l-btn:hover {
+  background: #FF8B00;
+  color: white;
+  padding:1px;
+  border: 1px solid #FF8B00!important;
+}
+.dialog-button .l-btn-outline,
+.easyui-linkbutton.l-btn-outline {
+  border-width: 1px;
+  border-color: #34527f;
+  padding: 1px;
+}
+.dialog-button .l-btn-disabled,
+.dialog-button .l-btn-disabled:hover,
+.easyui-linkbutton.l-btn-disabled,
+.easyui-linkbutton.l-btn-disabled:hover {
+  opacity: 0.5;
+  cursor: default;
+  background: #3C6197;
+  color: black;
+  background: -webkit-linear-gradient(top,#3C6197 0,#3C6197 100%);
+  background: -moz-linear-gradient(top,#3C6197 0,#3C6197 100%);
+  background: -o-linear-gradient(top,#3C6197 0,#3C6197 100%);
+  background: linear-gradient(to bottom,#3C6197 0,#3C6197 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#3C6197,endColorstr=#3C6197,GradientType=0);
+  padding: 1px;
+}
+.dialog-button .l-btn-selected,
+.dialog-button .l-btn-selected:hover,
+.easyui-linkbutton.l-btn-selected,
+.easyui-linkbutton.l-btn-selected:hover {
+  background: #34527f;
+  filter: none;
+  padding: 1px;
+}
+
+.easyui-linkbutton.l-btn-plain,
+.l-btn-plain {
+    background: transparent none repeat scroll 0 0!important  ;
+    border-width: 0!important  ;
+    filter: none!important  ;
+    color: black!important ;
+    padding: 1px!important  ;
+}
+.easyui-linkbutton.l-btn-plain:hover,
+.l-btn-plain:hover {
+    padding: 0!important ;
+    background: #e6e6e6 none repeat scroll 0 0!important ;
+    border: 1px solid #e6e6e6!important ;
+    border-radius: 0!important ;
+    color: black!important;
+}
+.l-btn{
+	 background: #e6e6e6 none repeat scroll 0 0 ;
+	 color: black;
+}
+.l-btn:hover{
+	 opacity:0.9;
+	 filter:alpha(opacity=90); 
+}
+.datagrid-row-selected {
+    background: #c1ddf1 none repeat scroll 0 0;
+    color: black;
+}
+.combobox-item-selected{
+	background: #c1ddf1 none repeat scroll 0 0;
+    color: black;
+}
+.panel-header{
+	background-color:#F5F4F4;
+	border:0px
+	
+}
+.panel-title{
+	color:#4F6FA0;
+}
+.layout-expand{
+	background:#F5F4F4
+}
+ .layout-panel .panel-header{
+  border-left-width:5px!important;
+    border-left-color:#193156!important;
+    border-left-style: solid!important;
+ }
+ .layout-panel-north .panel-body {
+    background-color:#FAFAFA!important;
+   
+  }
+  .window {
+   background-color: #5e85bb;
+   -moz-box-shadow:0 5px 3px #BFC7D6;
+   -webkit-box-shadow:0 5px 3px #BFC7D6;
+    box-shadow:0 5px 3px #BFC7D6;
+  }
+  .window, .window .window-body {
+   border-color: #5e85bb;
+  }
+  .window .panel-title{
+   color:white
+  }
+
+.panel-tool a {
+    display: inline-block;
+    height: 16px;
+    margin: 0 0 0 2px;
+    opacity: 0.6;
+    vertical-align: top;
+    width: 16px;
+}
+  .window .panel-header .panel-tool-close {
+    background: rgba(0, 0, 0, 0) url("../images/ulwxbase.sys/panel_tools.png") no-repeat scroll -16px 0;
+  }
+  .window .panel-header .panel-tool-min {
+    background: rgba(0, 0, 0, 0) url("../images/ulwxbase.sys/panel_tools.png") no-repeat scroll 0 0;
+  }
+  .window .panel-header .panel-tool-max {
+    background: rgba(0, 0, 0, 0) url("../images/ulwxbase.sys/panel_tools.png") no-repeat scroll 0 -16px;
+  }
+    .window .panel-header  .panel-tool-collapse {
+    background: rgba(0, 0, 0, 0) url("../images/ulwxbase.sys/panel_tools.png") no-repeat scroll -32px 0;
+   }
+
+
+ /****************************************/
+ 
+ 
+ /****更改字体颜色为black******/
+ 
+.panel-body {
+  color: black;
+
+}
+.panel-title {
+  color: black;
+
+}
+
+.l-btn {
+  color: black;
+}
+.l-btn:hover {
+  color: black;
+}
+
+.l-btn-plain:hover {
+  color: black;
+}
+.l-btn-disabled,
+.l-btn-disabled:hover {
+  color: black;
+}
+
+.combobox-item-hover {
+  color: black;
+}
+.tabs li a.tabs-inner:hover {
+
+  color: black;
+}
+.tabs li.tabs-selected a.tabs-inner {
+  color: black;
+}
+.tabs li a.tabs-inner {
+  color: black;
+}
+.datagrid-cell-rownumber {
+  color: black;
+}
+
+.datagrid-htable,
+.datagrid-btable,
+.datagrid-ftable {
+  color: black;
+}
+.datagrid-row-over,
+.datagrid-header td.datagrid-header-over {
+  color: black;
+}
+.l-btn-plain,
+.l-btn-selected {
+  color: black;
+}
+.m-btn-active,
+.s-btn-active {
+  color: black;
+}
+.switchbutton-handle {
+  color: black;
+}
+
+.switchbutton-off {
+  color: black;
+}
+
+.tooltip {
+  color: black;
+}
+
+.validatebox-invalid {
+  color: black;
+}
+
+.tree-node-hover {
+  color: black;
+}
+
+.tree-node-proxy {
+  color: black;
+}
+.m-btn-plain-active,
+.s-btn-plain-active {
+  color: black;
+}
+.m-btn-active,
+.s-btn-active {
+  color: black;
+}
+
+.menu-active-disabled {
+  color: black;
+}
+
+.menu-active {
+  color: black;
+}
+
+.menu {
+  color: black;
+}
+.slider-rulelabel span {
+  color: black;
+}
+
+.progressbar-text {
+  color: black;
+}
+
+.spinner-arrow-up,
+.spinner-arrow-down {
+  color: black;
+}
+.datebox-button a {
+  color: black;
+}
+
+.calendar-hover,
+.calendar-nav-hover,
+.calendar-menu-hover {
+  color: black;
+}
+.calendar-day {
+  color: black;
+}
+.m-list li>a:hover {
+  color: black;
+}
+.datalist-link,
+.m-list li>a {
+  color: black;
+}
+
+.datagrid-row-over,
+.datagrid-header td.datagrid-header-over {
+  color: black;
+}
+.datagrid-htable,
+.datagrid-btable,
+.datagrid-ftable {
+  color: black;
+}

@@ -1,0 +1,101 @@
+
+# 命名空间映射，每个命名空间对应一个包，命名空间类似struts2的命名空间，用于隔离请求
+aka:
+  webvc:
+    namespaces: #下面定义命名空间名称
+      sys:  # sys命名空间为预定义的，不能改变，固定为com.github.ulwx.aka.admin.web.action
+        package-name: com.github.ulwx.aka.admin.web.action
+        url-maps:
+          #定义逻辑action名称，为action的URL部分，和命名空间名称构成请求URL，即/sys/sys_Login_login
+          #逻辑action名称格式为[mod]-[action-name]-[action-method]或[mod]_[action-name]_[action-method]
+          #  [mod]： 为action所在的模块名（所在的包名）
+          #  [action-name]：为action的类名去掉Action后缀后的字符串，即action名
+          #  [action-method] ：为action类的请求处理方法名
+          sys_Login_login:
+            allow-methods: post,get
+            success: /main.jsp  #success 为逻辑视图名称，action里使用
+            error: redirect:/index.jsp #error 为逻辑视图名称，action里使用
+          sys-Login-logout:
+            success: redirect:/index.jsp
+          #如果不满足[mod]-[action-name]-[action-method]或[mod]_[action-name]_[action-method]格式，则需要添加
+          # mod-class-method-name属性指定映射到具体类的方法上。
+          logout:
+            mod-class-method-name: sys-Login-logout
+            success: redirect:/index.jsp
+          "[*_*_*]":
+            allow-methods: post,get
+    global-views:
+      error: /message.jsp
+      message: /message.jsp
+      json: /json.jsp
+      login: /index.jsp
+      forward: /forward.jsp
+      redirect: /redirect.jsp
+      download: /download.jsp
+      gate: /gate.jsp
+      main: /main.jsp
+
+  admin-base:
+    ds-name: xyz
+    service-impl:
+      #设置com.github.ulwx.aka.webmvc.web.action.IOperLogService的实现类，用于action方法调用时的操作日志，即
+      # ActionSupport#log()方法会用到。
+      log-service: com.github.ulwx.aka.admin.services.service.OperLogServiceImpl
+      #设置com.github.ulwx.aka.webmvc.services.IUserInfoService的实现类，用于获取用户信息对象，
+      #即构造com.github.ulwx.aka.webmvc.domain.SessionUserInfo对象。
+      user-info-service: com.github.ulwx.aka.admin.web.action.sys.services.service.sys.UserInfoService
+#   debug-filter:
+#      #为了调试用，当修改代码后，不用每次都去登录，而根据下面的配置去构造一个用户存放到session里
+#      enable: true
+#      username: adminjyd100
+    # 用于控制session里用户访问的安全性，
+    access-filter:
+      # 当访问控制过滤器F3AccessFilter在检测在Session里具有用户session时才调用access-plugins设置的插件。
+      # 访问控制的插件必须继承com.github.ulwx.aka.webmvc.filter.AccessPlugin接口，
+      access-plugins:
+        #是否需要包含
+        - com.github.ulwx.aka.admin.filter.SessionFilter
+        - com.github.ulwx.aka.admin.filter.URLControlFilter
+      # - com.github.ulwx.aka.admin.filter.SignFilter
+      #设置哪些URL不需要在session里存在User对象
+      not-filter-urls:
+        - sys_Login_loginJSON.action
+        - sys_Login_logoutJSON.action
+      #默认会包含error、message、json、login、forward、redirect、download、gate全局逻辑试图对应的jsp
+        - /download.jsp
+        - /forward.jsp
+        - /redirect.jsp
+        - /index.jsp
+        - /message.jsp
+        - /json.jsp
+        - /gate.jsp
+        - /index.jsp
+#   login-config:
+#      #新建用户时的初始化密码
+#      init-password: yscf888.com
+#      sms:
+#        #登录短信验证规则，可以指定 all ，如果指定为all说明所有人不需要手机验证码，只需要输入test-to-no-fix-smscode指定的值即可，
+#        #如果指定手机号码（可以指定多个，以逗号隔开），只有指定手机号码的人不需要手机验证码，只需要输入test-to-no-fix-smscode指定的值即可
+#        test-to: all
+#        #在login.sms.test-to=no有效，指定一个固定的手机验证码，登录时输入此验证码，测通过验证
+#        test-to-no-fix-smscode: 123456
+#        #短信验证码发送插件类，通过此类发送短信，继承com.github.ulwx.aka.admin.services.service.ILoginSms
+#        login-sms-plugin: com.github.ulwx.aka.admin.test.LogSmsImpl
+#        #登录时构造com.github.ulwx.aka.webmvc.domain.SessionUserInfo对象里的extInfo字段，用于应用自身使用，
+#        #需扩展com.github.ulwx.aka.admin.web.action.utils.LoginUserInfPlugin的实现。
+#      user-ext-inf-plugin: NONE
+#      #前端登录密码rsa加密私钥
+#      client-private-key: MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAi/52sB31O/1aBK72kQzcs9NskBDoJPgp1VVPHFn0BjyHRwNJ2V/MlmSO/WrsrtI+xqPCgTFd/h9BmXufQ4Q3AwIDAQABAkAY++DSrYYGnsBh9Zera1A4B5NoYpwLfP56RC9KMAOM2RwMqizZmAVmIdFl2gSYxkQxzn1T60kzJ1aq0KIN/zUBAiEA306hOO5Ky+xyELhYwKJtJrecVE3cWWc1K6ZrUHyxbjsCIQCgfVMmMsR6Obk+tvzuWecWIYf5h4sDOQww3j3nJVnl2QIgBGHAnCNg6Ft9aYKUi0MkrSvRL35Popl5259qX6vyt10CIAY3tL/3GYuOrvGSD0yAqSY/WFA/gxA15pYCFi3dUZVJAiEA127BTg/iYElzgIDzLJi32ZR/0/huE+nwCY9YwXrbW1w=
+
+#   file-server-urls:
+#      crossUploadSingle: http://localhost:7979/fileUpload/intf/v1/file/CrossUpload
+#      #多文件上传URL
+#      crossUploadMany: http://dev.jyd100.com:7979/fileUpload/intf/v1/file/CrossUploadMany
+#      #上传活动zip的URL
+#      crossUploadZip: http://dev.jyd100.com:7979/fileUpload/intf/v1/file/CrossUploadActivity
+#      #直连上传文件
+#      directUpload: http://dev.jyd100.com:7979/fileUpload/intf/v1/file/Upload
+#      #文件浏览地址
+#      list-url: http://dev.jyd100.com:7979/fileUpload/list.jsp?dir=/
+
+
