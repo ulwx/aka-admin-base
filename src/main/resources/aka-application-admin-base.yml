@@ -36,7 +36,7 @@ aka:
       main: /main.jsp
 
   admin-base:
-    ds-name: xyz
+#    ds-name: xyz
     service-impl:
       #设置com.github.ulwx.aka.webmvc.web.action.IOperLogService的实现类，用于action方法调用时的操作日志，即
       # ActionSupport#log()方法会用到。
