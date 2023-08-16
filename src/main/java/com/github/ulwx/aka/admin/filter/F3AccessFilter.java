@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 
 @WebFilter(urlPatterns = {"*.jsp", "*.action","/swagger-ui/*"})
@@ -69,15 +69,8 @@ public class F3AccessFilter implements Filter {
         if (!download.isEmpty()) set.add(download);
         if (!download.isEmpty()) set.add(download);
         set.addAll(adminProperties.getAccessFilter().getNotFilterUrls());
-        Map<String,AcesssNotFilerUrlsProvider> providers
-                =BeanGet.getBeans(AcesssNotFilerUrlsProvider.class,config.getServletContext());
-        if(providers!=null && providers.size()>0){
-            for(String key: providers.keySet()){
-                AcesssNotFilerUrlsProvider provider=providers.get(key);
-                List<String>  ret=provider.builder();
-                set.addAll(ret);
-            }
-        }
+        Set<String> others=ProtocoURLsUtils.getProtocolPrefex(config.getServletContext());
+        set.addAll(others);
         NotFilterURLs = set.toArray(new String[0]);//
 
         if (LoginPage == null) {

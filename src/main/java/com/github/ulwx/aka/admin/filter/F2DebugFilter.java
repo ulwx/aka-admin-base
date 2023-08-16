@@ -5,6 +5,7 @@ import com.github.ulwx.aka.admin.utils.AkaServiceUtils;
 import com.github.ulwx.aka.admin.utils.CbAppConfigProperties;
 import com.github.ulwx.aka.webmvc.BeanGet;
 import com.github.ulwx.aka.webmvc.web.action.ActionSupport;
+import com.ulwx.tool.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Set;
 
 @WebFilter( urlPatterns = {"*.jsp","*.action","/swagger-ui/*"})
 @Order(11)
@@ -38,11 +40,25 @@ public class F2DebugFilter implements Filter {
 		HttpServletRequest hreq = (HttpServletRequest) request; 
 		HttpServletResponse hres = (HttpServletResponse) response;  
 		String userAccount = this.userName;
-
 		HttpSession session=hreq.getSession();
+		String contextPath = hreq.getContextPath();
 	
 		try {
-			
+			Set<String> notFilterURLs=ProtocoURLsUtils.getProtocolPrefex(request.getServletContext());
+			String ruri = hreq.getRequestURI();
+			if (notFilterURLs !=null && !notFilterURLs.isEmpty()) {
+				String[] strs = notFilterURLs.toArray(new String[0]);
+				if (ArrayUtils.isNotEmpty(strs)) {
+					for (int i = 0; i < strs.length; i++) {
+						if (strs[i].startsWith("/")) {
+							if (ruri.startsWith(contextPath + strs[i])) {
+								chain.doFilter(hreq, hres);
+								return;
+							}
+						}
+					}
+				}
+			}
 			if( ActionSupport.getUserInfo(hreq)==null){
 				if(needDebug) {
 					log.debug("debug.filter");
