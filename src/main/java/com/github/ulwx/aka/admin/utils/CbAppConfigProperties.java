@@ -1,7 +1,5 @@
 package com.github.ulwx.aka.admin.utils;
 
-import com.github.ulwx.aka.webmvc.AkaWebMvcProperties.AccessFilter;
-import com.github.ulwx.aka.webmvc.AkaWebMvcProperties.DebugFilter;
 import com.github.ulwx.aka.webmvc.AkaWebMvcProperties.ServiceImpl;
 import com.ulwx.tool.StringUtils;
 import org.springframework.beans.BeansException;
@@ -11,17 +9,21 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+
 @ConfigurationProperties("aka.admin-base")
 public class CbAppConfigProperties implements InitializingBean, ApplicationContextAware {
-    private String dsName;
+    private String dsName="";
     @NestedConfigurationProperty
-    private Login loginConfig;
+    private Login loginConfig=new Login();
     @NestedConfigurationProperty
-    private DebugFilter debugFilter;
+    private DebugFilter debugFilter=new DebugFilter();
     @NestedConfigurationProperty
-    private AccessFilter accessFilter;
+    private AccessFilter accessFilter=new AccessFilter();
     @NestedConfigurationProperty
-    private ServiceImpl serviceImpl;
+    private ServiceImpl serviceImpl=new ServiceImpl();
     @NestedConfigurationProperty
     private FileServerUrls fileServerUrls=new FileServerUrls();
 
@@ -204,5 +206,46 @@ public class CbAppConfigProperties implements InitializingBean, ApplicationConte
         }
     }
 
+    public static class DebugFilter{
+        private Boolean enable=false;
+        private String username="";
 
+        public Boolean getEnable() {
+            return enable;
+        }
+
+        public void setEnable(Boolean enable) {
+            this.enable = enable;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+    }
+
+    public static class AccessFilter{
+        private List<String> accessPlugins=new ArrayList<>();
+        private LinkedHashSet notFilterUrls=new LinkedHashSet();
+
+        public List<String> getAccessPlugins() {
+            return accessPlugins;
+        }
+
+        public void setAccessPlugins(List<String> accessPlugins) {
+            this.accessPlugins = accessPlugins;
+        }
+
+        public LinkedHashSet getNotFilterUrls() {
+            return notFilterUrls;
+        }
+
+        public void setNotFilterUrls(LinkedHashSet notFilterUrls) {
+            this.notFilterUrls = notFilterUrls;
+        }
+    }
 }
