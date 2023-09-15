@@ -87,9 +87,13 @@ public class F2DebugFilter implements Filter {
 	public void init(FilterConfig Config) throws ServletException {
 		// TODO Auto-generated method stub
 		CbAppConfigProperties properties = BeanGet.getBean(CbAppConfigProperties.class,Config.getServletContext());
+		//log.debug("CbAppConfigProperties:"+ ObjectUtils.toStringUseFastJson(properties));
 		if(properties.getDebugFilter()!=null) {
 			userName = properties.getDebugFilter().getUsername();
+			log.debug("userNameJ:"+userName);
 			needDebug = properties.getDebugFilter().getEnable();
+		}else{
+			log.debug(""+properties.getDebugFilter());
 		}
 	}
 
