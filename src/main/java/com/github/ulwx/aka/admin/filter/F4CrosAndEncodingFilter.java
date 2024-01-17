@@ -1,9 +1,6 @@
 package com.github.ulwx.aka.admin.filter;
 
-import org.springframework.core.annotation.Order;
-
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -15,8 +12,8 @@ import java.io.IOException;
  * @author htqx
  * @version 1.0 2008-1-20
  */
-@WebFilter( urlPatterns = {"/*"})
-@Order(13)
+//@WebFilter( urlPatterns = {"/*"})
+//@Order(13)
 public class F4CrosAndEncodingFilter implements Filter {
 
     /** *//**

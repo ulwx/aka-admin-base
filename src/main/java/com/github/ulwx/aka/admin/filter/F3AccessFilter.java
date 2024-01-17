@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Set;
 
 
-@WebFilter(urlPatterns = {"*.jsp", "*.action","/swagger-ui/*"})
-@Order(12)
+//@WebFilter(urlPatterns = {"*.jsp", "*.action","/swagger-ui/*"})
+//@Order(12)
 public class F3AccessFilter implements Filter {
 
     private static Logger log = LoggerFactory.getLogger(F3AccessFilter.class);

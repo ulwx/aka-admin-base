@@ -2,13 +2,14 @@ package com.github.ulwx.aka.admin.services.dao.sysdb;
 
 import com.github.ulwx.aka.admin.domain.db.sys.SysUsersSession;
 import com.github.ulwx.aka.admin.utils.CbDao;
+import com.github.ulwx.aka.dbutils.spring.multids.AkaDS;
 import com.github.ulwx.aka.dbutils.tool.MD;
 import com.github.ulwx.aka.webmvc.AkaDaoSupport;
 import com.ulwx.type.TInteger;
 
 import java.util.HashMap;
 import java.util.Map;
-
+@AkaDS("${aka.admin-base.ds-name}")
 public class SysUsersSessionDao extends AkaDaoSupport {
 	
 	

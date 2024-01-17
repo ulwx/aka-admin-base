@@ -3,6 +3,7 @@ package com.github.ulwx.aka.admin.services.dao.sysdb;
 
 import com.github.ulwx.aka.admin.domain.db.sys.SysSms;
 import com.github.ulwx.aka.admin.utils.CbDao;
+import com.github.ulwx.aka.dbutils.spring.multids.AkaDS;
 import com.github.ulwx.aka.webmvc.AkaDaoSupport;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.util.Map;
  * @author lenovo
  *
  */
+@AkaDS("${aka.admin-base.ds-name}")
 public class SmsDao extends AkaDaoSupport {
 	/**
 	 * 5分钟短信验证

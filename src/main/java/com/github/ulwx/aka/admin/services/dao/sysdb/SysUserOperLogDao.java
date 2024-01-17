@@ -2,6 +2,7 @@ package com.github.ulwx.aka.admin.services.dao.sysdb;
 
 
 import com.github.ulwx.aka.admin.domain.db.sys.SysUserOperLog;
+import com.github.ulwx.aka.dbutils.spring.multids.AkaDS;
 import com.github.ulwx.aka.webmvc.AkaDaoSupport;
 
 /**
@@ -9,6 +10,7 @@ import com.github.ulwx.aka.webmvc.AkaDaoSupport;
  * @author lenovo
  *
  */
+@AkaDS("${aka.admin-base.ds-name}")
 public class SysUserOperLogDao extends AkaDaoSupport {
 	
 	public  void insertOper(SysUserOperLog obj) throws Exception {

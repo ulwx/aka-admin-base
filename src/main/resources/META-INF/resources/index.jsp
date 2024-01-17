@@ -247,7 +247,7 @@ table  td{
 			success: function(data){
 			   	//console.log(data);
 			   	$("#btn").linkbutton("enable");
-				if(!data.error){
+				if(data.status==1){
 				   $("#username").textbox("setValue","");
 				   $("#password").passwordbox("setValue","");
 				   $("#valcode").textbox("setValue","");
