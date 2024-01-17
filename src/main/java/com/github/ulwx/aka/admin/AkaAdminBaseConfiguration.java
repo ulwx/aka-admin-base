@@ -23,7 +23,7 @@ public class AkaAdminBaseConfiguration {
         FilterRegistrationBean<F1LogFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new F1LogFilter()); //设置filter
         registrationBean.addUrlPatterns("/*"); //设置拦截pattern
-        registrationBean.setOrder(10);//设置顺序
+        registrationBean.setOrder(10 );//设置顺序
         return registrationBean;
     }
 
