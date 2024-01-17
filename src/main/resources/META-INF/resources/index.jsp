@@ -10,7 +10,7 @@
 
 <jsp:include page="/head.jsp" flush="true"></jsp:include>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.plug/jsencrypt.js"></script>
-<style type="text/css">
+<style type="text/css" >
 body {
 	width: 100%;
 	height: 100%;
