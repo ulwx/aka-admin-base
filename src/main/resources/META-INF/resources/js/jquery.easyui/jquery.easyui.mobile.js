@@ -1,7 +1,7 @@
 /**
- * EasyUI for jQuery 1.10.18
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2023 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -46,7 +46,7 @@ _7.not(":first").children(".panel-body").navpanel("close");
 var p=_7.eq(0).children(".panel-body");
 $.mobile.panels.push({panel:p,animation:$.mobile.defaults.animation,direction:$.mobile.defaults.direction});
 }
-$(document)._unbind(".mobile")._bind("click.mobile",function(e){
+$(document).unbind(".mobile").bind("click.mobile",function(e){
 var a=$(e.target).closest("a");
 if(a.length){
 var _8=$.parser.parseOptions(a[0],["animation","direction",{back:"boolean"}]);
@@ -65,7 +65,7 @@ e.preventDefault();
 }
 }
 });
-$(window)._unbind(".mobile")._bind("hashchange.mobile",function(){
+$(window).unbind(".mobile").bind("hashchange.mobile",function(){
 var _a=$.mobile.panels.length;
 if(_a>1){
 var _b=location.hash;
@@ -76,14 +76,14 @@ $.mobile._back();
 }
 });
 },nav:function(_c,to,_d,_e){
-if(window.WebKitAnimationEvent||window.AnimationEvent){
+if(window.WebKitAnimationEvent){
 _d=_d!=undefined?_d:$.mobile.defaults.animation;
 _e=_e!=undefined?_e:$.mobile.defaults.direction;
 var _f="m-"+_d+(_e?"-"+_e:"");
 var p1=$(_c).panel("open").panel("resize").panel("panel");
 var p2=$(to).panel("open").panel("resize").panel("panel");
-p1.add(p2)._bind("webkitAnimationEnd",function(){
-$(this)._unbind("webkitAnimationEnd");
+p1.add(p2).bind("webkitAnimationEnd",function(){
+$(this).unbind("webkitAnimationEnd");
 var p=$(this).children(".panel-body");
 if($(this).hasClass("m-in")){
 p.panel("open").panel("resize");
