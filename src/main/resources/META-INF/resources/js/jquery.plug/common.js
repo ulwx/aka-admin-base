@@ -10,7 +10,6 @@ String.prototype.endWith=function(s){
 	     return true;
 	  else
 	     return false;
-	  return true;
 };
 	 
 String.prototype.startWith=function(s){

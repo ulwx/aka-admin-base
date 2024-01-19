@@ -59,7 +59,7 @@
      		height:500,
      		collapsible: true,
      		resizable: true,
-     		autoHeight:true,
+     		autoHeight:false,
      		isFrame: true, //是否使用iframe
      		self: false, //用于框架页面，如果值为true则不跨框架，否则跨框架弹出在框架最顶层页面
      		data: null, //iframe方式下用来父页面向弹出窗体中子页面传递数据
@@ -152,8 +152,8 @@
 							
 							win.dialog("center"); 
 							
-							$(iframe.get(0)).contents().find("body").css("overflow","auto");
-							$(iframe.get(0)).contents().find("html").css("overflow","auto");
+							//$(iframe.get(0)).contents().find("body").css("overflow","auto");
+							//$(iframe.get(0)).contents().find("html").css("overflow","auto");
 	 					}else{
 	 					 // alert(111);
 	 					}

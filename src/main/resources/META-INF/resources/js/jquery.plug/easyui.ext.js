@@ -249,84 +249,7 @@ $(function() {
 	if ($.fn.textbox)
 		$.fn.textbox.defaults.height = my_default_height;
 
-	if ($.fn.combo) {
-		function _13(_28) {
-			var _29 = $.data(_28, "combo").panel;
-			_29.panel("close");
-		}
-		function _1aa(e) {
-			var _1b = e.data.target;
-			var t = $(_1b);
-			var _1c = t.data("combo");
-			var temp = t.data("combo").combo;
-			var _1d = t.combo("options");
-			_1c.panel.panel("options").comboTarget = _1b;
-			switch (e.keyCode) {
-			case 38:
-				_1d.keyHandler.up.call(_1b, e);
-				break;
-			case 40:
-				_1d.keyHandler.down.call(_1b, e);
-				break;
-			case 37:
-				_1d.keyHandler.left.call(_1b, e);
-				break;
-			case 39:
-				_1d.keyHandler.right.call(_1b, e);
-				break;
-			case 13:
-				e.preventDefault();
-				_1d.keyHandler.enter.call(_1b, e);
-				return false;
-			case 9:
-			case 27:
-				_13(_1b);
-				break;
-			default:
-				if (_1d.editable) {
-					if (_1c.timer) {
-						clearTimeout(_1c.timer);
-					}
-					_1c.timer = setTimeout(function() {
-						var q = t.combo("getText");
-						if (_1c.previousText != q) {
-							_1c.previousText = q;
-							t.combo("showPanel");
-							_1d.keyHandler.query.call(_1b, q, e);
-							t.combo("validate");
-						}
-					}, _1d.delay);
 
-					temp.find(".textbox-text").bind("input", function(e) {
-						if (_1c.timer) {
-							clearTimeout(_1c.timer);
-						}
-						_1c.timer = setTimeout(function() {
-							var q = t.combo("getText");
-							if (_1c.previousText != q) {
-								_1c.previousText = q;
-								t.combo("showPanel");
-								_1d.keyHandler.query.call(_1b, q, e);
-								t.combo("validate");
-							}
-						}, _1d.delay);
-					});
-				}
-			}
-		}
-
-		$.fn.combo.defaults.height = my_default_height;
-		$.fn.combo.defaults.inputEvents.keydown = _1aa;
-		$.fn.combo.defaults.inputEvents.paste = _1aa;
-		$.fn.combo.defaults.inputEvents.drop = _1aa;
-
-	}
-	if ($.fn.combobox) {
-		$.fn.combobox.defaults.height = my_default_height;
-		$.fn.combobox.defaults.inputEvents.keydown = _1aa;
-		$.fn.combobox.defaults.inputEvents.paste = _1aa;
-		$.fn.combobox.defaults.inputEvents.drop = _1aa;
-	}
 	if ($.fn.numberbox)
 		$.fn.numberbox.defaults.height = my_default_height;
 	if ($.fn.datebox)
@@ -353,7 +276,7 @@ $(function() {
 	/**
 	 * 1.修复linkbutton的disable和enable不对称触发时，引起的href事件丢失的问题
 	 * 2.对linkbutton增加timeout属性，指定多长时间解禁按钮，默认1000秒
-	 * 
+	 *
 	 */
 
 	if ($.fn.linkbutton) {
@@ -435,186 +358,7 @@ $(function() {
 	}
 	;
 
-	/** 修正easyui的编辑时，对数字判断会改变的问题* */
-	if ($.fn.datagrid) {
-		function _2(a, o) {
-			return $.easyui.indexOfArray(a, o);
-		}
-		;
-		function _5(_6, aa) {
-			return $.data(_6, "treegrid") ? aa.slice(1) : aa;
-		}
-		;
-		function _164(_175, _176) {
-			var opts = $.data(_175, "datagrid").options;
-			var tr = opts.finder.getTr(_175, _176);
-			tr.children("td").each(function() {
-				var cell = $(this).find("div.datagrid-editable");
-				if (cell.length) {
-					var ed = $.data(cell[0], "datagrid.editor");
-					if (ed.actions.destroy) {
-						ed.actions.destroy(ed.target);
-					}
-					cell.html(ed.oldHtml);
-					$.removeData(cell[0], "datagrid.editor");
-					cell.removeClass("datagrid-editable");
-					cell.css("width", "");
-				}
-			});
-		}
-		;
-		function _157(_177, _178) {
-			var tr = $.data(_177, "datagrid").options.finder.getTr(_177, _178);
-			if (!tr.hasClass("datagrid-row-editing")) {
-				return true;
-			}
-			var vbox = tr.find(".validatebox-text");
-			vbox.validatebox("validate");
-			vbox.trigger("mouseleave");
-			var _179 = tr.find(".validatebox-invalid");
-			return _179.length == 0;
-		}
-		;
-		function _158(_159, _15a, _15b) {
-			var _15c = $.data(_159, "datagrid");
-			var opts = _15c.options;
-			var _15d = _15c.updatedRows;
-			var _15e = _15c.insertedRows;
-			var tr = opts.finder.getTr(_159, _15a);
-			var row = opts.finder.getRow(_159, _15a);
-			if (!tr.hasClass("datagrid-row-editing")) {
-				return;
-			}
-			if (!_15b) {
-				if (!_157(_159, _15a)) {
-					return;
-				}
-				var _15f = false;
-				var _160 = {};
-				tr.find("div.datagrid-editable").each(function() {
-					var _161 = $(this).parent().attr("field");
-					var ed = $.data(this, "datagrid.editor");
-					var t = $(ed.target);
-					var _162 = t.data("textbox") ? t.textbox("textbox") : t;
-					if (_162.is(":focus")) {
-						_162.triggerHandler("blur");
-					}
-					var _163 = ed.actions.getValue(ed.target);
-					if ($.isNumeric(row[_161]) && $.isNumeric(_163)) {
-						_163 = _163 - 0;
-					}
-					if (row[_161] !== _163) {
-						row[_161] = _163;
-						_15f = true;
-						_160[_161] = _163;
-					}
-				});
-				if (_15f) {
-					if (_2(_15e, row) == -1) {// //
-						if (_2(_15d, row) == -1) {
-							_15d.push(row);
-						}
-					}
-				}
-				opts.onEndEdit.apply(_159, _5(_159, [ _15a, row, _160 ]));
-			}
-			tr.removeClass("datagrid-row-editing");
-			_164(_159, _15a);// ///
-			$(_159).datagrid("refreshRow", _15a);
-			if (!_15b) {
-				opts.onAfterEdit.apply(_159, _5(_159, [ _15a, row, _160 ]));// //
-			} else {
-				opts.onCancelEdit.apply(_159, _5(_159, [ _15a, row ]));// //
-			}
-		}
-		;// ///
-		$.extend($.fn.datagrid.methods, {
-			getChecked : function(jq) {
-				var panel = $(jq).datagrid("getPanel");
-				var rows = $(jq).datagrid("getRows");
-				var ckrows = [];
-				panel.find("div.datagrid-cell-check input[type=checkbox]")
-						.each(
-								function() {
 
-									var checked = $(this).is(':checked');
-									if (checked) {
-										var rowIndex = $(this).closest(
-												"tr[datagrid-row-index]").attr(
-												"datagrid-row-index") - 0;
-										ckrows.push(rows[rowIndex]);
-									}
-								});
-				return ckrows;
-			},
-			/**
-			 * 修正edit单元格数字编辑时，用户不进行改变其值，只是点击进行编辑后再退出，但easyui总返回有改变的问题(通过getChanges得知)
-			 */
-			endEdit : function(jq, index) {
-				return jq.each(function() {
-					_158(this, index, false);
-					$(this).mydatagrid("highlightRowLikeSelect", index);
-					$(this).datagrid("checkRow", index);
-				});
-			},
-			cancelEdit : function(jq, index) {
-				return jq.each(function() {
-					_158(this, index, true);
-					$(this).mydatagrid("highlightRowLikeSelect", index);
-					$(this).datagrid("checkRow", index);
-				});
-			},
-
-		});
-
-		/* EasyUI系列之扩展easyui datagrid的四个方法.动态禁用，启用toolbar */
-		$.extend($.fn.datagrid.methods, {
-			/**
-			 * title:名称
-			 */
-			disableToolBar : function(jq, title) {
-				return jq.each(function() {
-					var bars = $(this).parent().prev("div.datagrid-toolbar")
-							.find("a.l-btn-plain");
-					bars.each(function() {
-						var bar = $(this).find(
-								"span.l-btn-text:contains('" + title + "')");
-						if (bar.length > 0) {
-							$(this).linkbutton("disable");
-						}
-					});
-
-				});
-			},
-			enableToolBar : function(jq, title) {
-				return jq.each(function() {
-					var bars = $(this).parent().prev("div.datagrid-toolbar")
-							.find("a.l-btn-plain");
-					bars.each(function() {
-						var bar = $(this).find(
-								"span.l-btn-text:contains('" + title + "')");
-						if (bar.length > 0) {
-							$(this).linkbutton("enable");
-						}
-					});
-
-				});
-			}
-		});
-
-	}
-	/** *优化easyui combobox设值问题 ** */
-	var _temp_combobox_method_loadData = $.fn.combobox.methods.loadData;
-	if ($.fn.combobox) {
-		$.extend($.fn.combobox.methods, {
-			loadData : function(jq, data) {
-				var ret = _temp_combobox_method_loadData(jq, data);
-				clearEasyUiInvalidTip('form');
-				return ret;
-
-			}
-		});
-	}
 
 	var ie = (function() {
 		var undef, v = 3, div = document.createElement('div'), all = div
@@ -627,7 +371,7 @@ $(function() {
 	/**
 	 * add by cgh 针对panel window dialog三个组件调整大小时会超出父级元素的修正
 	 * 如果父级元素的overflow属性为hidden，则修复上下左右个方向 如果父级元素的overflow属性为非hidden，则只修复上左两个方向
-	 * 
+	 *
 	 * @param width
 	 * @param height
 	 * @returns
@@ -690,7 +434,7 @@ $(function() {
 	/**
 	 * add by cgh 针对panel window dialog三个组件拖动时会超出父级元素的修正
 	 * 如果父级元素的overflow属性为hidden，则修复上下左右个方向 如果父级元素的overflow属性为非hidden，则只修复上左两个方向
-	 * 
+	 *
 	 * @param left
 	 * @param top
 	 * @returns
