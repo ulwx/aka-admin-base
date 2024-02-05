@@ -38,7 +38,7 @@ public class F1LogFilter implements Filter {
         
     }
 
-	public void init(FilterConfig arg0) throws ServletException {
+	public void init() throws ServletException {
 		// TODO Auto-generated method stub
 		
 	}

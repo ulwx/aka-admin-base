@@ -1,1136 +1,661 @@
 /*
-SQLyog Ultimate v13.1.1 (64 bit)
-MySQL - 5.7.31-log : Database - common-base
-*********************************************************************
+ Navicat Premium Data Transfer
+
+ Source Server         : 8.134.213.29
+ Source Server Type    : MySQL
+ Source Server Version : 80100 (8.1.0)
+ Source Host           : 8.134.213.29:3307
+ Source Schema         : feeadd
+
+ Target Server Type    : MySQL
+ Target Server Version : 80100 (8.1.0)
+ File Encoding         : 65001
+
+ Date: 02/02/2024 10:20:42
 */
 
-/*!40101 SET NAMES utf8 */;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
-/*!40101 SET SQL_MODE=''*/;
-
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`common-base` /*!40100 DEFAULT CHARACTER SET utf8 */;
-
-USE `common-base`;
-
-/*Table structure for table `sms_config` */
-
+-- ----------------------------
+-- Table structure for sms_config
+-- ----------------------------
 DROP TABLE IF EXISTS `sms_config`;
+CREATE TABLE `sms_config`  (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `sms_prex` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '短信前缀',
+  `url` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
+  `user_code` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '用户名',
+  `user_pwd` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '密码',
+  `type` varchar(2) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '类型：(1-验证码类短信 2-营销类短信 3:通知类短信)',
+  `filter` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '过滤关键字，以英文逗号分隔',
+  `commpany` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '鼎汉',
+  `black_phone` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '黑名单手机号码,以逗号分隔',
+  `status` smallint NOT NULL COMMENT '状态',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '鼎汉配置表' ROW_FORMAT = DYNAMIC;
 
-CREATE TABLE `sms_config` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `sms_prex` varchar(20) DEFAULT NULL COMMENT '短信前缀',
-  `url` varchar(255) DEFAULT NULL,
-  `user_code` varchar(50) DEFAULT NULL COMMENT '用户名',
-  `user_pwd` varchar(50) DEFAULT NULL COMMENT '密码',
-  `type` varchar(2) DEFAULT NULL COMMENT '类型：(1-验证码类短信 2-营销类短信 3:通知类短信)',
-  `filter` varchar(100) DEFAULT '' COMMENT '过滤关键字，以英文逗号分隔',
-  `commpany` varchar(10) DEFAULT NULL COMMENT '鼎汉',
-  `black_phone` varchar(500) DEFAULT '' COMMENT '黑名单手机号码,以逗号分隔',
-  `status` smallint(6) NOT NULL COMMENT '状态',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='鼎汉配置表';
+-- ----------------------------
+-- Records of sms_config
+-- ----------------------------
+INSERT INTO `sms_config` VALUES (1, '粤商财富', 'http://120.76.79.226:9080', 'jianyidai001', 'jianyidai16888', '1', '抵押,质押', '鼎汉', '18814145843', 1);
+INSERT INTO `sms_config` VALUES (2, '粤商财富', 'http://112.74.179.106:8080', 'jianyidai002', 'jianyidai16888', '2', '抵押,质押', '鼎汉', '', 1);
+INSERT INTO `sms_config` VALUES (6, '粤商财富', 'http://120.76.79.226:9080', 'jianyidai003', 'jianyidai16888', '3', '抵押,质押', '鼎汉', '', 1);
+INSERT INTO `sms_config` VALUES (7, '粤商财富', 'http://120.76.79.226:9080', 'jianyidai003', 'jianyidai16888', '4', '抵押,质押', '鼎汉', '', 1);
 
-/*Data for the table `sms_config` */
-
-insert  into `sms_config`(`id`,`sms_prex`,`url`,`user_code`,`user_pwd`,`type`,`filter`,`commpany`,`black_phone`,`status`) values 
-(1,'粤商财富','http://120.76.79.226:9080','jianyidai001','jianyidai16888','1','抵押,质押','鼎汉','18814145843',0),
-(2,'粤商财富','http://112.74.179.106:8080','jianyidai002','jianyidai16888','2','抵押,质押','鼎汉','',0),
-(6,'粤商财富','http://120.76.79.226:9080','jianyidai003','jianyidai16888','3','抵押,质押','鼎汉','',0),
-(7,'粤商财富','http://120.76.79.226:9080','jianyidai003','jianyidai16888','4','抵押,质押','鼎汉','',0);
-
-/*Table structure for table `sys_pages` */
-
+-- ----------------------------
+-- Table structure for sys_pages
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_pages`;
+CREATE TABLE `sys_pages`  (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '流水号',
+  `page_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '此页面名称',
+  `match_url_suffix` varchar(158) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '此页面的URL后缀',
+  `status` tinyint NULL DEFAULT 1 COMMENT '状态 1：有效 2：无效',
+  `updatime` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id`(`id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
-CREATE TABLE `sys_pages` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '流水号',
-  `page_name` varchar(50) DEFAULT '' COMMENT '此页面名称',
-  `match_url_suffix` varchar(158) DEFAULT '' COMMENT '此页面的URL后缀',
-  `status` tinyint(4) DEFAULT '1' COMMENT '状态 1：有效 2：无效',
-  `updatime` datetime DEFAULT NULL,
-  KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- ----------------------------
+-- Records of sys_pages
+-- ----------------------------
 
-/*Data for the table `sys_pages` */
-
-/*Table structure for table `sys_pages_service_right` */
-
+-- ----------------------------
+-- Table structure for sys_pages_service_right
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_pages_service_right`;
-
-CREATE TABLE `sys_pages_service_right` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '流水号',
-  `service_right_code` int(11) DEFAULT '0' COMMENT '权限点code，对应sys_service_right的right_code',
-  `service_right_name` varchar(30) DEFAULT '' COMMENT '权限点名称',
-  `page_id` int(11) DEFAULT '0' COMMENT '所属的页面id，对应sys_pages的id',
+CREATE TABLE `sys_pages_service_right`  (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '流水号',
+  `service_right_code` int NULL DEFAULT 0 COMMENT '权限点code',
+  `service_right_name` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '权限点名称',
+  `page_id` int NULL DEFAULT 0 COMMENT '所属的页面id，对应sys_pages的id',
   `updatime` datetime NOT NULL,
-  KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='页面权限点（一个页面对应多个业务权限点）';
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id`(`id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '页面权限点（一个页面对应多个业务权限点）' ROW_FORMAT = DYNAMIC;
 
-/*Data for the table `sys_pages_service_right` */
+-- ----------------------------
+-- Records of sys_pages_service_right
+-- ----------------------------
 
-/*Table structure for table `sys_pages_service_right_user` */
-
+-- ----------------------------
+-- Table structure for sys_pages_service_right_user
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_pages_service_right_user`;
-
-CREATE TABLE `sys_pages_service_right_user` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '流水号',
-  `page_service_right_id` int(11) DEFAULT '0' COMMENT '页面权限点id，对应sys_pages_service_right的id',
-  `sys_user_id` int(11) DEFAULT '0' COMMENT '系统用户id，对应sys_user表id',
+CREATE TABLE `sys_pages_service_right_user`  (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '流水号',
+  `page_service_right_id` int NULL DEFAULT 0 COMMENT '页面权限点id，对应sys_pages_service_right的id',
+  `sys_user_id` int NULL DEFAULT 0 COMMENT '系统用户id，对应sys_user表id',
   `updatime` datetime NOT NULL,
-  KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id`(`id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
-/*Data for the table `sys_pages_service_right_user` */
+-- ----------------------------
+-- Records of sys_pages_service_right_user
+-- ----------------------------
 
-/*Table structure for table `sys_right` */
-
+-- ----------------------------
+-- Table structure for sys_right
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_right`;
+CREATE TABLE `sys_right`  (
+  `sys_right_code` varchar(60) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '权限编码',
+  `sys_right_name` varchar(90) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '权限名称',
+  `sys_right_url` varchar(240) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT 'URL',
+  `icon` varchar(120) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT 'icon',
+  `enable` int NULL DEFAULT 1 COMMENT '是否有效 0：无效  1：有效',
+  `order_code` int NULL DEFAULT 0 COMMENT '排序码',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `updator` varchar(90) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '更新人',
+  PRIMARY KEY (`sys_right_code`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
-CREATE TABLE `sys_right` (
-  `sys_right_code` varchar(60) NOT NULL DEFAULT '' COMMENT '权限编码',
-  `sys_right_name` varchar(90) DEFAULT '' COMMENT '权限名称',
-  `sys_right_url` varchar(240) DEFAULT '' COMMENT 'URL',
-  `icon` varchar(120) DEFAULT '' COMMENT 'icon',
-  `enable` int(11) DEFAULT '1' COMMENT '是否有效 0：无效  1：有效',
-  `order_code` int(11) DEFAULT '0' COMMENT '排序码',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `updator` varchar(90) DEFAULT '' COMMENT '更新人',
-  PRIMARY KEY (`sys_right_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- ----------------------------
+-- Records of sys_right
+-- ----------------------------
+INSERT INTO `sys_right` VALUES ('10000', '系统管理', '', '1', 1, 10000, '2023-04-25 15:08:45', '管理员');
+INSERT INTO `sys_right` VALUES ('10001', '功能菜单', 'sys/sys_SysRight_ListData.action', '3', 1, 10001, '2024-01-24 19:34:37', '管理员');
+INSERT INTO `sys_right` VALUES ('10002', '系统用户', 'jsp/sys/sys/usersmanage.jsp', '2', 1, 10002, '2023-06-20 16:06:33', '管理员');
+INSERT INTO `sys_right` VALUES ('10003', '角色管理', 'sys/sys_SysRole_ListData.action', '3', 1, 10003, '2023-06-14 10:11:54', '管理员');
+INSERT INTO `sys_right` VALUES ('10004', '角色菜单', 'jsp/sys/sys/SysRoleUrls.jsp', '0', 1, 10004, '2019-03-15 13:24:27', '');
+INSERT INTO `sys_right` VALUES ('10005', '权限页面设置', 'jsp/sys/sys/SysPagesSettings.jsp', '', 1, 10005, NULL, '');
+INSERT INTO `sys_right` VALUES ('10006', '权限页面管理', 'jsp/sys/sys/SysPagesAdmin.jsp', '', 1, 10006, NULL, '');
+INSERT INTO `sys_right` VALUES ('10009', '用户操作日志', '', '', 0, 10005, '2018-01-25 10:12:05', 'admin');
+INSERT INTO `sys_right` VALUES ('20000', '增值服务管理', '', '', 1, 20000, NULL, '');
+INSERT INTO `sys_right` VALUES ('20001', '增值服务列表', 'jsp/feemod/feelist.jsp?source=console', '', 1, 20001, NULL, '');
+INSERT INTO `sys_right` VALUES ('20002', '服务成本管理', 'jsp/feemod/service_cost_list.jsp', '', 1, 20002, NULL, '');
+INSERT INTO `sys_right` VALUES ('20003', '仓库管理', 'jsp/feemod/store_list.jsp', '', 1, 20003, NULL, '');
+INSERT INTO `sys_right` VALUES ('20004', '客户管理', 'jsp/feemod/client_list.jsp', '', 1, 20004, NULL, '');
 
-/*Data for the table `sys_right` */
-
-insert  into `sys_right`(`sys_right_code`,`sys_right_name`,`sys_right_url`,`icon`,`enable`,`order_code`,`update_time`,`updator`) values 
-('10000','系统管理','','1',1,10000,'2021-04-14 15:35:26','管理员'),
-('10001','功能菜单','sys/sys_SysRight_ListData.action','3',1,10001,'2017-10-11 10:42:48','管理员'),
-('10002','系统用户','jsp/sys/sys/usersmanage.jsp','2',1,10002,'2017-11-13 12:53:15',NULL),
-('10003','角色管理','sys/sys_SysRole_ListData.action','3',1,10003,'2017-09-09 11:52:50','管理员'),
-('10004','角色菜单','jsp/sys/sys/SysRoleUrls.jsp','0',1,10004,'2019-03-15 13:24:27',''),
-('10005','权限页面设置','jsp/sys/sys/SysPagesSettings.jsp','',1,10005,NULL,''),
-('10006','权限页面管理','jsp/sys/sys/SysPagesAdmin.jsp','',1,10006,NULL,''),
-('10009','用户操作日志','','',0,10005,'2018-01-25 10:12:05','admin');
-
-/*Table structure for table `sys_role` */
-
+-- ----------------------------
+-- Table structure for sys_role
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
-
-CREATE TABLE `sys_role` (
-  `sys_role_sno` int(11) NOT NULL AUTO_INCREMENT COMMENT '流水号',
-  `role_name` varchar(30) NOT NULL DEFAULT '' COMMENT '角色名称',
-  `is_sys` tinyint(4) DEFAULT '0' COMMENT '1:系统预定义角色  0：用户自定义角色。系统预定义角色，界面上不能删除',
-  `role_type_code` int(11) DEFAULT '0' COMMENT '角色类型，对应sys_role_type的code',
-  `description` varchar(100) NOT NULL DEFAULT '' COMMENT '角色说明',
+CREATE TABLE `sys_role`  (
+  `sys_role_sno` int NOT NULL AUTO_INCREMENT COMMENT '流水号',
+  `role_name` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '角色名称',
+  `description` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '角色说明',
   `update_time` datetime NOT NULL COMMENT '更新时间',
-  `updator` varchar(30) NOT NULL DEFAULT '' COMMENT '更新人',
-  PRIMARY KEY (`sys_role_sno`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8 COMMENT='角色表';
+  `updator` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '更新人',
+  PRIMARY KEY (`sys_role_sno`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
 
-/*Data for the table `sys_role` */
+-- ----------------------------
+-- Records of sys_role
+-- ----------------------------
+INSERT INTO `sys_role` VALUES (0, '超管组', '超级管理员', '2019-11-12 17:34:58', '管理员');
+INSERT INTO `sys_role` VALUES (54, '财务', '', '2024-01-25 10:00:38', '管理员');
+INSERT INTO `sys_role` VALUES (55, '销售', '', '2024-01-25 10:01:18', '管理员');
+INSERT INTO `sys_role` VALUES (56, '仓库', '', '2024-01-25 10:01:45', '管理员');
 
-insert  into `sys_role`(`sys_role_sno`,`role_name`,`is_sys`,`role_type_code`,`description`,`update_time`,`updator`) values 
-(0,'超管组',1,0,'超级管理员','2019-11-12 17:34:58','管理员'),
-(10,'总经办-领导',1,100,'总经办-领导7','2021-01-20 14:59:13','管理员'),
-(11,'总经办-内勤',1,110,'总经办-内勤','2019-09-27 15:19:29','管理员'),
-(20,'财务组-专员',1,200,'财务组-专员','2019-09-27 15:19:36','管理员'),
-(21,'财务组-主管',1,210,'财务组-主管','2019-09-27 15:19:44','管理员'),
-(22,'财务组-经理',1,220,'财务组-经理','2019-09-27 15:19:53','管理员'),
-(30,'开发维护组',1,300,'开发维护组','2019-11-12 10:48:00','管理员'),
-(40,'行政',1,400,'行政','2019-09-27 15:20:13','管理员'),
-(50,'理财师',1,500,'理财师','2019-11-21 10:39:41','管理员'),
-(51,'理财主管',1,510,'理财部主管','2019-11-27 14:12:57','管理员'),
-(52,'理财总监',1,520,'理财总监','2019-10-30 10:52:18','管理员');
-
-/*Table structure for table `sys_role_right` */
-
+-- ----------------------------
+-- Table structure for sys_role_right
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_role_right`;
-
-CREATE TABLE `sys_role_right` (
-  `sys_role_right_sno` int(11) NOT NULL AUTO_INCREMENT COMMENT '流水号',
-  `sys_role_id` int(11) NOT NULL DEFAULT '0' COMMENT '角色id',
-  `sys_right_code` varchar(20) NOT NULL DEFAULT ' ' COMMENT '权限编码',
+CREATE TABLE `sys_role_right`  (
+  `sys_role_right_sno` int NOT NULL AUTO_INCREMENT COMMENT '流水号',
+  `sys_role_id` int NOT NULL DEFAULT 0 COMMENT '角色id',
+  `sys_right_code` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT ' ' COMMENT '权限编码',
   `update_time` datetime NOT NULL COMMENT '更新时间',
-  `updator` varchar(30) NOT NULL DEFAULT ' ' COMMENT '更新人',
-  PRIMARY KEY (`sys_role_right_sno`)
-) ENGINE=InnoDB AUTO_INCREMENT=1285 DEFAULT CHARSET=utf8 COMMENT='角色权限表';
+  `updator` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT ' ' COMMENT '更新人',
+  PRIMARY KEY (`sys_role_right_sno`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '角色权限表' ROW_FORMAT = DYNAMIC;
 
-/*Data for the table `sys_role_right` */
+-- ----------------------------
+-- Records of sys_role_right
+-- ----------------------------
+INSERT INTO `sys_role_right` VALUES (1, 54, '20001', '2024-01-25 10:00:38', '管理员');
+INSERT INTO `sys_role_right` VALUES (2, 54, '20000', '2024-01-25 10:00:38', '管理员');
+INSERT INTO `sys_role_right` VALUES (3, 55, '20001', '2024-01-25 10:01:18', '管理员');
+INSERT INTO `sys_role_right` VALUES (4, 55, '20000', '2024-01-25 10:01:18', '管理员');
+INSERT INTO `sys_role_right` VALUES (5, 56, '20001', '2024-01-25 10:01:45', '管理员');
+INSERT INTO `sys_role_right` VALUES (6, 56, '20000', '2024-01-25 10:01:45', '管理员');
 
-insert  into `sys_role_right`(`sys_role_right_sno`,`sys_role_id`,`sys_right_code`,`update_time`,`updator`) values 
-(397,11,'90000','2019-09-27 15:19:29','管理员'),
-(398,11,'90002','2019-09-27 15:19:29','管理员'),
-(399,11,'90001','2019-09-27 15:19:29','管理员'),
-(400,11,'40003','2019-09-27 15:19:29','管理员'),
-(401,11,'40002','2019-09-27 15:19:29','管理员'),
-(402,11,'40001','2019-09-27 15:19:29','管理员'),
-(403,11,'40000','2019-09-27 15:19:29','管理员'),
-(404,11,'40004','2019-09-27 15:19:29','管理员'),
-(405,11,'30002','2019-09-27 15:19:29','管理员'),
-(406,11,'80003','2019-09-27 15:19:29','管理员'),
-(407,11,'30001','2019-09-27 15:19:29','管理员'),
-(408,11,'80002','2019-09-27 15:19:29','管理员'),
-(409,11,'30004','2019-09-27 15:19:29','管理员'),
-(410,11,'80001','2019-09-27 15:19:29','管理员'),
-(411,11,'30003','2019-09-27 15:19:29','管理员'),
-(412,11,'80000','2019-09-27 15:19:29','管理员'),
-(413,11,'30020','2019-09-27 15:19:29','管理员'),
-(414,11,'30000','2019-09-27 15:19:29','管理员'),
-(415,11,'30021','2019-09-27 15:19:29','管理员'),
-(416,11,'30006','2019-09-27 15:19:29','管理员'),
-(417,11,'30005','2019-09-27 15:19:29','管理员'),
-(418,11,'30008','2019-09-27 15:19:29','管理员'),
-(419,11,'30007','2019-09-27 15:19:29','管理员'),
-(420,11,'20001','2019-09-27 15:19:29','管理员'),
-(421,11,'20000','2019-09-27 15:19:29','管理员'),
-(422,11,'70001','2019-09-27 15:19:29','管理员'),
-(423,11,'70000','2019-09-27 15:19:29','管理员'),
-(424,11,'50000','2019-09-27 15:19:29','管理员'),
-(425,11,'50002','2019-09-27 15:19:29','管理员'),
-(426,11,'50001','2019-09-27 15:19:29','管理员'),
-(427,11,'60002','2019-09-27 15:19:29','管理员'),
-(428,11,'10000','2019-09-27 15:19:29','管理员'),
-(429,11,'50004','2019-09-27 15:19:29','管理员'),
-(430,11,'60001','2019-09-27 15:19:29','管理员'),
-(431,11,'50003','2019-09-27 15:19:29','管理员'),
-(432,11,'60000','2019-09-27 15:19:29','管理员'),
-(433,11,'10002','2019-09-27 15:19:29','管理员'),
-(434,11,'10001','2019-09-27 15:19:29','管理员'),
-(435,11,'50005','2019-09-27 15:19:29','管理员'),
-(436,11,'10004','2019-09-27 15:19:29','管理员'),
-(437,11,'10003','2019-09-27 15:19:29','管理员'),
-(438,11,'10006','2019-09-27 15:19:29','管理员'),
-(439,11,'30019','2019-09-27 15:19:29','管理员'),
-(440,11,'10005','2019-09-27 15:19:29','管理员'),
-(441,20,'60002','2019-09-27 15:19:36','管理员'),
-(442,20,'60001','2019-09-27 15:19:36','管理员'),
-(443,20,'60000','2019-09-27 15:19:36','管理员'),
-(444,21,'50000','2019-09-27 15:19:44','管理员'),
-(445,21,'50002','2019-09-27 15:19:44','管理员'),
-(446,21,'50001','2019-09-27 15:19:44','管理员'),
-(447,21,'60002','2019-09-27 15:19:44','管理员'),
-(448,21,'50004','2019-09-27 15:19:44','管理员'),
-(449,21,'60001','2019-09-27 15:19:44','管理员'),
-(450,21,'50003','2019-09-27 15:19:44','管理员'),
-(451,21,'60000','2019-09-27 15:19:44','管理员'),
-(452,21,'50005','2019-09-27 15:19:44','管理员'),
-(453,22,'70001','2019-09-27 15:19:53','管理员'),
-(454,22,'60002','2019-09-27 15:19:53','管理员'),
-(455,22,'60001','2019-09-27 15:19:53','管理员'),
-(456,22,'60000','2019-09-27 15:19:53','管理员'),
-(457,22,'70000','2019-09-27 15:19:53','管理员'),
-(502,40,'30002','2019-09-27 15:20:13','管理员'),
-(503,40,'30001','2019-09-27 15:20:13','管理员'),
-(504,40,'30004','2019-09-27 15:20:13','管理员'),
-(505,40,'30003','2019-09-27 15:20:13','管理员'),
-(506,40,'30020','2019-09-27 15:20:13','管理员'),
-(507,40,'30000','2019-09-27 15:20:13','管理员'),
-(508,40,'30021','2019-09-27 15:20:13','管理员'),
-(509,40,'30006','2019-09-27 15:20:13','管理员'),
-(510,40,'30005','2019-09-27 15:20:13','管理员'),
-(511,40,'30008','2019-09-27 15:20:13','管理员'),
-(512,40,'30019','2019-09-27 15:20:13','管理员'),
-(513,40,'30007','2019-09-27 15:20:13','管理员'),
-(902,52,'90000','2019-10-30 10:52:18','管理员'),
-(903,52,'90002','2019-10-30 10:52:18','管理员'),
-(904,52,'90001','2019-10-30 10:52:18','管理员'),
-(905,52,'80003','2019-10-30 10:52:18','管理员'),
-(906,52,'60008','2019-10-30 10:52:18','管理员'),
-(907,52,'80002','2019-10-30 10:52:18','管理员'),
-(908,52,'60007','2019-10-30 10:52:18','管理员'),
-(909,52,'80001','2019-10-30 10:52:18','管理员'),
-(910,52,'60006','2019-10-30 10:52:18','管理员'),
-(911,52,'80000','2019-10-30 10:52:18','管理员'),
-(912,52,'60005','2019-10-30 10:52:18','管理员'),
-(913,52,'60004','2019-10-30 10:52:18','管理员'),
-(914,52,'60003','2019-10-30 10:52:18','管理员'),
-(915,52,'60002','2019-10-30 10:52:18','管理员'),
-(916,52,'60001','2019-10-30 10:52:18','管理员'),
-(917,52,'60000','2019-10-30 10:52:18','管理员'),
-(1034,30,'90000','2019-11-12 10:48:00','管理员'),
-(1035,30,'90002','2019-11-12 10:48:00','管理员'),
-(1036,30,'90001','2019-11-12 10:48:00','管理员'),
-(1037,30,'80003','2019-11-12 10:48:00','管理员'),
-(1038,30,'80002','2019-11-12 10:48:00','管理员'),
-(1039,30,'80001','2019-11-12 10:48:00','管理员'),
-(1040,30,'80000','2019-11-12 10:48:00','管理员'),
-(1041,30,'30020','2019-11-12 10:48:00','管理员'),
-(1042,30,'30021','2019-11-12 10:48:00','管理员'),
-(1043,30,'70001','2019-11-12 10:48:00','管理员'),
-(1044,30,'70000','2019-11-12 10:48:00','管理员'),
-(1045,30,'60009','2019-11-12 10:48:00','管理员'),
-(1046,30,'60008','2019-11-12 10:48:00','管理员'),
-(1047,30,'60007','2019-11-12 10:48:00','管理员'),
-(1048,30,'60006','2019-11-12 10:48:00','管理员'),
-(1049,30,'50000','2019-11-12 10:48:00','管理员'),
-(1050,30,'60005','2019-11-12 10:48:00','管理员'),
-(1051,30,'60004','2019-11-12 10:48:00','管理员'),
-(1052,30,'50002','2019-11-12 10:48:00','管理员'),
-(1053,30,'60003','2019-11-12 10:48:00','管理员'),
-(1054,30,'50001','2019-11-12 10:48:00','管理员'),
-(1055,30,'60002','2019-11-12 10:48:00','管理员'),
-(1056,30,'50004','2019-11-12 10:48:00','管理员'),
-(1057,30,'60001','2019-11-12 10:48:00','管理员'),
-(1058,30,'50003','2019-11-12 10:48:00','管理员'),
-(1059,30,'60000','2019-11-12 10:48:00','管理员'),
-(1060,30,'50005','2019-11-12 10:48:00','管理员'),
-(1061,30,'30019','2019-11-12 10:48:00','管理员'),
-(1062,30,'40003','2019-11-12 10:48:00','管理员'),
-(1063,30,'40002','2019-11-12 10:48:00','管理员'),
-(1064,30,'40001','2019-11-12 10:48:00','管理员'),
-(1065,30,'40000','2019-11-12 10:48:00','管理员'),
-(1066,30,'40004','2019-11-12 10:48:00','管理员'),
-(1067,30,'30002','2019-11-12 10:48:00','管理员'),
-(1068,30,'30001','2019-11-12 10:48:00','管理员'),
-(1069,30,'30004','2019-11-12 10:48:00','管理员'),
-(1070,30,'30003','2019-11-12 10:48:00','管理员'),
-(1071,30,'30000','2019-11-12 10:48:00','管理员'),
-(1072,30,'30006','2019-11-12 10:48:00','管理员'),
-(1073,30,'30005','2019-11-12 10:48:00','管理员'),
-(1074,30,'30008','2019-11-12 10:48:00','管理员'),
-(1075,30,'30007','2019-11-12 10:48:00','管理员'),
-(1076,30,'20001','2019-11-12 10:48:00','管理员'),
-(1077,30,'20000','2019-11-12 10:48:00','管理员'),
-(1078,30,'10000','2019-11-12 10:48:00','管理员'),
-(1079,30,'10002','2019-11-12 10:48:00','管理员'),
-(1080,30,'10001','2019-11-12 10:48:00','管理员'),
-(1081,30,'10004','2019-11-12 10:48:00','管理员'),
-(1082,30,'10003','2019-11-12 10:48:00','管理员'),
-(1083,30,'10006','2019-11-12 10:48:00','管理员'),
-(1084,30,'10005','2019-11-12 10:48:00','管理员'),
-(1085,0,'90000','2019-11-12 17:34:58','管理员'),
-(1086,0,'90002','2019-11-12 17:34:58','管理员'),
-(1087,0,'90001','2019-11-12 17:34:58','管理员'),
-(1088,0,'90004','2019-11-12 17:34:58','管理员'),
-(1089,0,'90003','2019-11-12 17:34:58','管理员'),
-(1090,0,'90006','2019-11-12 17:34:58','管理员'),
-(1091,0,'90005','2019-11-12 17:34:58','管理员'),
-(1092,0,'80003','2019-11-12 17:34:58','管理员'),
-(1093,0,'80002','2019-11-12 17:34:58','管理员'),
-(1094,0,'80001','2019-11-12 17:34:58','管理员'),
-(1095,0,'80000','2019-11-12 17:34:58','管理员'),
-(1096,0,'30020','2019-11-12 17:34:58','管理员'),
-(1097,0,'30021','2019-11-12 17:34:58','管理员'),
-(1098,0,'70001','2019-11-12 17:34:58','管理员'),
-(1099,0,'70000','2019-11-12 17:34:58','管理员'),
-(1100,0,'60009','2019-11-12 17:34:58','管理员'),
-(1101,0,'60008','2019-11-12 17:34:58','管理员'),
-(1102,0,'60007','2019-11-12 17:34:58','管理员'),
-(1103,0,'60006','2019-11-12 17:34:58','管理员'),
-(1104,0,'50000','2019-11-12 17:34:58','管理员'),
-(1105,0,'60005','2019-11-12 17:34:58','管理员'),
-(1106,0,'60004','2019-11-12 17:34:58','管理员'),
-(1107,0,'50002','2019-11-12 17:34:58','管理员'),
-(1108,0,'60003','2019-11-12 17:34:58','管理员'),
-(1109,0,'50001','2019-11-12 17:34:58','管理员'),
-(1110,0,'60002','2019-11-12 17:34:58','管理员'),
-(1111,0,'50004','2019-11-12 17:34:58','管理员'),
-(1112,0,'60001','2019-11-12 17:34:58','管理员'),
-(1113,0,'50003','2019-11-12 17:34:58','管理员'),
-(1114,0,'60000','2019-11-12 17:34:58','管理员'),
-(1115,0,'50005','2019-11-12 17:34:58','管理员'),
-(1116,0,'30019','2019-11-12 17:34:58','管理员'),
-(1117,0,'40003','2019-11-12 17:34:58','管理员'),
-(1118,0,'40002','2019-11-12 17:34:58','管理员'),
-(1119,0,'40001','2019-11-12 17:34:58','管理员'),
-(1120,0,'40000','2019-11-12 17:34:58','管理员'),
-(1121,0,'40004','2019-11-12 17:34:58','管理员'),
-(1122,0,'30002','2019-11-12 17:34:58','管理员'),
-(1123,0,'30001','2019-11-12 17:34:58','管理员'),
-(1124,0,'30004','2019-11-12 17:34:58','管理员'),
-(1125,0,'30003','2019-11-12 17:34:58','管理员'),
-(1126,0,'30000','2019-11-12 17:34:58','管理员'),
-(1127,0,'60010','2019-11-12 17:34:58','管理员'),
-(1128,0,'30006','2019-11-12 17:34:58','管理员'),
-(1129,0,'30005','2019-11-12 17:34:58','管理员'),
-(1130,0,'30008','2019-11-12 17:34:58','管理员'),
-(1131,0,'30007','2019-11-12 17:34:58','管理员'),
-(1132,0,'20001','2019-11-12 17:34:58','管理员'),
-(1133,0,'20000','2019-11-12 17:34:58','管理员'),
-(1134,0,'10000','2019-11-12 17:34:58','管理员'),
-(1135,0,'90008','2019-11-12 17:34:58','管理员'),
-(1136,0,'90007','2019-11-12 17:34:58','管理员'),
-(1137,0,'10002','2019-11-12 17:34:58','管理员'),
-(1138,0,'10001','2019-11-12 17:34:58','管理员'),
-(1139,0,'90009','2019-11-12 17:34:58','管理员'),
-(1140,0,'10004','2019-11-12 17:34:58','管理员'),
-(1141,0,'10003','2019-11-12 17:34:58','管理员'),
-(1142,0,'10006','2019-11-12 17:34:58','管理员'),
-(1143,0,'10005','2019-11-12 17:34:58','管理员'),
-(1160,50,'90000','2019-11-21 10:39:41','管理员'),
-(1161,50,'90002','2019-11-21 10:39:41','管理员'),
-(1162,50,'90001','2019-11-21 10:39:41','管理员'),
-(1163,50,'80003','2019-11-21 10:39:41','管理员'),
-(1164,50,'60008','2019-11-21 10:39:41','管理员'),
-(1165,50,'60007','2019-11-21 10:39:41','管理员'),
-(1166,50,'60006','2019-11-21 10:39:41','管理员'),
-(1167,50,'80000','2019-11-21 10:39:41','管理员'),
-(1168,50,'60005','2019-11-21 10:39:41','管理员'),
-(1169,50,'60004','2019-11-21 10:39:41','管理员'),
-(1170,50,'60003','2019-11-21 10:39:41','管理员'),
-(1171,50,'60002','2019-11-21 10:39:41','管理员'),
-(1172,50,'60001','2019-11-21 10:39:41','管理员'),
-(1173,50,'60000','2019-11-21 10:39:41','管理员'),
-(1174,51,'90000','2019-11-27 14:12:57','管理员'),
-(1175,51,'90011','2019-11-27 14:12:57','管理员'),
-(1176,51,'90010','2019-11-27 14:12:57','管理员'),
-(1177,51,'90002','2019-11-27 14:12:57','管理员'),
-(1178,51,'90013','2019-11-27 14:12:57','管理员'),
-(1179,51,'90001','2019-11-27 14:12:57','管理员'),
-(1180,51,'90012','2019-11-27 14:12:57','管理员'),
-(1181,51,'90004','2019-11-27 14:12:57','管理员'),
-(1182,51,'90003','2019-11-27 14:12:57','管理员'),
-(1183,51,'90006','2019-11-27 14:12:57','管理员'),
-(1184,51,'90005','2019-11-27 14:12:57','管理员'),
-(1185,51,'60008','2019-11-27 14:12:57','管理员'),
-(1186,51,'60007','2019-11-27 14:12:57','管理员'),
-(1187,51,'60006','2019-11-27 14:12:57','管理员'),
-(1188,51,'60005','2019-11-27 14:12:57','管理员'),
-(1189,51,'60004','2019-11-27 14:12:57','管理员'),
-(1190,51,'60003','2019-11-27 14:12:57','管理员'),
-(1191,51,'60002','2019-11-27 14:12:57','管理员'),
-(1192,51,'60001','2019-11-27 14:12:57','管理员'),
-(1193,51,'90008','2019-11-27 14:12:57','管理员'),
-(1194,51,'60000','2019-11-27 14:12:57','管理员'),
-(1195,51,'90007','2019-11-27 14:12:57','管理员'),
-(1196,51,'90009','2019-11-27 14:12:57','管理员'),
-(1241,10,'90000','2021-01-20 14:59:13','管理员'),
-(1242,10,'90002','2021-01-20 14:59:13','管理员'),
-(1243,10,'90001','2021-01-20 14:59:13','管理员'),
-(1244,10,'40003','2021-01-20 14:59:13','管理员'),
-(1245,10,'40002','2021-01-20 14:59:13','管理员'),
-(1246,10,'40001','2021-01-20 14:59:13','管理员'),
-(1247,10,'40000','2021-01-20 14:59:13','管理员'),
-(1248,10,'40004','2021-01-20 14:59:13','管理员'),
-(1249,10,'30002','2021-01-20 14:59:13','管理员'),
-(1250,10,'80003','2021-01-20 14:59:13','管理员'),
-(1251,10,'30001','2021-01-20 14:59:13','管理员'),
-(1252,10,'80002','2021-01-20 14:59:13','管理员'),
-(1253,10,'30004','2021-01-20 14:59:13','管理员'),
-(1254,10,'80001','2021-01-20 14:59:13','管理员'),
-(1255,10,'80000','2021-01-20 14:59:13','管理员'),
-(1256,10,'30003','2021-01-20 14:59:13','管理员'),
-(1257,10,'30020','2021-01-20 14:59:13','管理员'),
-(1258,10,'30000','2021-01-20 14:59:13','管理员'),
-(1259,10,'30021','2021-01-20 14:59:13','管理员'),
-(1260,10,'30006','2021-01-20 14:59:13','管理员'),
-(1261,10,'30005','2021-01-20 14:59:13','管理员'),
-(1262,10,'30008','2021-01-20 14:59:13','管理员'),
-(1263,10,'30007','2021-01-20 14:59:13','管理员'),
-(1264,10,'20001','2021-01-20 14:59:13','管理员'),
-(1265,10,'20000','2021-01-20 14:59:13','管理员'),
-(1266,10,'70001','2021-01-20 14:59:13','管理员'),
-(1267,10,'70000','2021-01-20 14:59:13','管理员'),
-(1268,10,'50000','2021-01-20 14:59:13','管理员'),
-(1269,10,'50002','2021-01-20 14:59:13','管理员'),
-(1270,10,'50001','2021-01-20 14:59:13','管理员'),
-(1271,10,'60002','2021-01-20 14:59:13','管理员'),
-(1272,10,'50004','2021-01-20 14:59:13','管理员'),
-(1273,10,'60001','2021-01-20 14:59:13','管理员'),
-(1274,10,'10000','2021-01-20 14:59:13','管理员'),
-(1275,10,'60000','2021-01-20 14:59:13','管理员'),
-(1276,10,'50003','2021-01-20 14:59:13','管理员'),
-(1277,10,'10002','2021-01-20 14:59:13','管理员'),
-(1278,10,'10001','2021-01-20 14:59:13','管理员'),
-(1279,10,'50005','2021-01-20 14:59:13','管理员'),
-(1280,10,'10004','2021-01-20 14:59:13','管理员'),
-(1281,10,'10003','2021-01-20 14:59:13','管理员'),
-(1282,10,'10006','2021-01-20 14:59:13','管理员'),
-(1283,10,'30019','2021-01-20 14:59:13','管理员'),
-(1284,10,'10005','2021-01-20 14:59:13','管理员');
-
-/*Table structure for table `sys_role_urls` */
-
+-- ----------------------------
+-- Table structure for sys_role_urls
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_role_urls`;
+CREATE TABLE `sys_role_urls`  (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '流水号',
+  `role_id` int NULL DEFAULT 0 COMMENT '角色id',
+  `url_match` varchar(1000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT 'url后缀匹配，如果配置/开始的url，则表示前缀匹配；如果非/开始，则为后缀匹配，后缀匹配可以用正则。',
+  `updatime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '角色url权限，匹配的url可以访问' ROW_FORMAT = DYNAMIC;
 
-CREATE TABLE `sys_role_urls` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '流水号',
-  `role_id` int(11) DEFAULT '0' COMMENT '角色id',
-  `url_match` varchar(1000) DEFAULT '' COMMENT 'url后缀匹配，如果配置/开始的url，则表示前缀匹配；如果非/开始，则为后缀匹配，后缀匹配可以用正则。',
-  `updatime` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色url权限，匹配的url可以访问';
+-- ----------------------------
+-- Records of sys_role_urls
+-- ----------------------------
 
-/*Data for the table `sys_role_urls` */
-
-/*Table structure for table `sys_roletype` */
-
+-- ----------------------------
+-- Table structure for sys_roletype
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_roletype`;
-
-CREATE TABLE `sys_roletype` (
-  `sys_roletype_code` int(11) NOT NULL AUTO_INCREMENT COMMENT '编码，',
-  `sys_roletype_name` varchar(30) NOT NULL DEFAULT '' COMMENT '角色类型名称',
-  `sys_roletypeclass_code` tinyint(4) DEFAULT '0' COMMENT '分类code，对应 sys_roletypeclass表的code',
-  `description` varchar(100) NOT NULL DEFAULT '' COMMENT '角色说明',
+CREATE TABLE `sys_roletype`  (
+  `sys_roletype_code` int NOT NULL AUTO_INCREMENT COMMENT '编码，',
+  `sys_roletype_name` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '角色类型名称',
+  `sys_roletypeclass_code` tinyint NULL DEFAULT 0 COMMENT '分类code，对应 sys_roletypeclass表的code',
+  `description` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '角色说明',
   `update_time` datetime NOT NULL COMMENT '更新时间',
-  `updator` varchar(30) NOT NULL DEFAULT ' ' COMMENT '更新人',
-  PRIMARY KEY (`sys_roletype_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=521 DEFAULT CHARSET=utf8 COMMENT='角色类型表';
+  `updator` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT ' ' COMMENT '更新人',
+  PRIMARY KEY (`sys_roletype_code`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 522 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '角色类型表' ROW_FORMAT = DYNAMIC;
 
-/*Data for the table `sys_roletype` */
+-- ----------------------------
+-- Records of sys_roletype
+-- ----------------------------
+INSERT INTO `sys_roletype` VALUES (0, '管理员岗位', 0, ' ', '2017-08-04 19:18:29', ' ');
+INSERT INTO `sys_roletype` VALUES (100, '总经办人员', 1, ' ', '2017-11-13 12:40:36', ' ');
+INSERT INTO `sys_roletype` VALUES (200, '财务人员', 2, ' ', '2018-07-24 15:06:27', ' ');
+INSERT INTO `sys_roletype` VALUES (300, '开发人员', 5, '', '2018-07-24 16:06:03', ' ');
+INSERT INTO `sys_roletype` VALUES (400, '销售专员', 6, '', '2018-09-28 11:26:03', ' ');
+INSERT INTO `sys_roletype` VALUES (500, '仓库操作人员', 4, '', '2019-08-26 16:36:09', ' ');
+INSERT INTO `sys_roletype` VALUES (510, '运营人员', 7, '', '2019-08-26 16:38:30', ' ');
 
-insert  into `sys_roletype`(`sys_roletype_code`,`sys_roletype_name`,`sys_roletypeclass_code`,`description`,`update_time`,`updator`) values 
-(0,'管理员岗位',0,' ','2017-08-04 19:18:29',' '),
-(100,'总经办-领导',1,' ','2017-11-13 12:40:36',' '),
-(110,'总经办-内勤',1,' ','2018-07-24 15:05:05',' '),
-(200,'财务组-专员',2,' ','2018-07-24 15:06:27',' '),
-(210,'财务组-主管',2,' ','2018-07-24 15:07:10',' '),
-(220,'财务组-经理',2,' ','2018-07-24 15:07:58',' '),
-(300,'开发维护组岗位',5,'','2018-07-24 16:06:03',' '),
-(400,'行政专员',6,'','2018-09-28 11:26:03',' '),
-(410,'行政主管',6,'','2019-08-26 16:42:16',' '),
-(420,'行政经理',6,'','2019-08-26 16:42:58',' '),
-(500,'理财师',4,'','2019-08-26 16:36:09',' '),
-(510,'理财主管',4,'','2019-08-26 16:38:30',' '),
-(520,'理财总监',4,'','2019-08-26 16:38:54',' ');
-
-/*Table structure for table `sys_roletypeclass` */
-
+-- ----------------------------
+-- Table structure for sys_roletypeclass
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_roletypeclass`;
+CREATE TABLE `sys_roletypeclass`  (
+  `code` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT 'id',
+  `class_name` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '类别名称',
+  PRIMARY KEY (`code`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '角色类型（岗位）分类表，每个角色类型（岗位）对应一个分类' ROW_FORMAT = DYNAMIC;
 
-CREATE TABLE `sys_roletypeclass` (
-  `code` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'id',
-  `class_name` varchar(40) DEFAULT '' COMMENT '类别名称',
-  PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色类型（岗位）分类表，每个角色类型（岗位）对应一个分类';
+-- ----------------------------
+-- Records of sys_roletypeclass
+-- ----------------------------
+INSERT INTO `sys_roletypeclass` VALUES (0, '管理员组');
+INSERT INTO `sys_roletypeclass` VALUES (1, '总经办');
+INSERT INTO `sys_roletypeclass` VALUES (2, '财务部');
+INSERT INTO `sys_roletypeclass` VALUES (4, '仓库部');
+INSERT INTO `sys_roletypeclass` VALUES (5, '开发组');
+INSERT INTO `sys_roletypeclass` VALUES (6, '销售部');
+INSERT INTO `sys_roletypeclass` VALUES (7, '运营部');
 
-/*Data for the table `sys_roletypeclass` */
+-- ----------------------------
+-- Table structure for sys_service_right
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_service_right`;
+CREATE TABLE `sys_service_right`  (
+  `right_code` int NULL DEFAULT NULL,
+  `right_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `updatime` datetime NULL DEFAULT NULL,
+  `status` int NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
-insert  into `sys_roletypeclass`(`code`,`class_name`) values 
-(0,'管理员组'),
-(1,'总经办'),
-(2,'财务部'),
-(4,'理财部'),
-(5,'开发组'),
-(6,'行政部'),
-(50,'其它');
+-- ----------------------------
+-- Records of sys_service_right
+-- ----------------------------
 
-/*Table structure for table `sys_sms` */
-
+-- ----------------------------
+-- Table structure for sys_sms
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_sms`;
+CREATE TABLE `sys_sms`  (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `sms_type` int NOT NULL COMMENT '短信类型',
+  `mobile` varchar(13) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '接收手机号',
+  `content` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '内容',
+  `sms_code` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '手机验证码',
+  `response` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '返回',
+  `response_id` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '返回ID',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `status` tinyint NULL DEFAULT 1 COMMENT '1:有效  2：无效',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `INX_MOBILE`(`mobile` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '后台短信验证发送表' ROW_FORMAT = DYNAMIC;
 
-CREATE TABLE `sys_sms` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `sms_type` int(5) NOT NULL COMMENT '短信类型',
-  `mobile` varchar(13) NOT NULL DEFAULT '' COMMENT '接收手机号',
-  `content` varchar(200) DEFAULT '' COMMENT '内容',
-  `sms_code` varchar(10) DEFAULT '' COMMENT '手机验证码',
-  `response` varchar(10) DEFAULT '' COMMENT '返回',
-  `response_id` varchar(200) DEFAULT '' COMMENT '返回ID',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `status` tinyint(4) DEFAULT '1' COMMENT '1:有效  2：无效',
-  PRIMARY KEY (`id`),
-  KEY `INX_MOBILE` (`mobile`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='后台短信验证发送表';
+-- ----------------------------
+-- Records of sys_sms
+-- ----------------------------
 
-/*Data for the table `sys_sms` */
-
-/*Table structure for table `sys_user` */
-
+-- ----------------------------
+-- Table structure for sys_user
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
+CREATE TABLE `sys_user`  (
+  `sys_user_sno` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户id，流水号',
+  `account` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '用户登录名称',
+  `password` varchar(80) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '用户密码',
+  `name` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '用户名称',
+  `tel` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '电话',
+  `sex` char(4) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '未知' COMMENT '性别 男 ，女 ，未知',
+  `phone` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '手机号码',
+  `birth_day` date NULL DEFAULT NULL COMMENT '生日',
+  `nike_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '昵称',
+  `email` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '邮件地址',
+  `nation` varchar(16) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '民族',
+  `add_time` datetime NULL DEFAULT NULL COMMENT '添加时间',
+  `pic_url` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '用户图片URL',
+  `sign` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '个性签名',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `updator` varchar(15) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '添加人姓名',
+  `enable` tinyint NOT NULL DEFAULT 1 COMMENT '0：无效 1：有效',
+  PRIMARY KEY (`sys_user_sno`) USING BTREE,
+  UNIQUE INDEX `UI_ACCOUNT`(`account` ASC, `enable` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 186 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '用户表，此表存放所有使用本系统的用户' ROW_FORMAT = DYNAMIC;
 
-CREATE TABLE `sys_user` (
-  `sys_user_sno` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id，流水号',
-  `account` varchar(40) NOT NULL DEFAULT '' COMMENT '用户登录名称',
-  `password` varchar(80) DEFAULT NULL COMMENT '用户密码',
-  `name` varchar(20) NOT NULL DEFAULT '' COMMENT '用户名称',
-  `tel` varchar(30) NOT NULL DEFAULT '' COMMENT '电话',
-  `sex` char(4) NOT NULL DEFAULT '未知' COMMENT '性别 男 ，女 ，未知',
-  `phone` varchar(20) NOT NULL DEFAULT '' COMMENT '手机号码',
-  `birth_day` date DEFAULT NULL COMMENT '生日',
-  `nike_name` varchar(20) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '昵称',
-  `email` varchar(30) NOT NULL DEFAULT '' COMMENT '邮件地址',
-  `nation` varchar(16) DEFAULT '' COMMENT '民族',
-  `add_time` datetime DEFAULT NULL COMMENT '添加时间',
-  `pic_url` varchar(128) DEFAULT '' COMMENT '用户图片URL',
-  `sign` varchar(40) DEFAULT '' COMMENT '个性签名',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `updator` varchar(15) DEFAULT '' COMMENT '添加人姓名',
-  `enable` tinyint(4) NOT NULL DEFAULT '1' COMMENT '0：无效 1：有效',
-  PRIMARY KEY (`sys_user_sno`),
-  UNIQUE KEY `UI_ACCOUNT` (`account`,`enable`)
-) ENGINE=InnoDB AUTO_INCREMENT=184 DEFAULT CHARSET=utf8 COMMENT='用户表，此表存放所有使用本系统的用户';
+-- ----------------------------
+-- Records of sys_user
+-- ----------------------------
+INSERT INTO `sys_user` VALUES (1, 'adminjyd100', 'a476cedda1b779108c9e69dada102d8e', '管理员', '', '男', '18565574709', '2018-08-01', 'admin', '', '', '2017-11-16 18:39:56', '', 'abf65ef8f72a2708016b135161d3ae56', '2024-01-24 20:37:26', '管理员', 1);
+INSERT INTO `sys_user` VALUES (184, 'caiwu', '7ca659901a96c03f9e0d5e350ce156a3', '财务人员', '', '男', '18565574709', NULL, 'caiwu', '', '', '2024-01-25 10:03:02', '', '', '2024-01-25 10:13:46', '管理员', 1);
+INSERT INTO `sys_user` VALUES (185, 'xiaoshou', '7ca659901a96c03f9e0d5e350ce156a3', '销售', '', '男', '18565574709', NULL, '', '', '', '2024-01-25 10:15:09', '', '', '2024-01-25 10:15:09', '管理员', 1);
 
-/*Data for the table `sys_user` */
-
-insert  into `sys_user`(`sys_user_sno`,`account`,`password`,`name`,`tel`,`sex`,`phone`,`birth_day`,`nike_name`,`email`,`nation`,`add_time`,`pic_url`,`sign`,`update_time`,`updator`,`enable`) values 
-(1,'adminjyd100','323927b270f4d4d0da679188342e82a7','管理员','','男','18565574709','2018-08-01','admin','','','2017-11-16 18:39:56','','abf65ef8f72a2708016b135161d3ae56','2018-08-17 11:49:02','管理员',1),
-(3,'RSQ123456','fd3d9dc9668d08887af4352cf8e2b0e3','容树强','','男','13825113328',NULL,'','','','2019-08-30 18:04:56','','d8e2aac77b37990658cb6b96b02f1920','2019-10-21 11:05:52','王赛男',1),
-(4,'Lv123456','5865baef2454663fcaa9ebc5a56cdd65','吕传真','','男','15616659958',NULL,'','','','2019-09-03 10:42:37','','37a6259cc0c1dae299a7866489dff0bd','2019-09-03 10:42:37','管理员',1),
-(5,'hyy123456','b8096e59d40d569a4fc2c011433ec936','洪跃源','','男','18602052757',NULL,'','','','2019-09-03 10:42:37','','bd394ff2197f6b20d3ad978411022148','2019-11-27 14:11:07','管理员',1),
-(90,'xhlcb001','fd3d9dc9668d08887af4352cf8e2b0e3','小洪','','未知','18602052756',NULL,'','','','2019-10-11 20:58:45','','',NULL,'',1),
-(92,'lin01','323927b270f4d4d0da679188342e82a7','林一','','未知','13928833591',NULL,'','','','2019-10-12 09:52:36','','',NULL,'',1),
-(93,'wlc0','fd3d9dc9668d08887af4352cf8e2b0e3','王理财零','','未知','13698167620',NULL,'','','','2019-10-12 10:14:42','','',NULL,'',1),
-(94,'wlc1','fd3d9dc9668d08887af4352cf8e2b0e3','王理财壹','','未知','13698167621',NULL,'','','','2019-10-12 10:15:22','','',NULL,'',1),
-(95,'wlc2','b8096e59d40d569a4fc2c011433ec936','王理财贰','','未知','13698167622',NULL,'','','','2019-10-12 10:16:08','','','2019-11-27 14:15:22','管理员',1),
-(96,'wlc3','fd3d9dc9668d08887af4352cf8e2b0e3','王理财叁','','未知','13698167623',NULL,'','','','2019-10-12 10:16:53','','',NULL,'',1),
-(97,'wlc4','fd3d9dc9668d08887af4352cf8e2b0e3','王理财肆','','未知','13698167624',NULL,'','','','2019-10-12 10:17:23','','',NULL,'',1),
-(98,'wlc5','fd3d9dc9668d08887af4352cf8e2b0e3','王理财伍','','未知','13698167625',NULL,'','','','2019-10-12 10:17:52','','',NULL,'',1),
-(101,'yscf_wsn','99bf32220c4191ff3d6313f4a3cf8966','王赛男','','女','13798167620',NULL,'王赛男','','','2019-10-12 18:20:18','','be2ac16fc9fbcd2b7e61b92eb2b886d1','2019-10-31 11:18:11','管理员',1),
-(102,'lin02','6fbf961a0c61c352912fe17023f09ae0','林二','','未知','13922775397',NULL,'','','','2019-10-14 10:14:08','','',NULL,'',1),
-(103,'wl0','fd3d9dc9668d08887af4352cf8e2b0e3','王里零','','未知','13698167610',NULL,'','','','2019-10-14 10:24:24','','',NULL,'',1),
-(104,'wl1','fd3d9dc9668d08887af4352cf8e2b0e3','王里一','','未知','13698167611',NULL,'','','','2019-10-14 10:25:31','','',NULL,'',1),
-(105,'wl2','fd3d9dc9668d08887af4352cf8e2b0e3','王里二','','未知','13698167612',NULL,'','','','2019-10-14 10:26:11','','',NULL,'',1),
-(106,'wl3','fd3d9dc9668d08887af4352cf8e2b0e3','王里三','','未知','13698167613',NULL,'','','','2019-10-14 10:26:11','','',NULL,'',1),
-(107,'wl4','fd3d9dc9668d08887af4352cf8e2b0e3','王里四','','未知','13698167614',NULL,'','','','2019-10-14 10:26:11','','',NULL,'',1),
-(108,'lin03','fd3d9dc9668d08887af4352cf8e2b0e3','林三','','未知','13922755157',NULL,'','','','2019-10-14 10:59:57','','',NULL,'',1),
-(109,'rzj','fd3d9dc9668d08887af4352cf8e2b0e3','容总监','','未知','13825113327',NULL,'','','','2019-10-14 11:18:44','','',NULL,'',1),
-(110,'rzg','fd3d9dc9668d08887af4352cf8e2b0e3','容主管','','未知','13825113329',NULL,'','','','2019-10-14 11:19:26','','',NULL,'',1),
-(111,'wl5','fd3d9dc9668d08887af4352cf8e2b0e3','王里五','','未知','13698167615',NULL,'','','','2019-10-14 12:05:00','','',NULL,'',1),
-(112,'wl6','fd3d9dc9668d08887af4352cf8e2b0e3','王里二','','未知','13698167612',NULL,'','','','2019-10-14 12:05:25','','',NULL,'',0),
-(113,'rt001','fd3d9dc9668d08887af4352cf8e2b0e3','容理一','','未知','17728813365',NULL,'','774589dds@2890.com','','2019-10-14 14:44:29','','',NULL,'',1),
-(114,'rt002','fd3d9dc9668d08887af4352cf8e2b0e3','容理二','','未知','15487455695',NULL,'','','','2019-10-14 14:44:29','','',NULL,'',1),
-(115,'rt003','fd3d9dc9668d08887af4352cf8e2b0e3','容理三','','未知','14895784665',NULL,'','47584595520312@qq.com','','2019-10-14 14:44:29','','',NULL,'',1),
-(116,'rt004','fd3d9dc9668d08887af4352cf8e2b0e3','容理四','','男','17521425165',NULL,'','','','2019-10-14 14:51:23','','',NULL,'',1),
-(117,'rt005','fd3d9dc9668d08887af4352cf8e2b0e3','容理五','','男','19685585474',NULL,'','','','2019-10-14 14:51:23','','',NULL,'',1),
-(118,'rt006','fd3d9dc9668d08887af4352cf8e2b0e3','容理六','','女','14564564565',NULL,'','485112@qq.com','','2019-10-14 14:51:24','','',NULL,'',0),
-(119,'wl6','fd3d9dc9668d08887af4352cf8e2b0e3','王里六','','未知','13698167616',NULL,'','','','2019-10-14 14:56:01','','',NULL,'',1),
-(120,'wl7','fd3d9dc9668d08887af4352cf8e2b0e3','王里七','','未知','13698167617',NULL,'','','','2019-10-14 14:58:50','','',NULL,'',1),
-(121,'wl8','fd3d9dc9668d08887af4352cf8e2b0e3','王里八','','未知','13698167618',NULL,'','','','2019-10-14 14:58:50','','',NULL,'',1),
-(122,'wl9','fd3d9dc9668d08887af4352cf8e2b0e3','王里九','','未知','13698167619',NULL,'','','','2019-10-14 14:58:50','','',NULL,'',1),
-(123,'wangl0','fd3d9dc9668d08887af4352cf8e2b0e3','王礼零','','未知','18898167600',NULL,'','','','2019-10-14 17:59:36','','',NULL,'',1),
-(124,'wangl1','fd3d9dc9668d08887af4352cf8e2b0e3','王礼一','','未知','18898167601',NULL,'','','','2019-10-14 18:00:17','','',NULL,'',1),
-(125,'wangl2','fd3d9dc9668d08887af4352cf8e2b0e3','王礼二','','未知','18898167602',NULL,'','','','2019-10-14 18:00:52','','',NULL,'',1),
-(126,'wangl3','fd3d9dc9668d08887af4352cf8e2b0e3','王礼三','','未知','18898167603',NULL,'','','','2019-10-14 18:01:13','','',NULL,'',1),
-(127,'wc1','fd3d9dc9668d08887af4352cf8e2b0e3','王财一','','未知','15198167601',NULL,'','','','2019-10-15 15:21:56','','',NULL,'',1),
-(128,'wc2','fd3d9dc9668d08887af4352cf8e2b0e3','王财二','','未知','15198167602',NULL,'','','','2019-10-15 15:22:20','','',NULL,'',1),
-(129,'wc3','fd3d9dc9668d08887af4352cf8e2b0e3','王财三','','未知','15198167603',NULL,'','','','2019-10-15 15:22:43','','',NULL,'',1),
-(130,'noFinance','fa99a246d7e2ec6bd5a9562431420e0a','不是理财师','','男','18719333924',NULL,'','','','2019-10-16 11:17:53','','37a6259cc0c1dae299a7866489dff0bd','2019-10-16 11:17:53','管理员',1),
-(131,'fffwefd','fd3d9dc9668d08887af4352cf8e2b0e3','啊啊额','','男','18719333924',NULL,'','485112@qq.com','','2019-10-16 11:24:38','','',NULL,'',0),
-(133,'linshaoer','6fbf961a0c61c352912fe17023f09ae0','林少儿','','女','13686804199',NULL,'林','','','2019-10-19 10:04:53','','37a6259cc0c1dae299a7866489dff0bd','2019-10-19 10:04:53','管理员',1),
-(134,'whl','fd3d9dc9668d08887af4352cf8e2b0e3','王荟零','','未知','13198160001',NULL,'','','','2019-10-24 15:02:40','','',NULL,'',0),
-(135,'why','fd3d9dc9668d08887af4352cf8e2b0e3','王荟一','','未知','13198160002',NULL,'','','','2019-10-24 15:03:19','','',NULL,'',1),
-(136,'whe','fd3d9dc9668d08887af4352cf8e2b0e3','王荟二','','未知','13198160002',NULL,'','','','2019-10-24 15:06:33','','',NULL,'',1),
-(137,'wf0','fd3d9dc9668d08887af4352cf8e2b0e3','王非零','','未知','18898160001',NULL,'','','','2019-10-24 15:27:12','','',NULL,'',1),
-(138,'wq0','fd3d9dc9668d08887af4352cf8e2b0e3','王祁一','','未知','18698167601',NULL,'','','','2019-10-24 15:30:30','','',NULL,'',1),
-(139,'wq2','fd3d9dc9668d08887af4352cf8e2b0e3','王祁二','','未知','18698167602',NULL,'','','','2019-10-24 15:31:59','','',NULL,'',1),
-(140,'wq3','fd3d9dc9668d08887af4352cf8e2b0e3','王祁三','','未知','18698167603',NULL,'','','','2019-10-24 15:32:18','','',NULL,'',1),
-(141,'HJJ123456','ac7856c58bd35ef6c696f440e6afe469','当当当','','男','13452323123',NULL,'当当当','','','2019-10-24 18:00:45','','37a6259cc0c1dae299a7866489dff0bd','2019-10-24 18:00:45','管理员',1),
-(142,'ww1','fd3d9dc9668d08887af4352cf8e2b0e3','王旺一','','未知','19198167601',NULL,'','','','2019-10-25 10:06:59','','',NULL,'',1),
-(143,'ww2','fd3d9dc9668d08887af4352cf8e2b0e3','王旺二','','未知','19198167602',NULL,'','','','2019-10-25 10:06:59','','',NULL,'',1),
-(144,'ww3','fd3d9dc9668d08887af4352cf8e2b0e3','王旺三','','未知','19198167603',NULL,'','','','2019-10-25 10:06:59','','',NULL,'',1),
-(145,'ww4','fd3d9dc9668d08887af4352cf8e2b0e3','王旺四','','未知','19198167604',NULL,'','','','2019-10-25 10:06:59','','',NULL,'',1),
-(146,'ws0','fd3d9dc9668d08887af4352cf8e2b0e3','王赛零','','未知','17798167600',NULL,'','','','2019-10-25 10:09:59','','',NULL,'',1),
-(147,'ws1','fd3d9dc9668d08887af4352cf8e2b0e3','王赛一','','未知','17798167601',NULL,'','','','2019-10-25 10:10:22','','',NULL,'',1),
-(148,'ws2','fd3d9dc9668d08887af4352cf8e2b0e3','王赛二','','未知','17798167602',NULL,'','','','2019-10-25 10:10:50','','',NULL,'',1),
-(149,'ws3','fd3d9dc9668d08887af4352cf8e2b0e3','王赛三','','未知','17798167603',NULL,'','','','2019-10-25 10:15:51','','',NULL,'',1),
-(150,'ws4','fd3d9dc9668d08887af4352cf8e2b0e3','王赛四','','未知','17798167604',NULL,'','','','2019-10-25 10:15:52','','',NULL,'',1),
-(151,'ws5','fd3d9dc9668d08887af4352cf8e2b0e3','王赛五','','未知','17798167605',NULL,'','','','2019-10-25 10:15:52','','',NULL,'',1),
-(152,'ws6','fd3d9dc9668d08887af4352cf8e2b0e3','王赛六','','未知','17798167606',NULL,'','','','2019-10-25 10:15:52','','',NULL,'',1),
-(153,'wcs111','fd3d9dc9668d08887af4352cf8e2b0e3','王策生','','未知','13898765433',NULL,'','','','2019-10-29 14:41:04','','',NULL,'',1),
-(154,'lin001','fd3d9dc9668d08887af4352cf8e2b0e3','理财总监','','未知','18922344999',NULL,'','','','2019-11-07 17:33:25','','',NULL,'',1),
-(155,'wk0','fd3d9dc9668d08887af4352cf8e2b0e3','王筷零','','未知','13100000000',NULL,'','','','2019-11-11 15:01:34','','',NULL,'',1),
-(156,'wk1','fd3d9dc9668d08887af4352cf8e2b0e3','王筷一','','未知','13100000001',NULL,'','','','2019-11-11 15:02:10','','',NULL,'',1),
-(157,'wk2','fd3d9dc9668d08887af4352cf8e2b0e3','王筷二','','未知','13100000002',NULL,'','','','2019-11-11 15:02:40','','',NULL,'',1),
-(158,'wk3','fd3d9dc9668d08887af4352cf8e2b0e3','王筷三','','未知','13100000003',NULL,'','','','2019-11-11 15:03:14','','',NULL,'',1),
-(159,'wk4','fd3d9dc9668d08887af4352cf8e2b0e3','王筷四','','未知','13100000004',NULL,'','','','2019-11-11 15:07:16','','',NULL,'',1),
-(160,'wk5','fd3d9dc9668d08887af4352cf8e2b0e3','王筷五','','未知','13100000005',NULL,'','','','2019-11-11 15:09:00','','',NULL,'',1),
-(161,'wk6','fd3d9dc9668d08887af4352cf8e2b0e3','王筷六','','未知','13100000006',NULL,'','','','2019-11-11 15:09:24','','',NULL,'',1),
-(162,'lin002','fd3d9dc9668d08887af4352cf8e2b0e3','理财主管','','未知','13829735293',NULL,'','','','2019-11-11 15:53:46','','',NULL,'',1),
-(163,'lin003','fd3d9dc9668d08887af4352cf8e2b0e3','理财师','','未知','13922383915',NULL,'','','','2019-11-11 15:57:30','','',NULL,'',1),
-(164,'lin004','fd3d9dc9668d08887af4352cf8e2b0e3','林晓一','','未知','13829735295',NULL,'','','','2019-11-12 09:47:12','','',NULL,'',1),
-(165,'lin005','fd3d9dc9668d08887af4352cf8e2b0e3','林小五','','未知','13729887895',NULL,'','','','2019-11-12 15:47:38','','',NULL,'',1),
-(166,'lin006','fd3d9dc9668d08887af4352cf8e2b0e3','林小六','','未知','13729887898',NULL,'','','','2019-11-12 15:48:01','','',NULL,'',1),
-(167,'lin007','fd3d9dc9668d08887af4352cf8e2b0e3','林小七','','未知','13729887897',NULL,'','','','2019-11-12 15:48:44','','',NULL,'',1),
-(168,'lin008','fd3d9dc9668d08887af4352cf8e2b0e3','理一','','未知','18825168511',NULL,'','','','2019-11-14 09:50:29','','',NULL,'',1),
-(169,'lin009','fd3d9dc9668d08887af4352cf8e2b0e3','理二','','未知','18825168510',NULL,'','','','2019-11-14 09:54:02','','',NULL,'',1),
-(170,'lin','fd3d9dc9668d08887af4352cf8e2b0e3','理三','','未知','18825168512',NULL,'','','','2019-11-14 10:07:21','','',NULL,'',1),
-(171,'yslc0','fd3d9dc9668d08887af4352cf8e2b0e3','演示理财零','','未知','13500000000',NULL,'','','','2019-11-15 09:41:25','','',NULL,'',1),
-(172,'yslc1','fd3d9dc9668d08887af4352cf8e2b0e3','演示理财一','','未知','13500000001',NULL,'','','','2019-11-15 09:42:02','','',NULL,'',1),
-(173,'yslc2','fd3d9dc9668d08887af4352cf8e2b0e3','演示理财二','','未知','13500000002',NULL,'','','','2019-11-15 09:42:33','','',NULL,'',1),
-(174,'yslc3','fd3d9dc9668d08887af4352cf8e2b0e3','演示理财三','','未知','13500000003',NULL,'','','','2019-11-15 15:31:20','','',NULL,'',1),
-(175,'yslc4','fd3d9dc9668d08887af4352cf8e2b0e3','演示理财四','','未知','13500000004',NULL,'','','','2019-11-15 15:32:30','','',NULL,'',1),
-(176,'yslc5','fd3d9dc9668d08887af4352cf8e2b0e3','演示理财五','','未知','13500000005',NULL,'','','','2019-11-15 15:32:54','','',NULL,'',1),
-(177,'lin0001','fd3d9dc9668d08887af4352cf8e2b0e3','林颜一','','未知','13660707999',NULL,'','','','2019-11-21 10:00:47','','',NULL,'',1),
-(178,'lin0002','fd3d9dc9668d08887af4352cf8e2b0e3','林颜二','','未知','15920100088',NULL,'','','','2019-11-21 10:01:22','','',NULL,'',1),
-(179,'lin0003','fd3d9dc9668d08887af4352cf8e2b0e3','林颜三','','未知','13610006588',NULL,'','','','2019-11-21 10:01:54','','',NULL,'',1),
-(180,'lin0007','fd3d9dc9668d08887af4352cf8e2b0e3','林颜四','','未知','14750000558',NULL,'','','','2019-11-21 17:39:32','','',NULL,'',1),
-(181,'lin0008','fd3d9dc9668d08887af4352cf8e2b0e3','林颜五','','未知','14750000678',NULL,'','','','2019-11-21 17:40:01','','',NULL,'',1),
-(182,'lin0009','fd3d9dc9668d08887af4352cf8e2b0e3','林颜六','','未知','13610344567',NULL,'','','','2019-11-21 17:40:40','','',NULL,'',1),
-(183,'13922369407','fd3d9dc9668d08887af4352cf8e2b0e3','定点','','未知','13922369407',NULL,'','','','2019-11-28 15:24:20','','','2021-04-14 18:27:23','管理员',0);
-
-/*Table structure for table `sys_user_oper_log` */
-
+-- ----------------------------
+-- Table structure for sys_user_oper_log
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_user_oper_log`;
+CREATE TABLE `sys_user_oper_log`  (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '流水号',
+  `right_name` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '模块名称',
+  `oper_type` smallint NOT NULL DEFAULT 0 COMMENT '操作类型 1：增加数据  2：修改数据  3：删除数据  4：审批数据   5：查看数据  6：登录与退出',
+  `detail` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '操作详情描述',
+  `user_name` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '操作人姓名',
+  `user_id` int NOT NULL DEFAULT 0 COMMENT '用户id',
+  `ip` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT 'ip',
+  `logid` varchar(7) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '日志id',
+  `src_ip` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '来源ip',
+  `req_args` varchar(2000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '请求参数',
+  `oper_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
+  `source` int NULL DEFAULT 0 COMMENT '1:android 2:pc  3:微站',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `INX_SysUserOperLog_Operatime`(`user_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 251 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '用户操作日志表' ROW_FORMAT = DYNAMIC;
 
-CREATE TABLE `sys_user_oper_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '流水号',
-  `right_name` varchar(30) NOT NULL DEFAULT '' COMMENT '模块名称',
-  `oper_type` smallint(11) NOT NULL DEFAULT '0' COMMENT '操作类型 1：增加数据  2：修改数据  3：删除数据  4：审批数据   5：查看数据  6：登录与退出',
-  `detail` varchar(500) NOT NULL COMMENT '操作详情描述',
-  `user_name` varchar(30) NOT NULL DEFAULT '' COMMENT '操作人姓名',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
-  `ip` varchar(20) DEFAULT '' COMMENT 'ip',
-  `logid` varchar(7) DEFAULT '' COMMENT '日志id',
-  `src_ip` varchar(20) DEFAULT '' COMMENT '来源ip',
-  `req_args` varchar(2000) DEFAULT '' COMMENT '请求参数',
-  `oper_time` datetime DEFAULT NULL COMMENT '操作时间',
-  `source` int(11) DEFAULT '0' COMMENT '1:android 2:pc  3:微站',
-  PRIMARY KEY (`id`),
-  KEY `INX_SysUserOperLog_Operatime` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COMMENT='用户操作日志表';
+-- ----------------------------
+-- Records of sys_user_oper_log
+-- ----------------------------
+INSERT INTO `sys_user_oper_log` VALUES (1, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '790801', '192.168.0.106', '{\"sign\":[\"2e7d645b181215bf5253fb89af946673\"],\"username\":[\"adminjyd100\"],\"password\":[\"DkXbn+1khoBm99psDFYLQ2tsdK5G5tNhSZb+58Z/I9N//IsSIhBHv9VPUVsBmRlPQMRtG7u3teEEBwcCitBixQ\\u003d\\u003d\"],\"valcode\":[\"ap4b\"],\"smscode\":[\"123456\"]}', '2021-01-07 17:20:32', 2);
+INSERT INTO `sys_user_oper_log` VALUES (2, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '512229', '192.168.0.106', '{\"sign\":[\"6fd577523bc69d7278fa185a4f148d9c\"],\"username\":[\"adminjyd100\"],\"password\":[\"HlbU4TVTpzk/Z2ALpAwZdDwhsu+18YuLyghN2SpBhPvJBMMLTyXII3nycQnVMTneInYVL9yv4Sw9FG/DnLJ9ZQ\\u003d\\u003d\"],\"valcode\":[\"8ul9\"],\"smscode\":[\"123456\"]}', '2021-01-07 17:43:02', 2);
+INSERT INTO `sys_user_oper_log` VALUES (3, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '132747', '192.168.0.106', '{\"sign\":[\"ed7a9635798922d313087deece2bdf97\"],\"username\":[\"adminjyd100\"],\"password\":[\"HPpSHhf158cFyY27MX9Ask3dw9U9AdTEuhou3JPwq4hI/P9WZGOBVF16xYKB5OrDJmRYvf3SPc1dk8LZ2t4OFA\\u003d\\u003d\"],\"valcode\":[\"vxu7\"],\"smscode\":[\"123456\"]}', '2021-01-07 17:57:33', 2);
+INSERT INTO `sys_user_oper_log` VALUES (4, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '124089', '192.168.0.106', '{\"sign\":[\"28f07e40bc9f80f0398b2844ed1cbb2d\"],\"username\":[\"adminjyd100\"],\"password\":[\"fsv88/ykXmSCJHzCeUoUZMH9FchCOLbj3TblTH2s01CUymmuKs8VoH5IaIbxzYj1R1R5S78kud5vO+OZer0+Yw\\u003d\\u003d\"],\"valcode\":[\"b9b4\"],\"smscode\":[\"123456\"]}', '2021-01-07 18:01:43', 2);
+INSERT INTO `sys_user_oper_log` VALUES (5, '系统模块', 2, '修改角色表数据,id为10', 'adminjyd100', 1, '172.28.80.1', '800086', '192.168.0.106', '{\"roleName\":[\"总经办-领导\"],\"hiddenCode\":[\"10\"],\"sysRight\":[\"90002\",\"90001\",\"40003\",\"40002\",\"40001\",\"40004\",\"30002\",\"80003\",\"30001\",\"80002\",\"30004\",\"80001\",\"30003\",\"30020\",\"30021\",\"30006\",\"30005\",\"30008\",\"30007\",\"20001\",\"70001\",\"50002\",\"50001\",\"60002\",\"50004\",\"60001\",\"50003\",\"10002\",\"10001\",\"50005\",\"10004\",\"10003\",\"10006\",\"30019\",\"10005\",\"10000\",\"20000\",\"40000\",\"50000\",\"70000\",\"80000\"],\"description\":[\"总经办-领导7\"],\"sno\":[\"10\"]}', '2021-01-07 18:02:29', 2);
+INSERT INTO `sys_user_oper_log` VALUES (6, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '218404', '192.168.0.106', '{\"sign\":[\"63e6efd97d40430c242f3dcf50bd487f\"],\"username\":[\"adminjyd100\"],\"password\":[\"dmIYHHfXbca1fXZY+5YC0nAFo9O/kQCLEg2rAkFJDA11A+rw8ZrSMaYqHRqX1CUj87yBUoNvc64EaeeZl8/+1w\\u003d\\u003d\"],\"valcode\":[\"xqpv\"],\"smscode\":[\"123456\"]}', '2021-01-08 10:25:23', 2);
+INSERT INTO `sys_user_oper_log` VALUES (7, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '912047', '192.168.0.106', '{\"sign\":[\"34d60b402777a6e2fc1793e861fc4755\"],\"username\":[\"adminjyd100\"],\"password\":[\"KUoyr+zq4at63njlTLhFzsASle8qK6d/RomJexxsjMJ4te5qemM3hLW59va06PxM2xET1HyXY9tCZwqXVb0A/g\\u003d\\u003d\"],\"valcode\":[\"mxx5\"],\"smscode\":[\"123456\"]}', '2021-01-08 11:09:06', 2);
+INSERT INTO `sys_user_oper_log` VALUES (8, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '991049', '192.168.0.106', '{\"sign\":[\"a6206c99067634f19fa5a7e35cb0c454\"],\"username\":[\"adminjyd100\"],\"password\":[\"E5AjVISFruh9qSGuO782q6bbrd8ur4THZKHoeFGzbIorSpXWABENhSE9bmwKnTeUxIx9Ur8wEa0l0RkNOz1Evg\\u003d\\u003d\"],\"valcode\":[\"kyb8\"],\"smscode\":[\"123456\"]}', '2021-01-08 11:29:07', 2);
+INSERT INTO `sys_user_oper_log` VALUES (9, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '228297', '192.168.0.106', '{\"sign\":[\"64e28c0c0749a8156f975f4fd4f89c38\"],\"username\":[\"adminjyd100\"],\"password\":[\"f7lcXRQdtXCD9KVTbASJpTiTZlSS0ICBUItVoq+OWcrnARCExVo9CaUpT9hZnLvbgB7VY2lGNI7saDwjSGhhmg\\u003d\\u003d\"],\"valcode\":[\"gr8g\"],\"smscode\":[\"123456\"]}', '2021-01-08 11:38:12', 2);
+INSERT INTO `sys_user_oper_log` VALUES (10, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '970859', '192.168.0.106', '{\"sign\":[\"9568cac953a606795f4768361a7ddbc6\"],\"username\":[\"adminjyd100\"],\"password\":[\"N7lQ9z8c9h4l6TGVAlxiLuiLQS9zilOKTYQqKijMrf+sH5UlJPoIe6T6RusMzd1Tm5j+ZER7vMarkfyYiGoOtA\\u003d\\u003d\"],\"valcode\":[\"34CB\"],\"smscode\":[\"123456\"]}', '2021-01-08 13:20:15', 2);
+INSERT INTO `sys_user_oper_log` VALUES (11, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '525446', '192.168.0.106', '{\"sign\":[\"935a568aef60d4300a5cd23a2931adaa\"],\"username\":[\"adminjyd100\"],\"password\":[\"KAO60Yq6H5LE1Nsq/fqQrpz3jm70pWX1DTJ/CM9OTaH8TejDeawdotqwABUl8penWY3Yq7A/DuzcF9H5mBUvGw\\u003d\\u003d\"],\"valcode\":[\"ptqn\"],\"smscode\":[\"123456\"]}', '2021-01-08 14:53:25', 2);
+INSERT INTO `sys_user_oper_log` VALUES (12, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '496729', '192.168.0.106', '{\"sign\":[\"d744e0b859361eace048150d46435b87\"],\"username\":[\"adminjyd100\"],\"password\":[\"FuwI0Z5Ys5SsDAtantFRKEyW1e2qikx0k/0AwMQrwlMu8R2qaEMB4l1qs/WWC0Hsk/k5s1czkWWt/2RIwcdRnA\\u003d\\u003d\"],\"valcode\":[\"tc5k\"],\"smscode\":[\"123456\"]}', '2021-01-20 14:58:23', 2);
+INSERT INTO `sys_user_oper_log` VALUES (13, '系统模块', 2, '修改角色表数据,id为10', 'adminjyd100', 1, '172.28.80.1', '331955', '192.168.0.106', '{\"roleName\":[\"总经办-领导\"],\"hiddenCode\":[\"10\"],\"sysRight\":[\"90002\",\"90001\",\"40003\",\"40002\",\"40001\",\"40004\",\"30002\",\"80003\",\"30001\",\"80002\",\"30004\",\"80001\",\"30003\",\"30020\",\"30021\",\"30006\",\"30005\",\"30008\",\"30007\",\"20001\",\"70001\",\"50002\",\"50001\",\"60002\",\"50004\",\"60001\",\"50003\",\"10002\",\"10001\",\"50005\",\"10004\",\"10003\",\"10006\",\"30019\",\"10005\",\"10000\",\"20000\",\"40000\",\"50000\",\"70000\",\"80000\"],\"description\":[\"总经办-领导7\"],\"sno\":[\"10\"]}', '2021-01-20 14:59:13', 2);
+INSERT INTO `sys_user_oper_log` VALUES (14, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '770837', '192.168.0.106', '{\"sign\":[\"80c00463b1ccc8a4e290a4166347d3d0\"],\"username\":[\"adminjyd100\"],\"password\":[\"HmzDklNm7nAD/ogbhejUouosHQPQgMqpkVCG4XtPjYVKJG/gIDDt6FxfUI/aXRIUce+ywMK5O+YJHSbdKaPWqw\\u003d\\u003d\"],\"valcode\":[\"y84l\"],\"smscode\":[\"123456\"]}', '2021-01-20 15:01:40', 2);
+INSERT INTO `sys_user_oper_log` VALUES (15, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '695971', '192.168.0.106', '{\"sign\":[\"9e4b48fb2d017c1ec720fbd7ad6acd3e\"],\"username\":[\"adminjyd100\"],\"password\":[\"CPt8mykFpYBp3Xefrr2oAgcCEmUxsxq+OO2nx2wjUfSxXf5Vgwk1Em0vQHvCchetrX3GIeHa7sd+duX3LCEzXA\\u003d\\u003d\"],\"valcode\":[\"jj8p\"],\"smscode\":[\"123456\"]}', '2021-01-20 15:04:16', 2);
+INSERT INTO `sys_user_oper_log` VALUES (16, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '925669', '192.168.0.106', '{\"sign\":[\"ec6efe196754433c6464846f91cd092f\"],\"username\":[\"adminjyd100\"],\"password\":[\"acbM3Vjs04RwOFgUudXVDDWkRp3hS9UQYV0qXq8LPrinaPOzKa7xdyMmaQIkWody7gMkQ311UXeEP9sAV1lnyg\\u003d\\u003d\"],\"valcode\":[\"5e4c\"],\"smscode\":[\"123456\"]}', '2021-01-20 15:16:08', 2);
+INSERT INTO `sys_user_oper_log` VALUES (17, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '668947', '192.168.0.106', '{\"sign\":[\"66b87e5522dede9a2a29b7909c60649a\"],\"username\":[\"adminjyd100\"],\"password\":[\"d62y3pIK8QJvYMwArcTvyYBkFE76p5JGYnkLvzuEySnADwkwsFB4WvFdNZwBD5Kcg/esHNfiJdlyM6JMg/CTdw\\u003d\\u003d\"],\"valcode\":[\"vbwx\"],\"smscode\":[\"123456\"]}', '2021-01-20 15:16:32', 2);
+INSERT INTO `sys_user_oper_log` VALUES (18, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.28.80.1', '608195', '192.168.0.106', '{\"sign\":[\"1b23e722402746bed9079cf3a57e453e\"],\"username\":[\"adminjyd100\"],\"password\":[\"c5M756m3dIw1uPqIivTZZE/wm2fitEBi6C2ThRM7tThW4jog7jS4fs+bDBZe9cqc5LW60cYEHW6LkDe7WEW2Yg\\u003d\\u003d\"],\"valcode\":[\"22vk\"],\"smscode\":[\"123456\"]}', '2021-01-20 15:23:24', 2);
+INSERT INTO `sys_user_oper_log` VALUES (19, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.0.1', '695012', '192.168.0.106', '{\"sign\":[\"f550c1be84a74da751066170c1fa96b4\"],\"username\":[\"adminjyd100\"],\"password\":[\"PWuA5uhc0znXXai8fbREsZeLmne+STp8xjEa4Maj03QUWZFMz+t1k8zlXxx6sCd+FJzN33f1GKYpvOqfMn6rmA\\u003d\\u003d\"],\"valcode\":[\"nrv4\"],\"smscode\":[\"123456\"]}', '2021-01-23 19:54:27', 2);
+INSERT INTO `sys_user_oper_log` VALUES (20, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.0.1', '968843', '192.168.0.106', '{\"sign\":[\"0f95323f76031da1094d833a32087138\"],\"username\":[\"adminjyd100\"],\"password\":[\"JgqX4koKALmH1ZpAu8RvTU8K2TS5YRLxMRSEWOprb3YlPFAkdlkAUKiFcCwvaRQyFhbhqhlT+mG6tp0HSCbv0g\\u003d\\u003d\"],\"valcode\":[\"agjn\"],\"smscode\":[\"123456\"]}', '2021-01-23 20:02:05', 2);
+INSERT INTO `sys_user_oper_log` VALUES (21, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.0.1', '622098', '192.168.0.106', '{\"sign\":[\"d46f57da0df8cedf9f4f8e34ce9d0a08\"],\"username\":[\"adminjyd100\"],\"password\":[\"R4zJuF7yy6RlKQHppEISMb4/F2xG4n1bCIV3Oc6XHUu6IAkIaPixyF8sDmime/uMJc5sAfOBl8wgSAnKpcyvhQ\\u003d\\u003d\"],\"valcode\":[\"b39y\"],\"smscode\":[\"123456\"]}', '2021-01-23 20:18:40', 2);
+INSERT INTO `sys_user_oper_log` VALUES (22, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.0.1', '471894', '192.168.0.106', '{\"sign\":[\"097d74de9751218f19270b4de8c4f9e4\"],\"username\":[\"adminjyd100\"],\"password\":[\"VN5pvwD4128QYp6xPdh0FUB6rLpQtXw0KowzAzH4fDjuMWMhcVVE3pAr+8swuEgN58ZFIRTdrKpEdHLnNkFCVA\\u003d\\u003d\"],\"valcode\":[\"rlhs\"],\"smscode\":[\"123456\"]}', '2021-01-23 20:23:10', 2);
+INSERT INTO `sys_user_oper_log` VALUES (23, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.0.1', '292087', '192.168.0.106', '{\"sign\":[\"812333734b0642ee88659c6348414411\"],\"username\":[\"adminjyd100\"],\"password\":[\"UHrINMnCHoJ0RvWk7TwZjSVSQRpJpFUHIy7pKKq4l3JkeJWcFa3CeMJNlZ7jP6jDNjqVsVzj6i/4ihVL3MlSvQ\\u003d\\u003d\"],\"valcode\":[\"vbwx\"],\"smscode\":[\"123456\"]}', '2021-01-23 20:58:03', 2);
+INSERT INTO `sys_user_oper_log` VALUES (24, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.0.1', '806180', '192.168.0.106', '{\"sign\":[\"61e394e6008fa6d9b3ea23cacdb87e7c\"],\"username\":[\"adminjyd100\"],\"password\":[\"Mn20Uf7VcxK5qnsLpOLQAvdx/AAe+0W7AfPSD005YtGrE/EtU17b7xUBDVPFSQBVX2He7jqtNovFxTM01EEsDw\\u003d\\u003d\"],\"valcode\":[\"8b3r\"],\"smscode\":[\"123456\"]}', '2021-01-23 21:40:50', 2);
+INSERT INTO `sys_user_oper_log` VALUES (25, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.0.1', '653105', '192.168.0.106', '{\"sign\":[\"0996588cef19a2ab38413d620cd87c76\"],\"username\":[\"adminjyd100\"],\"password\":[\"M/AaUmIG2cX5RZ+pvSxjZ7A8iWIxxbFp4pi6rsF1ktXJLCahkTgXxf0CXi1xM3d7qpkuHOSboSB980kMUw00jg\\u003d\\u003d\"],\"valcode\":[\"uq8n\"],\"smscode\":[\"123456\"]}', '2021-01-25 21:29:42', 2);
+INSERT INTO `sys_user_oper_log` VALUES (26, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '178641', '10.130.1.68', '{\"sign\":[\"e5c8909d225415f03994b5a4e19121dc\"],\"username\":[\"adminjyd100\"],\"password\":[\"TE5W7jBCx3IlBhhiXC5b5qstbkCp0BOFuWvPLqzWudp1pFRwpG0qZmcbR/rwwbThUoWmGnLExWVzO7R2nnE85A\\u003d\\u003d\"],\"valcode\":[\"njhh\"],\"smscode\":[\"123456\"]}', '2021-04-14 14:22:43', 2);
+INSERT INTO `sys_user_oper_log` VALUES (27, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '605115', '10.130.1.68', '{\"sign\":[\"da6917075360ba54672cbb80b550cf4a\"],\"username\":[\"adminjyd100\"],\"password\":[\"Q58PAIGelNLQvpA95PjXO6LkrgHU1O7I7aDCYnpFxdI3RNjSq76Afug/8KnAso4OuUoCxIFw607UrizNeCGUFw\\u003d\\u003d\"],\"valcode\":[\"dm3n\"],\"smscode\":[\"123456\"]}', '2021-04-14 15:22:14', 2);
+INSERT INTO `sys_user_oper_log` VALUES (28, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '321764', '10.130.1.68', '{\"sign\":[\"46f18d8c12c8cac2eef5056d66b3cc4e\"],\"username\":[\"adminjyd100\"],\"password\":[\"alvyp/DpOpojJ3z6g2vrd+JKV0LB7rKInLKZfpunL06JrfOEdVOPOuWhuBdDyUO7GQOx/wa4v0yc8+vQS7/10w\\u003d\\u003d\"],\"valcode\":[\"yv3h\"],\"smscode\":[\"123456\"]}', '2021-04-14 15:29:09', 2);
+INSERT INTO `sys_user_oper_log` VALUES (29, '系统模块', 2, '修改功能菜单数据,code为10000', 'adminjyd100', 1, '172.24.48.1', '083172', '10.130.1.68', '{\"sysRightCode\":[\"10000\"],\"hiddenCode\":[\"10000\"],\"sysRightName\":[\"系统管理\"],\"sysRightUrl\":[\"\"],\"icon\":[\"1\"],\"orderCode\":[\"10000\"],\"enable\":[\"1\"],\"sno\":[\"10000\"]}', '2021-04-14 15:50:36', 2);
+INSERT INTO `sys_user_oper_log` VALUES (30, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '806407', '10.130.1.68', '{\"sign\":[\"580b26b944bf2fd982568644d0f8123d\"],\"username\":[\"adminjyd100\"],\"password\":[\"hNOYlvDfhwwEChbncDJO7+DuVbEboY1035D0tJsiKfdHeODxiupKRlXY3ATKXHQMfVgWgX7cAbFN7/EPnBF+Aw\\u003d\\u003d\"],\"valcode\":[\"4vmd\"],\"smscode\":[\"123456\"]}', '2021-04-14 15:52:29', 2);
+INSERT INTO `sys_user_oper_log` VALUES (31, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '964302', '10.130.1.68', '{\"sign\":[\"6691b0e64b47b5099799031f92cdd561\"],\"username\":[\"adminjyd100\"],\"password\":[\"KSW3t5hNirhE4nknh3jzSfAzcl8RzyVNkSlob5GDl1P37RoW2JSl8BY0qPpZg11NmQWWZsaVoDenhIR9thJFFA\\u003d\\u003d\"],\"valcode\":[\"evfu\"],\"smscode\":[\"123456\"]}', '2021-04-14 16:07:17', 2);
+INSERT INTO `sys_user_oper_log` VALUES (32, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '171218', '10.130.1.68', '{\"sign\":[\"c5d9a53c4fde12595f104e6c9ae90a1a\"],\"username\":[\"adminjyd100\"],\"password\":[\"EkvTKJR6nkSoE9w9n+O+lppSOaDGQGoSbaM9+7HvELZqAfjYP/6he9lFang4eIXk7SQfIgxemakb7KpMqa5aPQ\\u003d\\u003d\"],\"valcode\":[\"x4fj\"],\"smscode\":[\"123456\"]}', '2021-04-14 16:13:28', 2);
+INSERT INTO `sys_user_oper_log` VALUES (33, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '033483', '10.130.1.68', '{\"sign\":[\"a3941a717a3f702dd373d67a80b60980\"],\"username\":[\"adminjyd100\"],\"password\":[\"LcrpE0+KoDVrpmqp9a94d1YTmyDpJdXZpj7msJftTcWjUyMINKWgFSzkhycJc3ocefLuXgI75BS3DTscm16Z0g\\u003d\\u003d\"],\"valcode\":[\"yhku\"],\"smscode\":[\"123456\"]}', '2021-04-14 18:18:03', 2);
+INSERT INTO `sys_user_oper_log` VALUES (34, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '380076', '10.130.1.68', '{\"sign\":[\"11a287d81a988bee6018c0703a77ff6c\"],\"username\":[\"adminjyd100\"],\"password\":[\"AuZRvCZVqxuoz9pbTfEC7qy66C890JFhFHedHhAoMzhbI2eDNsF105uSfRAOfHEF+b71pDqcOCos3yj9LnqsFw\\u003d\\u003d\"],\"valcode\":[\"asnw\"],\"smscode\":[\"123456\"]}', '2021-04-14 18:21:11', 2);
+INSERT INTO `sys_user_oper_log` VALUES (35, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '743681', '10.130.1.68', '{\"sign\":[\"dfa630100844f682ac34be24de76a94a\"],\"username\":[\"adminjyd100\"],\"password\":[\"fGQjeafLAFZUfvAWekazqTIqS8Dl3snsY713nL6Byw1HEFwiuYdGrIyxX7tSXcfpqCr73bNAg9xut4kQUqzLAA\\u003d\\u003d\"],\"valcode\":[\"hu3n\"],\"smscode\":[\"123456\"]}', '2021-04-14 18:24:59', 2);
+INSERT INTO `sys_user_oper_log` VALUES (36, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '523847', '10.130.1.68', '{\"sign\":[\"56a017e5c790f55306d7fbb148e14c76\"],\"username\":[\"adminjyd100\"],\"password\":[\"XCDDzjyL6IjWU8RmsLu91Uc/LLU7rx2lP0t1XNv5CTHIJwhMcxPajwJV1C23xOIZJE1199nSlqWqUtT57EdUOQ\\u003d\\u003d\"],\"valcode\":[\"ts6m\"],\"smscode\":[\"123456\"]}', '2021-04-14 18:27:07', 2);
+INSERT INTO `sys_user_oper_log` VALUES (37, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '023072', '10.130.1.68', '{\"sign\":[\"1d2749dde46a1b0d6556a1b27f03cd33\"],\"username\":[\"adminjyd100\"],\"password\":[\"MJXFOerWtpD5MBM1edj6E0IhbHzQbAzuQanmudx5E/kdnjNngO5zF287VeW9aLU2/Xp/Oi9TR7lOkliWUZBoYA\\u003d\\u003d\"],\"valcode\":[\"65va\"],\"smscode\":[\"123456\"]}', '2021-04-14 18:28:06', 2);
+INSERT INTO `sys_user_oper_log` VALUES (38, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '459572', '192.168.0.100', '{\"sign\":[\"ca7711d1b40b17bf0b8416e52ddce6d4\"],\"username\":[\"adminjyd100\"],\"password\":[\"HrVbiyyYcyYSYTa4Ye/7IvEsbbE9hlzLddjpyi52KPBbRjCw+gGqr+OWPXD+xBtcigqt2S1rZ8uiljfGCVHNhg\\u003d\\u003d\"],\"valcode\":[\"w3gc\"],\"smscode\":[\"123456\"]}', '2021-04-16 22:18:52', 2);
+INSERT INTO `sys_user_oper_log` VALUES (39, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '168429', '192.168.0.100', '{\"sign\":[\"7fbabb4b6a4b5667bdc0f2febfa8629f\"],\"username\":[\"adminjyd100\"],\"password\":[\"dsIx5dcZsD8hi+RnBh6kpTkTRC0y/dh83C6k5qp/B6jfPOJSDXvXXhY/QVyg6zUSrAx1zHY3auyyDO8/ZHWnZA\\u003d\\u003d\"],\"valcode\":[\"pm4b\"],\"smscode\":[\"123456\"]}', '2021-04-16 23:23:19', 2);
+INSERT INTO `sys_user_oper_log` VALUES (40, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '300332', '192.168.0.100', '{\"sign\":[\"8ad597e6fe398596a4faa2aadf41d31c\"],\"username\":[\"adminjyd100\"],\"password\":[\"Ywh4BlxetZfmncalX7umiRUmIcc8hJj/ZwbUq/TYo2ygEeqJEeZ0CZ8LJfc1MosPZi3HqQ3aPtSJX9lm/jesww\\u003d\\u003d\"],\"valcode\":[\"b5xm\"],\"smscode\":[\"123456\"]}', '2021-04-17 09:50:37', 2);
+INSERT INTO `sys_user_oper_log` VALUES (41, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.24.48.1', '121338', '192.168.0.100', '{\"sign\":[\"4729bfe917e1e8e1bf93338aa1bd85b1\"],\"username\":[\"adminjyd100\"],\"password\":[\"g0pOQQqaCRJne1uj6rqJU5LQBE9CDvo4LiNh1tRXweo56A6tv33udaHcF8n/qgKzi9sY7/5SUnKeu79wqmhNtg\\u003d\\u003d\"],\"valcode\":[\"ge8g\"],\"smscode\":[\"123456\"]}', '2021-04-17 12:30:09', 2);
+INSERT INTO `sys_user_oper_log` VALUES (42, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '873378', '10.130.1.205', '{\"sign\":[\"d0c72f2ff12f599fa4847299b04f410e\"],\"username\":[\"adminjyd100\"],\"password\":[\"LIgET0fK6mUU30a8hWs0pHTzq486zGS4qbYaRGuO2JdekYKQltomfe8zgSm4Zbfmbp2sBPg7SPPCQ5rw1WC3dg\\u003d\\u003d\"],\"valcode\":[\"L7WU\"],\"smscode\":[\"123456\"]}', '2023-04-21 17:41:45', 2);
+INSERT INTO `sys_user_oper_log` VALUES (43, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '303629', '10.130.1.205', '{\"sign\":[\"da6b2a7f629900c99ff5c37f60cc0fc7\"],\"username\":[\"adminjyd100\"],\"password\":[\"NsmYSnXWy0nt7CHZdYGPDdIUhmVJA7j+0JnKdNJtscnPLjnSljTLvZWdf65f2vy3jsg4MjYNh3xikayn1GhoBg\\u003d\\u003d\"],\"valcode\":[\"j5rk\"],\"smscode\":[\"123456\"]}', '2023-04-21 18:00:38', 2);
+INSERT INTO `sys_user_oper_log` VALUES (44, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '747404', '10.130.1.205', '{\"sign\":[\"8d81bf71c7a840cd915b0ebb53964d9e\"],\"username\":[\"adminjyd100\"],\"password\":[\"JiSuKBcnNoThCfUKs2KLIkfLFobltKnSFTnompLi7THzoxt/mlHQg5RUdq8/TdhppbRmL1dYsnQrGv7dSTnTiw\\u003d\\u003d\"],\"valcode\":[\"LBp3\"],\"smscode\":[\"123456\"]}', '2023-04-23 10:24:07', 2);
+INSERT INTO `sys_user_oper_log` VALUES (45, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '396807', '10.130.1.205', '{\"sign\":[\"954bb174c8c019d3ea4e0a1453ebbf14\"],\"username\":[\"adminjyd100\"],\"password\":[\"g8jx64oZc0QDAd3/9YLFFCCqjLZGOprTyyiRaRc6ph9f5kmnTGtnoUr6wnIx9ePm4XAh0Y0xIupHO4V32e1QIQ\\u003d\\u003d\"],\"valcode\":[\"7S8R\"],\"smscode\":[\"123456\"]}', '2023-04-23 10:34:31', 2);
+INSERT INTO `sys_user_oper_log` VALUES (46, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '478662', '10.130.1.205', '{\"sign\":[\"e28eda74b08c036ce3136d80ab7cccf2\"],\"username\":[\"adminjyd100\"],\"password\":[\"RB9VIMbM36Vsvz1JfoeWYT9RZL6kHbJUdnV8rOSgkNa4ZBpdCT/b5uZUCNJXajh9LO+83PvHI1BkO+ujSkNlAw\\u003d\\u003d\"],\"valcode\":[\"55Q5\"],\"smscode\":[\"123456\"]}', '2023-04-23 10:38:09', 2);
+INSERT INTO `sys_user_oper_log` VALUES (47, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '339177', '10.130.1.205', '{\"sign\":[\"5e61e807f7814ed3230cf2fb83cc0635\"],\"username\":[\"adminjyd100\"],\"password\":[\"YFpgegxJe0KRtEvh6VAvac2VxmNQkUMQRVC46HIZz/KMYn2248KRFay4yjkLN8Xb8PV3yJqhs4brc8LIoyZIrw\\u003d\\u003d\"],\"valcode\":[\"D98R\"],\"smscode\":[\"123456\"]}', '2023-04-23 10:52:45', 2);
+INSERT INTO `sys_user_oper_log` VALUES (48, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '614371', '10.130.1.205', '{\"sign\":[\"8922d368d4bae2e46eacec3de023b5f1\"],\"username\":[\"adminjyd100\"],\"password\":[\"JkY1q/pQdkKagS3CiGTFgtGCaMsY065XDri4lorXKiujbDd8BA/1aZFOq25O8gn2S+uWWUrckucG951039EqhA\\u003d\\u003d\"],\"valcode\":[\"2hv9\"],\"smscode\":[\"123456\"]}', '2023-04-23 11:08:58', 2);
+INSERT INTO `sys_user_oper_log` VALUES (49, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '852879', '10.130.1.205', '{\"sign\":[\"78c301578f067aa3388683d98de4e69c\"],\"username\":[\"adminjyd100\"],\"password\":[\"Y9Dr6uXhM1ihiS6I+Dd7/ApXFJESUUCNy9Chrs6HZLUAEiIB7VbWbRx68JEkfERBWq0RNwXeI7ILKrPNdLvP/w\\u003d\\u003d\"],\"valcode\":[\"JFNY\"],\"smscode\":[\"123456\"]}', '2023-04-23 11:17:51', 2);
+INSERT INTO `sys_user_oper_log` VALUES (50, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '800981', '10.130.1.205', '{\"sign\":[\"f211eafa4e58aa608df7ae29d191a5a1\"],\"username\":[\"adminjyd100\"],\"password\":[\"eAxeAw5BuLoJkLCLNxW1XEGxRgT/A9tU/IX6o+CFpcX0ifm3E2KTZuizN/hg3DrDp1e7T5HN/Wnk/fE4+2+J0g\\u003d\\u003d\"],\"valcode\":[\"cr9j\"],\"smscode\":[\"123456\"]}', '2023-04-23 11:35:23', 2);
+INSERT INTO `sys_user_oper_log` VALUES (51, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '554344', '10.130.1.205', '{\"sign\":[\"363ace7d4415996878b065ec5ff05342\"],\"username\":[\"adminjyd100\"],\"password\":[\"dLy5Gpy0rMRzwBIWn9owRTX3sSYSBz8MSRrMqByRdVo8jy0qdtXNvZDHx7G5XLu23A+mEGqTjRDgfHfcXs2oHQ\\u003d\\u003d\"],\"valcode\":[\"CGX7\"],\"smscode\":[\"123456\"]}', '2023-04-23 11:52:11', 2);
+INSERT INTO `sys_user_oper_log` VALUES (52, '系统模块', 2, '修改功能菜单数据,code为10001', 'adminjyd100', 1, '192.168.137.1', '265454', '10.130.1.205', '{\"sysRightCode\":[\"10001\"],\"hiddenCode\":[\"10001\"],\"sysRightName\":[\"功能菜单\"],\"sysRightUrl\":[\"sys/sys_SysRight_ListData.action\"],\"icon\":[\"3\"],\"orderCode\":[\"10001\"],\"enable\":[\"1\"],\"sno\":[\"10001\"]}', '2023-04-23 12:30:21', 2);
+INSERT INTO `sys_user_oper_log` VALUES (53, '系统模块', 2, '修改功能菜单数据,code为10001', 'adminjyd100', 1, '192.168.137.1', '837689', '10.130.1.205', '{\"sysRightCode\":[\"10001\"],\"hiddenCode\":[\"10001\"],\"sysRightName\":[\"功能菜单1\"],\"sysRightUrl\":[\"sys/sys_SysRight_ListData.action\"],\"icon\":[\"3\"],\"orderCode\":[\"10001\"],\"enable\":[\"1\"],\"sno\":[\"10001\"]}', '2023-04-23 12:30:27', 2);
+INSERT INTO `sys_user_oper_log` VALUES (54, '系统模块', 2, '修改功能菜单数据,code为10001', 'adminjyd100', 1, '192.168.137.1', '509736', '10.130.1.205', '{\"sysRightCode\":[\"10001\"],\"hiddenCode\":[\"10001\"],\"sysRightName\":[\"功能菜单\"],\"sysRightUrl\":[\"sys/sys_SysRight_ListData.action\"],\"icon\":[\"3\"],\"orderCode\":[\"10001\"],\"enable\":[\"1\"],\"sno\":[\"10001\"]}', '2023-04-23 12:30:32', 2);
+INSERT INTO `sys_user_oper_log` VALUES (55, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.21.0.1', '118213', '10.130.1.205', '{\"sign\":[\"895dc9ff197cb5c67ce7c4c1bccbc4ea\"],\"username\":[\"adminjyd100\"],\"password\":[\"BMOUJgYi7rhT/8LhQ8xt4CTcFoFlAUjkIbTmrBbNvdpdPFOrDn1kdcqY4HTu8FiRyRoEdDOSgwvaT9Hf+0gbmg\\u003d\\u003d\"],\"valcode\":[\"3H32\"],\"smscode\":[\"123456\"]}', '2023-04-23 16:15:16', 2);
+INSERT INTO `sys_user_oper_log` VALUES (56, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.21.0.1', '004211', '10.130.1.205', '{\"sign\":[\"e11c923967706ccaf8cc917d7d0a1920\"],\"username\":[\"adminjyd100\"],\"password\":[\"F3XM/hDma9zMzXutNoIrvdOs1rOXlHV9nAzB/VzvqqUzpuaqgSUvlG9YsbHflikGLvgNpa/DbsKvnbGnLhBCHg\\u003d\\u003d\"],\"valcode\":[\"F3DB\"],\"smscode\":[\"123456\"]}', '2023-04-23 17:52:08', 2);
+INSERT INTO `sys_user_oper_log` VALUES (57, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '10.8.0.2', '206342', '10.8.0.2', '{\"sign\":[\"782ab7cda6485c80c54cf3bbdfed4a31\"],\"username\":[\"adminjyd100\"],\"password\":[\"EawOS9kfv57hFGv1DJ1umo0Vyr7qCvFK+Wv3P/QAmTx6R5P6tHxUJ8p/jjtgJQdcfelq2MN6kqunVI6pNbsj1w\\u003d\\u003d\"],\"valcode\":[\"T2DS\"],\"smscode\":[\"123456\"]}', '2023-04-25 15:08:38', 2);
+INSERT INTO `sys_user_oper_log` VALUES (58, '系统模块', 2, '修改功能菜单数据,code为10000', 'adminjyd100', 1, '10.8.0.2', '261414', '10.8.0.2', '{\"sysRightCode\":[\"10000\"],\"hiddenCode\":[\"10000\"],\"sysRightName\":[\"系统管理\"],\"sysRightUrl\":[\"\"],\"icon\":[\"1\"],\"orderCode\":[\"10000\"],\"enable\":[\"1\"],\"sno\":[\"10000\"]}', '2023-04-25 15:08:45', 2);
+INSERT INTO `sys_user_oper_log` VALUES (59, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '10.8.0.2', '902792', '10.8.0.2', '{\"sign\":[\"333006a6a7575f7c281bbef3b31850be\"],\"username\":[\"adminjyd100\"],\"password\":[\"Q4S+O9jqZL+9pefBykg5tEx6JSp76FHC3MvsgPPDMuyFbdo6Mjw1RmnobiTlONsW+ZYDtBWciHMqpZD/CpzeVg\\u003d\\u003d\"],\"valcode\":[\"93xd\"],\"smscode\":[\"123456\"]}', '2023-04-25 18:01:25', 2);
+INSERT INTO `sys_user_oper_log` VALUES (60, '系统模块', 2, '修改功能菜单数据,code为10001', 'adminjyd100', 1, '10.8.0.2', '598470', '10.8.0.2', '{\"sysRightCode\":[\"10001\"],\"hiddenCode\":[\"10001\"],\"sysRightName\":[\"功能菜单\"],\"sysRightUrl\":[\"sys/sys_SysRight_ListData.action\"],\"icon\":[\"3\"],\"orderCode\":[\"10001\"],\"enable\":[\"1\"],\"sno\":[\"10001\"]}', '2023-04-25 18:02:18', 2);
+INSERT INTO `sys_user_oper_log` VALUES (61, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '10.8.0.2', '977697', '10.8.0.2', '{\"sign\":[\"765711832e1a148604c8da0c4dd33984\"],\"username\":[\"adminjyd100\"],\"password\":[\"AjexzqOsUFWDIy0iZtC/JqdGY1X5pSXDZPndzBoSADpYVwvVh9RQsm1xTqxcSiYg5DdTbkahV1vUcDZt98lVow\\u003d\\u003d\"],\"valcode\":[\"8KE5\"],\"smscode\":[\"123456\"]}', '2023-04-25 19:13:07', 2);
+INSERT INTO `sys_user_oper_log` VALUES (62, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.21.0.1', '566996', '10.130.1.205', '{\"sign\":[\"4b0a3a0a5d7ff31da5e0cffa7cc1c3c0\"],\"username\":[\"adminjyd100\"],\"password\":[\"Z0T3qDkArTObKiktY1RYp5k/aBVfDGtUEYJx+hoX6AMRLgwuS9O07qZDDxoWB1mXkSxTu55jAZO7ZqyiIqz4gA\\u003d\\u003d\"],\"valcode\":[\"HQHT\"],\"smscode\":[\"123456\"]}', '2023-04-26 11:15:08', 2);
+INSERT INTO `sys_user_oper_log` VALUES (63, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '760385', '10.130.1.205', '{\"sign\":[\"85920d27af59275937af208a9b4806fc\"],\"password\":[\"VMNEO/GDpSi0rgCxZwyxDSMeQed2iFifYY+eVC8bfqyW7JaG6mkeIUo0b0U8vQ32/P59Arx/m/pvAVZLh+DcYQ\\u003d\\u003d\"],\"valcode\":[\"5N5L\"],\"smscode\":[\"123456\"],\"username\":[\"adminjyd100\"]}', '2023-05-10 11:16:53', 2);
+INSERT INTO `sys_user_oper_log` VALUES (64, '系统模块', 2, '修改角色表数据,id为11', 'adminjyd100', 1, '172.19.208.1', '372234', '10.130.1.205', '{\"roleName\":[\"总经办-内勤\"],\"description\":[\"总经办-内勤\"],\"hiddenCode\":[\"11\"],\"sysRight\":[\"90002\",\"90001\",\"40003\",\"40002\",\"40001\",\"40004\",\"30002\",\"80003\",\"30001\",\"80002\",\"30004\",\"80001\",\"30003\",\"30020\",\"30021\",\"30006\",\"30005\",\"30008\",\"30007\",\"20001\",\"70001\",\"50002\",\"50001\",\"60002\",\"50004\",\"60001\",\"50003\",\"10002\",\"10001\",\"50005\",\"10004\",\"10003\",\"10006\",\"30019\",\"10005\",\"10000\",\"20000\",\"40000\",\"50000\",\"70000\",\"80000\"],\"sno\":[\"11\"]}', '2023-05-10 12:09:37', 2);
+INSERT INTO `sys_user_oper_log` VALUES (65, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '652025', '10.130.1.205', '{\"sign\":[\"d94860a9b8041f1071faf9914a661820\"],\"password\":[\"Zu6tC09MYVPC5L9FZV4VVrx6mXd/epPDb9TOUNq9j6QxVuKpMdhb2gdCHobdo1+sLJ09s4+u2HnPccM7yG/heA\\u003d\\u003d\"],\"valcode\":[\"n5my\"],\"smscode\":[\"123456\"],\"username\":[\"adminjyd100\"]}', '2023-05-10 15:04:54', 2);
+INSERT INTO `sys_user_oper_log` VALUES (66, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '919470', '10.130.1.205', '{\"sign\":[\"c239f61e9487a3bed39b8ff6e8132918\"],\"password\":[\"WIO/TuIw3c+5/oAIZnuE8iRPCqB/lTIo9RoaFJauXThmGQ+a3O1ZLcWkjxQtmkbwaei//IJE/2sqn7lw4LeKgg\\u003d\\u003d\"],\"valcode\":[\"pubs\"],\"smscode\":[\"123456\"],\"username\":[\"adminjyd100\"]}', '2023-05-10 15:32:33', 2);
+INSERT INTO `sys_user_oper_log` VALUES (67, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '432870', '10.130.1.205', '{\"sign\":[\"5e5c01a9ac15e93d3a0ae30b044477c1\"],\"password\":[\"RGlQ+vUPSWx/F6nHDyHAgXE2E3IYtHqKqAP8xskc5VShbT6u05FSJeZiVgBa/viUZPYLJ4fDe4Fn3c300Hcjaw\\u003d\\u003d\"],\"valcode\":[\"42tg\"],\"smscode\":[\"123456\"],\"username\":[\"adminjyd100\"]}', '2023-05-11 15:13:54', 2);
+INSERT INTO `sys_user_oper_log` VALUES (68, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '686440', '10.130.1.205', '{\"sign\":[\"4675106cb2414c2004b5a1d75e661300\"],\"password\":[\"i/Vj4Hvi3CNuNheq9WXaAuXTMFcC4a40rQD8ibaPCbBpPAsEekwwAM79NU/kZd4mW/fgBrFLiQn93mWrr1Tgeg\\u003d\\u003d\"],\"valcode\":[\"43vj\"],\"smscode\":[\"123456\"],\"username\":[\"adminjyd100\"]}', '2023-05-18 12:06:21', 2);
+INSERT INTO `sys_user_oper_log` VALUES (69, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '522557', '10.130.1.205', '{\"sign\":[\"796b144b2fb37ee625d4b5b810bd0821\"],\"password\":[\"BriZOEVj/kp8Z53mNGCQmw75TfozKNNKGdlTTIZQrl4071el+l79wxcfO7X7MZ1wIPeWlp2bb2jeSeoCLroDAQ\\u003d\\u003d\"],\"valcode\":[\"h2ty\"],\"smscode\":[\"123456\"],\"username\":[\"adminjyd100\"]}', '2023-05-18 16:00:54', 2);
+INSERT INTO `sys_user_oper_log` VALUES (70, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '480808', '10.130.1.205', '{\"sign\":[\"3504ee2b3a1f1755ce1040ea6d8ff2ad\"],\"password\":[\"O8htZDgjInKffMQH/0oaWAKK0yV0gMffL6+RMtnKqxhO7W+m/ulPez8bcpinI8qd80LP950LBxcBuzioIGGhBQ\\u003d\\u003d\"],\"valcode\":[\"L6MQ\"],\"smscode\":[\"123456\"],\"username\":[\"adminjyd100\"]}', '2023-05-19 19:11:42', 2);
+INSERT INTO `sys_user_oper_log` VALUES (71, '系统模块', 2, '修改功能菜单数据,code为10001', 'adminjyd100', 1, '172.19.208.1', '371823', '10.130.1.205', '{\"sysRightName\":[\"功能菜单\"],\"sysRightUrl\":[\"sys/sys_SysRight_ListData.action\"],\"hiddenCode\":[\"10001\"],\"sno\":[\"10001\"],\"enable\":[\"1\"],\"icon\":[\"3\"],\"orderCode\":[\"10001\"],\"sysRightCode\":[\"10001\"]}', '2023-05-19 19:13:37', 2);
+INSERT INTO `sys_user_oper_log` VALUES (72, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '10.8.0.2', '056499', '10.8.0.2', '{\"sign\":[\"1513ed4d784e0229d9a6d5ef08d3dbd2\"],\"password\":[\"fbpTS2VbavuH//ywL6NsqyamT/7VLcgJkuTtISVm4H6BhSeoeNnn/isX9S8KjcFCz1in6uPTIPAO2ydKuem4jA\\u003d\\u003d\"],\"valcode\":[\"xxta\"],\"smscode\":[\"123456\"],\"username\":[\"adminjyd100\"]}', '2023-05-22 11:44:24', 2);
+INSERT INTO `sys_user_oper_log` VALUES (73, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '823330', '10.130.1.102', '{\"password\":[\"hohJyps1Cl3JZBUzaVxKeGISoBNtZj140vpQKJb1lAshf1q75OphwECENTX2l1bD4PS6xk14DVSMkh874gAWmA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"1e9c5a21c665308c06bc8b917414262c\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"1e9c5a21c665308c06bc8b917414262c\"],\"username\":[\"adminjyd100\"],\"password\":[\"hohJyps1Cl3JZBUzaVxKeGISoBNtZj140vpQKJb1lAshf1q75OphwECENTX2l1bD4PS6xk14DVSMkh874gAWmA\\u003d\\u003d\"],\"valcode\":[\"sgsq\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"sgsq\"],\"username\":[\"adminjyd100\"]}', '2023-05-24 10:45:00', 2);
+INSERT INTO `sys_user_oper_log` VALUES (74, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '270205', '10.130.1.102', '{\"password\":[\"YVvUTBw4Xt4CGhDH2KCYq+s6WeUG4FN/G8UZGg3IrG6WoIxgi0eggO2T7EwxU/X1DmUKS5efhJheLX1KPof5uQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"1a52aad10a7a657b924956cabc72cb2f\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"1a52aad10a7a657b924956cabc72cb2f\"],\"username\":[\"adminjyd100\"],\"password\":[\"YVvUTBw4Xt4CGhDH2KCYq+s6WeUG4FN/G8UZGg3IrG6WoIxgi0eggO2T7EwxU/X1DmUKS5efhJheLX1KPof5uQ\\u003d\\u003d\"],\"valcode\":[\"drhr\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"drhr\"],\"username\":[\"adminjyd100\"]}', '2023-05-24 10:50:27', 2);
+INSERT INTO `sys_user_oper_log` VALUES (75, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '718621', '10.130.1.102', '{\"password\":[\"UfJ3KdzqiQKV0hviM7ODQG7YLrlUKAWsmKO0PNfQ6VBXSwnrPPAgHG8jbd2WPrUwHpXlU7AsVdipgrq+dDPZ8A\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"6f06870ab976c7e819ef568c6397b32e\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"6f06870ab976c7e819ef568c6397b32e\"],\"username\":[\"adminjyd100\"],\"password\":[\"UfJ3KdzqiQKV0hviM7ODQG7YLrlUKAWsmKO0PNfQ6VBXSwnrPPAgHG8jbd2WPrUwHpXlU7AsVdipgrq+dDPZ8A\\u003d\\u003d\"],\"valcode\":[\"6gqy\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"6gqy\"],\"username\":[\"adminjyd100\"]}', '2023-05-24 10:52:38', 2);
+INSERT INTO `sys_user_oper_log` VALUES (76, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '394001', '10.130.1.102', '{\"password\":[\"Mvg2YWITpzCc5Ud0cwyYWnWYy/meiIpgmTJVjlonLtfIU7CYl/oThC8m9dsbgHt5d5avTDdntO76FmpfMlYWtA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"ab2aed0ae0b527ae0302aa1a1e6851c3\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"ab2aed0ae0b527ae0302aa1a1e6851c3\"],\"username\":[\"adminjyd100\"],\"password\":[\"Mvg2YWITpzCc5Ud0cwyYWnWYy/meiIpgmTJVjlonLtfIU7CYl/oThC8m9dsbgHt5d5avTDdntO76FmpfMlYWtA\\u003d\\u003d\"],\"valcode\":[\"fry7\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"fry7\"],\"username\":[\"adminjyd100\"]}', '2023-05-24 10:57:16', 2);
+INSERT INTO `sys_user_oper_log` VALUES (77, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '041583', '10.130.1.102', '{\"password\":[\"MJ/iJfLwfKrK+ieOfFyei5o6ZFOGbXRhiVQY2cj0XyceiWMbeC99ZRB5lyqBXOhA3M1ufkZdt37dOdOYDa8aKA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"5b02386bcaedd34b8f458c419ed92c68\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"5b02386bcaedd34b8f458c419ed92c68\"],\"username\":[\"adminjyd100\"],\"password\":[\"MJ/iJfLwfKrK+ieOfFyei5o6ZFOGbXRhiVQY2cj0XyceiWMbeC99ZRB5lyqBXOhA3M1ufkZdt37dOdOYDa8aKA\\u003d\\u003d\"],\"valcode\":[\"p7l3\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"p7l3\"],\"username\":[\"adminjyd100\"]}', '2023-05-24 11:24:20', 2);
+INSERT INTO `sys_user_oper_log` VALUES (78, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '992318', '10.130.1.102', '{\"password\":[\"BfrpffUUuFwrPx764oFi/8nNy04aJVS/TbjBcGMdNmKTGVQkMOmDtaUgQnUfRfG209J2A/EgYeTTAkVzs6qWiQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"db644685a408179fd407638e61794613\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"db644685a408179fd407638e61794613\"],\"username\":[\"adminjyd100\"],\"password\":[\"BfrpffUUuFwrPx764oFi/8nNy04aJVS/TbjBcGMdNmKTGVQkMOmDtaUgQnUfRfG209J2A/EgYeTTAkVzs6qWiQ\\u003d\\u003d\"],\"valcode\":[\"wmys\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"wmys\"],\"username\":[\"adminjyd100\"]}', '2023-05-24 11:25:38', 2);
+INSERT INTO `sys_user_oper_log` VALUES (79, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '164981', '10.130.1.102', '{\"password\":[\"FdYhASsKbsQwLvf7PKvy+4QkcX8HjJc+l9Wj1Y/sTtTDvQ4KRytJxieJ8A+Ls3iPyKAsCFysC0eueIvxlHj7JA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"3b1203fc3857d3ac7857df6f4c7bfc37\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"3b1203fc3857d3ac7857df6f4c7bfc37\"],\"username\":[\"adminjyd100\"],\"password\":[\"FdYhASsKbsQwLvf7PKvy+4QkcX8HjJc+l9Wj1Y/sTtTDvQ4KRytJxieJ8A+Ls3iPyKAsCFysC0eueIvxlHj7JA\\u003d\\u003d\"],\"valcode\":[\"gpr6\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"gpr6\"],\"username\":[\"adminjyd100\"]}', '2023-05-24 11:26:18', 2);
+INSERT INTO `sys_user_oper_log` VALUES (80, '系统模块', 2, '修改功能菜单数据,code为10001', 'adminjyd100', 1, '172.19.208.1', '275213', '10.130.1.102', '{\"sysRightName\":[\"功能菜单\"],\"sysRightUrl\":[\"sys/sys_SysRight_ListData.action\"],\"hiddenCode\":[\"10001\"],\"sno\":[\"10001\"],\"enable\":[\"1\"],\"icon\":[\"3\"],\"orderCode\":[\"10001\"],\"REQUEST_PARAM_MAP\":[{\"sysRightCode\":[\"10001\"],\"hiddenCode\":[\"10001\"],\"sysRightName\":[\"功能菜单\"],\"sysRightUrl\":[\"sys/sys_SysRight_ListData.action\"],\"icon\":[\"3\"],\"orderCode\":[\"10001\"],\"enable\":[\"1\"],\"sno\":[\"10001\"]}],\"sysRightCode\":[\"10001\"]}', '2023-05-24 11:26:25', 2);
+INSERT INTO `sys_user_oper_log` VALUES (81, '系统模块', 2, '修改角色表数据,id为20', 'adminjyd100', 1, '172.19.208.1', '037824', '10.130.1.102', '{\"hiddenCode\":[\"20\"],\"sysRight\":[\"60002\",\"60001\"],\"sno\":[\"20\"],\"roleName\":[\"财务组-专员\"],\"description\":[\"财务组-专员\"],\"REQUEST_PARAM_MAP\":[{\"roleName\":[\"财务组-专员\"],\"hiddenCode\":[\"20\"],\"sysRight\":[\"60002\",\"60001\"],\"description\":[\"财务组-专员\"],\"sno\":[\"20\"]}]}', '2023-05-24 11:26:34', 2);
+INSERT INTO `sys_user_oper_log` VALUES (82, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.19.208.1', '188726', '10.130.1.223', '{\"password\":[\"FtN6I2CZC7+sKxjICaPOfnbldXZA/aCMittBJzKLB62xySRM1mvY9GveP7SpLh/vHXAV3uV5Z+c4z0lvxW6ghg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"022f01a7c1832c75968164a54c301680\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"022f01a7c1832c75968164a54c301680\"],\"username\":[\"adminjyd100\"],\"password\":[\"FtN6I2CZC7+sKxjICaPOfnbldXZA/aCMittBJzKLB62xySRM1mvY9GveP7SpLh/vHXAV3uV5Z+c4z0lvxW6ghg\\u003d\\u003d\"],\"valcode\":[\"yqtl\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"yqtl\"],\"username\":[\"adminjyd100\"]}', '2023-05-29 11:42:14', 2);
+INSERT INTO `sys_user_oper_log` VALUES (83, '系统模块', 2, '修改角色表数据,id为20', 'adminjyd100', 1, '172.19.208.1', '797607', '10.130.1.223', '{\"hiddenCode\":[\"20\"],\"sysRight\":[\"60002\",\"60001\"],\"sno\":[\"20\"],\"roleName\":[\"财务组-专员\"],\"description\":[\"财务组-专员\"],\"REQUEST_PARAM_MAP\":[{\"roleName\":[\"财务组-专员\"],\"hiddenCode\":[\"20\"],\"sysRight\":[\"60002\",\"60001\"],\"description\":[\"财务组-专员\"],\"sno\":[\"20\"]}]}', '2023-05-29 11:44:26', 2);
+INSERT INTO `sys_user_oper_log` VALUES (84, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '10.130.1.223', '111750', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003df5d0cb1d19a32e48d53086ea0796a57e\"],\"password\":[\"L4sfiQJXXWk2GEb/ekDLoJrWNouw0e3Kt3paCRzNOeHzulXAiIxsrTOFFPhs8YeIrL3BlUN0Xa/n86mULyi+Mg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"f5d0cb1d19a32e48d53086ea0796a57e\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"f5d0cb1d19a32e48d53086ea0796a57e\"],\"username\":[\"adminjyd100\"],\"password\":[\"L4sfiQJXXWk2GEb/ekDLoJrWNouw0e3Kt3paCRzNOeHzulXAiIxsrTOFFPhs8YeIrL3BlUN0Xa/n86mULyi+Mg\\u003d\\u003d\"],\"valcode\":[\"p9t7\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"p9t7\"],\"username\":[\"adminjyd100\"]}', '2023-06-14 10:11:45', 2);
+INSERT INTO `sys_user_oper_log` VALUES (85, '系统模块', 2, '修改功能菜单数据,code为10003', 'adminjyd100', 1, '10.130.1.223', '120865', '10.130.1.223', '{\"sysRightName\":[\"角色管理\"],\"REQUEST_QUERY_STR\":[\"sysRightCode\\u003d10003\\u0026hiddenCode\\u003d10003\\u0026sysRightName\\u003d%E8%A7%92%E8%89%B2%E7%AE%A1%E7%90%86\\u0026sysRightUrl\\u003dsys%2Fsys_SysRole_ListData.action\\u0026icon\\u003d3\\u0026orderCode\\u003d10003\\u0026enable\\u003d1\\u0026sno\\u003d10003\"],\"sysRightUrl\":[\"sys/sys_SysRole_ListData.action\"],\"hiddenCode\":[\"10003\"],\"sno\":[\"10003\"],\"enable\":[\"1\"],\"icon\":[\"3\"],\"orderCode\":[\"10003\"],\"REQUEST_PARAM_MAP\":[{\"sysRightCode\":[\"10003\"],\"hiddenCode\":[\"10003\"],\"sysRightName\":[\"角色管理\"],\"sysRightUrl\":[\"sys/sys_SysRole_ListData.action\"],\"icon\":[\"3\"],\"orderCode\":[\"10003\"],\"enable\":[\"1\"],\"sno\":[\"10003\"]}],\"sysRightCode\":[\"10003\"]}', '2023-06-14 10:11:54', 2);
+INSERT INTO `sys_user_oper_log` VALUES (86, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '782219', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d06af2b1706fc61294510bcea118b50ba\"],\"password\":[\"V2fg+HA61rt42Ucb9aFoodPx1HkCBePx/xXWfTsKUtckoDiB+9bPelz1d+4kjS5q44j8w/lab1fvD2CORBVx6A\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"06af2b1706fc61294510bcea118b50ba\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"06af2b1706fc61294510bcea118b50ba\"],\"username\":[\"adminjyd100\"],\"password\":[\"V2fg+HA61rt42Ucb9aFoodPx1HkCBePx/xXWfTsKUtckoDiB+9bPelz1d+4kjS5q44j8w/lab1fvD2CORBVx6A\\u003d\\u003d\"],\"valcode\":[\"3slg\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"3slg\"],\"username\":[\"adminjyd100\"]}', '2023-06-16 11:46:10', 2);
+INSERT INTO `sys_user_oper_log` VALUES (87, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '884142', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d8ca1ec3ab6046219dec1bfa9e14f1970\"],\"password\":[\"FzYIetmwWnBD8wUDr/nlf3TB/oU2+NIHRBTE2q5QAYJuj9BrxkaHMxRz0tsGdG1Uo7y5eYkHYhzn9Qi6H80A0Q\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"8ca1ec3ab6046219dec1bfa9e14f1970\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"8ca1ec3ab6046219dec1bfa9e14f1970\"],\"username\":[\"adminjyd100\"],\"password\":[\"FzYIetmwWnBD8wUDr/nlf3TB/oU2+NIHRBTE2q5QAYJuj9BrxkaHMxRz0tsGdG1Uo7y5eYkHYhzn9Qi6H80A0Q\\u003d\\u003d\"],\"valcode\":[\"gbav\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"gbav\"],\"username\":[\"adminjyd100\"]}', '2023-06-16 16:58:34', 2);
+INSERT INTO `sys_user_oper_log` VALUES (88, '系统模块', 2, '修改角色表数据,id为10', 'adminjyd100', 1, '192.168.137.1', '427878', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"roleName\\u003d%E6%80%BB%E7%BB%8F%E5%8A%9E-%E9%A2%86%E5%AF%BC\\u0026hiddenCode\\u003d10\\u0026sysRight\\u003d90002\\u0026sysRight\\u003d90001\\u0026sysRight\\u003d40003\\u0026sysRight\\u003d40002\\u0026sysRight\\u003d40001\\u0026sysRight\\u003d40004\\u0026sysRight\\u003d30002\\u0026sysRight\\u003d80003\\u0026sysRight\\u003d30001\\u0026sysRight\\u003d80002\\u0026sysRight\\u003d30004\\u0026sysRight\\u003d80001\\u0026sysRight\\u003d30003\\u0026sysRight\\u003d30020\\u0026sysRight\\u003d30021\\u0026sysRight\\u003d30006\\u0026sysRight\\u003d30005\\u0026sysRight\\u003d30008\\u0026sysRight\\u003d30007\\u0026sysRight\\u003d20001\\u0026sysRight\\u003d70001\\u0026sysRight\\u003d50002\\u0026sysRight\\u003d50001\\u0026sysRight\\u003d60002\\u0026sysRight\\u003d50004\\u0026sysRight\\u003d60001\\u0026sysRight\\u003d50003\\u0026sysRight\\u003d10002\\u0026sysRight\\u003d10001\\u0026sysRight\\u003d50005\\u0026sysRight\\u003d10004\\u0026sysRight\\u003d10003\\u0026sysRight\\u003d10006\\u0026sysRight\\u003d30019\\u0026sysRight\\u003d10005\\u0026sysRight\\u00', '2023-06-16 16:58:43', 2);
+INSERT INTO `sys_user_oper_log` VALUES (89, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '046975', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003de3860b8ef453af9fa0ef0a7b77b1c1bd\"],\"password\":[\"i5AvHcgMXUItRTtvGuRjwL07umnO/GkLzErM9GwjyEFONiI+L8rjnQGFQyy2dGs+h5tMQ/hKvC+ZCDobtjvglQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"e3860b8ef453af9fa0ef0a7b77b1c1bd\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"e3860b8ef453af9fa0ef0a7b77b1c1bd\"],\"username\":[\"adminjyd100\"],\"password\":[\"i5AvHcgMXUItRTtvGuRjwL07umnO/GkLzErM9GwjyEFONiI+L8rjnQGFQyy2dGs+h5tMQ/hKvC+ZCDobtjvglQ\\u003d\\u003d\"],\"valcode\":[\"cs39\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"cs39\"],\"username\":[\"adminjyd100\"]}', '2023-06-16 17:01:18', 2);
+INSERT INTO `sys_user_oper_log` VALUES (90, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '457987', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003df2af5538fd3701044d395328ab1bed45\"],\"password\":[\"FmIBnM8f8b27rew37W+xWJ5iFbZPXxP+/cuyb2Jijxd2bOLqPfLc9a4ZFTqKhJobdS4kVDiuIDSZIUJCLh/NSQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"f2af5538fd3701044d395328ab1bed45\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"f2af5538fd3701044d395328ab1bed45\"],\"username\":[\"adminjyd100\"],\"password\":[\"FmIBnM8f8b27rew37W+xWJ5iFbZPXxP+/cuyb2Jijxd2bOLqPfLc9a4ZFTqKhJobdS4kVDiuIDSZIUJCLh/NSQ\\u003d\\u003d\"],\"valcode\":[\"en8j\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"en8j\"],\"username\":[\"adminjyd100\"]}', '2023-06-16 17:41:39', 2);
+INSERT INTO `sys_user_oper_log` VALUES (91, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '960038', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dc081031104ccf28a9f85a892ee88a428\"],\"password\":[\"WNgvJbkCEsM8e9KsluNXf0eYH4Y1Pq6jTBOHKW8ZJgzUbGOHRNos+xGs9s0APzU+2JqD5BjjlJ2SHgECobaAeg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"c081031104ccf28a9f85a892ee88a428\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"c081031104ccf28a9f85a892ee88a428\"],\"username\":[\"adminjyd100\"],\"password\":[\"WNgvJbkCEsM8e9KsluNXf0eYH4Y1Pq6jTBOHKW8ZJgzUbGOHRNos+xGs9s0APzU+2JqD5BjjlJ2SHgECobaAeg\\u003d\\u003d\"],\"valcode\":[\"6g3l\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"6g3l\"],\"username\":[\"adminjyd100\"]}', '2023-06-16 18:36:06', 2);
+INSERT INTO `sys_user_oper_log` VALUES (92, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '183769', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d50a2ffb0fb3d3a38bd4d59453a68b7a6\"],\"password\":[\"w9RrPj7940eEbMS17ajRMQfB5eMQ/sHCb+XUc2xImvA0X+Fu2LFNn5gqv2l5Ol7slcYvgTelmUbjuSiouwxW\"],\"smscode\":[\"123456\"],\"sign\":[\"50a2ffb0fb3d3a38bd4d59453a68b7a6\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"50a2ffb0fb3d3a38bd4d59453a68b7a6\"],\"username\":[\"adminjyd100\"],\"password\":[\"w9RrPj7940eEbMS17ajRMQfB5eMQ/sHCb+XUc2xImvA0X+Fu2LFNn5gqv2l5Ol7slcYvgTelmUbjuSiouwxW\"],\"valcode\":[\"ulls\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"ulls\"],\"username\":[\"adminjyd100\"]}', '2023-06-16 18:58:59', 2);
+INSERT INTO `sys_user_oper_log` VALUES (93, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '852962', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003db135f1876fc1c6572800da4b7b647834\"],\"password\":[\"e/sARS6ff4EGF+JTg/+T1044D8suyDdhza7L68G5Kq1Eh3ryG5R4360f47QJI5Lz+Xl5Bll+8jsnkqn0tqHfeA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"b135f1876fc1c6572800da4b7b647834\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"b135f1876fc1c6572800da4b7b647834\"],\"username\":[\"adminjyd100\"],\"password\":[\"e/sARS6ff4EGF+JTg/+T1044D8suyDdhza7L68G5Kq1Eh3ryG5R4360f47QJI5Lz+Xl5Bll+8jsnkqn0tqHfeA\\u003d\\u003d\"],\"valcode\":[\"rncs\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"rncs\"],\"username\":[\"adminjyd100\"]}', '2023-06-19 11:11:31', 2);
+INSERT INTO `sys_user_oper_log` VALUES (94, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '736457', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d8a49c0586aaee8d2cd1009eb24434301\"],\"password\":[\"USgl6pOHcpxMyEClukvOH7U5jWa28m1Xk5MrO4dAWJI0b+OhhoSTMYxbBjd8gL79xgFAPAcREyBehRiP5UHdBQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"8a49c0586aaee8d2cd1009eb24434301\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"8a49c0586aaee8d2cd1009eb24434301\"],\"username\":[\"adminjyd100\"],\"password\":[\"USgl6pOHcpxMyEClukvOH7U5jWa28m1Xk5MrO4dAWJI0b+OhhoSTMYxbBjd8gL79xgFAPAcREyBehRiP5UHdBQ\\u003d\\u003d\"],\"valcode\":[\"u8hv\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"u8hv\"],\"username\":[\"adminjyd100\"]}', '2023-06-19 11:27:05', 2);
+INSERT INTO `sys_user_oper_log` VALUES (95, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '581383', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d6cdb78e4b06bb9c825cd080d0a69888e\"],\"password\":[\"Zg7alqCx7V3uZquYwCJuCd/0d/ujEKCp0k7Vs+vBdsoVrTTbJ+W2qI710r8VorpFSl7W8VBAEdZAhaQI4BOpDg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"6cdb78e4b06bb9c825cd080d0a69888e\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"6cdb78e4b06bb9c825cd080d0a69888e\"],\"username\":[\"adminjyd100\"],\"password\":[\"Zg7alqCx7V3uZquYwCJuCd/0d/ujEKCp0k7Vs+vBdsoVrTTbJ+W2qI710r8VorpFSl7W8VBAEdZAhaQI4BOpDg\\u003d\\u003d\"],\"valcode\":[\"v2tb\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"v2tb\"],\"username\":[\"adminjyd100\"]}', '2023-06-19 11:45:20', 2);
+INSERT INTO `sys_user_oper_log` VALUES (96, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '207622', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003de5825ee82c5a7dad2130a4bc5c0e9301\"],\"password\":[\"TADXh7TgdHArCTFXGKgTSF+tb6sDYklKSB0Q+D0++q2iHegaPvON0vBGnDEYuBCc5n9rnUwl2vFPtla771MWEQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"e5825ee82c5a7dad2130a4bc5c0e9301\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"e5825ee82c5a7dad2130a4bc5c0e9301\"],\"username\":[\"adminjyd100\"],\"password\":[\"TADXh7TgdHArCTFXGKgTSF+tb6sDYklKSB0Q+D0++q2iHegaPvON0vBGnDEYuBCc5n9rnUwl2vFPtla771MWEQ\\u003d\\u003d\"],\"valcode\":[\"vcx3\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"vcx3\"],\"username\":[\"adminjyd100\"]}', '2023-06-20 16:06:13', 2);
+INSERT INTO `sys_user_oper_log` VALUES (97, '系统模块', 2, '修改功能菜单数据,code为10002', 'adminjyd100', 1, '192.168.137.1', '752289', '10.130.1.223', '{\"sysRightName\":[\"系统用户\"],\"REQUEST_QUERY_STR\":[\"sysRightCode\\u003d10002\\u0026hiddenCode\\u003d10002\\u0026sysRightName\\u003d%E7%B3%BB%E7%BB%9F%E7%94%A8%E6%88%B7\\u0026sysRightUrl\\u003djsp%2Fsys%2Fsys%2Fusersmanage.jsp\\u0026icon\\u003d2\\u0026orderCode\\u003d10002\\u0026enable\\u003d1\\u0026sno\\u003d10002\"],\"sysRightUrl\":[\"jsp/sys/sys/usersmanage.jsp\"],\"hiddenCode\":[\"10002\"],\"sno\":[\"10002\"],\"enable\":[\"1\"],\"icon\":[\"2\"],\"orderCode\":[\"10002\"],\"REQUEST_PARAM_MAP\":[{\"sysRightCode\":[\"10002\"],\"hiddenCode\":[\"10002\"],\"sysRightName\":[\"系统用户\"],\"sysRightUrl\":[\"jsp/sys/sys/usersmanage.jsp\"],\"icon\":[\"2\"],\"orderCode\":[\"10002\"],\"enable\":[\"1\"],\"sno\":[\"10002\"]}],\"sysRightCode\":[\"10002\"]}', '2023-06-20 16:06:33', 2);
+INSERT INTO `sys_user_oper_log` VALUES (98, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '568811', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d893af1d7e136d27e8941f40fd77a765a\"],\"password\":[\"X1gKoKgT+QXAvk7lheoVVXQov9zMypEQgr8Mgw5NA47fFACsXk0agp9oaiZ6ZyrP74JTFjYgYb9j11Une7JD/A\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"893af1d7e136d27e8941f40fd77a765a\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"893af1d7e136d27e8941f40fd77a765a\"],\"username\":[\"adminjyd100\"],\"password\":[\"X1gKoKgT+QXAvk7lheoVVXQov9zMypEQgr8Mgw5NA47fFACsXk0agp9oaiZ6ZyrP74JTFjYgYb9j11Une7JD/A\\u003d\\u003d\"],\"valcode\":[\"ulkq\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"ulkq\"],\"username\":[\"adminjyd100\"]}', '2023-07-03 17:03:27', 2);
+INSERT INTO `sys_user_oper_log` VALUES (99, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '419355', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d5736072c08757220b6701e2c8c6c2105\"],\"password\":[\"iYuh9P4DmCfYz6bSfXSqZWq43lo2Y6tVV/DLMn+HUu6Jz8XAlH7h8DXPO0A6B5an8nt3sVRALNoOU8WW3LjfWw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"5736072c08757220b6701e2c8c6c2105\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"5736072c08757220b6701e2c8c6c2105\"],\"username\":[\"adminjyd100\"],\"password\":[\"iYuh9P4DmCfYz6bSfXSqZWq43lo2Y6tVV/DLMn+HUu6Jz8XAlH7h8DXPO0A6B5an8nt3sVRALNoOU8WW3LjfWw\\u003d\\u003d\"],\"valcode\":[\"7cv7\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"7cv7\"],\"username\":[\"adminjyd100\"]}', '2023-08-04 17:54:24', 2);
+INSERT INTO `sys_user_oper_log` VALUES (100, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '485005', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d3a480eca308c3a8698203c00e713e79a\"],\"password\":[\"YHGnfH8XEDagzjnz1fm0wRUjDa5vKLbtBeUJcG53V6Ehiq3dsTGUsq8oxNwZYP3nom33ZxxuaiKLIsmJKE4EOA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"3a480eca308c3a8698203c00e713e79a\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"3a480eca308c3a8698203c00e713e79a\"],\"username\":[\"adminjyd100\"],\"password\":[\"YHGnfH8XEDagzjnz1fm0wRUjDa5vKLbtBeUJcG53V6Ehiq3dsTGUsq8oxNwZYP3nom33ZxxuaiKLIsmJKE4EOA\\u003d\\u003d\"],\"valcode\":[\"AFW9\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"AFW9\"],\"username\":[\"adminjyd100\"]}', '2023-08-04 17:54:37', 2);
+INSERT INTO `sys_user_oper_log` VALUES (101, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '039484', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dd1d1c792cc93356e75145fc005f2d5f8\"],\"password\":[\"XyaN5378xTXP3GA24gQbEn57wASSpafFbaCn2aaVNGPCMnViP6VJSywgpP8PI3tE5Zt4uL/38AuJTBP/aYrKxQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"d1d1c792cc93356e75145fc005f2d5f8\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"d1d1c792cc93356e75145fc005f2d5f8\"],\"username\":[\"adminjyd100\"],\"password\":[\"XyaN5378xTXP3GA24gQbEn57wASSpafFbaCn2aaVNGPCMnViP6VJSywgpP8PI3tE5Zt4uL/38AuJTBP/aYrKxQ\\u003d\\u003d\"],\"valcode\":[\"72g5\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"72g5\"],\"username\":[\"adminjyd100\"]}', '2023-08-04 18:09:53', 2);
+INSERT INTO `sys_user_oper_log` VALUES (102, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '216977', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d0d8bac0bccea26a90e623c985218a378\"],\"password\":[\"QTbgBQMwUFhw7jaAilpuBJJhC80aLHVw34ktyY/eJD3F6c/QzK7pKCNrPpzAFh5wpT2TnRT8154ls6QtaNnwxQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"0d8bac0bccea26a90e623c985218a378\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"0d8bac0bccea26a90e623c985218a378\"],\"username\":[\"adminjyd100\"],\"password\":[\"QTbgBQMwUFhw7jaAilpuBJJhC80aLHVw34ktyY/eJD3F6c/QzK7pKCNrPpzAFh5wpT2TnRT8154ls6QtaNnwxQ\\u003d\\u003d\"],\"valcode\":[\"MB75\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"MB75\"],\"username\":[\"adminjyd100\"]}', '2023-08-04 18:11:46', 2);
+INSERT INTO `sys_user_oper_log` VALUES (103, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '772017', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dd1a35cf5806cf22e6adbc65750f4fbe9\"],\"password\":[\"ZTxZbkLcZb6asVbxYlKuZyzkWR7FJfA4bDo3/CXR0+V7ayHMorjhGxhi9zbDlCXO+uNVdUWyr5G1Gm6hmK3sbA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"d1a35cf5806cf22e6adbc65750f4fbe9\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"d1a35cf5806cf22e6adbc65750f4fbe9\"],\"username\":[\"adminjyd100\"],\"password\":[\"ZTxZbkLcZb6asVbxYlKuZyzkWR7FJfA4bDo3/CXR0+V7ayHMorjhGxhi9zbDlCXO+uNVdUWyr5G1Gm6hmK3sbA\\u003d\\u003d\"],\"valcode\":[\"AH9L\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"AH9L\"],\"username\":[\"adminjyd100\"]}', '2023-08-04 18:20:32', 2);
+INSERT INTO `sys_user_oper_log` VALUES (104, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '783781', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d477262791d03277ea45b4a724e5c2a33\"],\"password\":[\"ijxoroSIp7EwGkMJB8Cq6JC7W1h8XrvF1+d8ZR4fd8nmTN0i10dumpapv3jD2VI7Tsd9p015KQ+F3q9UyjBLBw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"477262791d03277ea45b4a724e5c2a33\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"477262791d03277ea45b4a724e5c2a33\"],\"username\":[\"adminjyd100\"],\"password\":[\"ijxoroSIp7EwGkMJB8Cq6JC7W1h8XrvF1+d8ZR4fd8nmTN0i10dumpapv3jD2VI7Tsd9p015KQ+F3q9UyjBLBw\\u003d\\u003d\"],\"valcode\":[\"FJJM\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"FJJM\"],\"username\":[\"adminjyd100\"]}', '2023-08-04 18:20:51', 2);
+INSERT INTO `sys_user_oper_log` VALUES (105, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '366830', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003de38f592b850218c865adfe0fd5c4fd4a\"],\"password\":[\"GNRVrFjRV3hp0c7XfujmBcKEX7C7kKGdmD4fR0xg1hR+UYFc6aRuj3KAQjFVutDjBUkE0zwKfy9c/qpc+AmPHA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"e38f592b850218c865adfe0fd5c4fd4a\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"e38f592b850218c865adfe0fd5c4fd4a\"],\"username\":[\"adminjyd100\"],\"password\":[\"GNRVrFjRV3hp0c7XfujmBcKEX7C7kKGdmD4fR0xg1hR+UYFc6aRuj3KAQjFVutDjBUkE0zwKfy9c/qpc+AmPHA\\u003d\\u003d\"],\"valcode\":[\"FGRA\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"FGRA\"],\"username\":[\"adminjyd100\"]}', '2023-08-04 18:23:35', 2);
+INSERT INTO `sys_user_oper_log` VALUES (106, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.137.1', '151709', '10.130.1.223', '{\"REQUEST_QUERY_STR\":[\"sign\\u003df7768ec438bfa6bf238641fd1a8c1f59\"],\"password\":[\"D/VdVrsgs7Kc61y0L+0PZsX61ydp9L/MgSjXO1NqNClxGuIbhBNCdQb9489q5b9FtDC3dkoJ39I7t7hpz5Fqtg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"f7768ec438bfa6bf238641fd1a8c1f59\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"f7768ec438bfa6bf238641fd1a8c1f59\"],\"username\":[\"adminjyd100\"],\"password\":[\"D/VdVrsgs7Kc61y0L+0PZsX61ydp9L/MgSjXO1NqNClxGuIbhBNCdQb9489q5b9FtDC3dkoJ39I7t7hpz5Fqtg\\u003d\\u003d\"],\"valcode\":[\"8cwe\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"8cwe\"],\"username\":[\"adminjyd100\"]}', '2023-08-04 18:25:16', 2);
+INSERT INTO `sys_user_oper_log` VALUES (107, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.22.80.1', '577539', '192.168.2.150', '{\"REQUEST_QUERY_STR\":[\"sign\\u003df11e101dd43f3e9ecbcdf1ea7b138388\"],\"password\":[\"J94QbyZ9YNbg5UwqHxxBn7R74wmWpFE/zSOykSvRJM8zW2Y8Uui2Gy2c07MsSdPwS3mcj2QHEX9c7G+8XvuzTg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"f11e101dd43f3e9ecbcdf1ea7b138388\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"f11e101dd43f3e9ecbcdf1ea7b138388\"],\"username\":[\"adminjyd100\"],\"password\":[\"J94QbyZ9YNbg5UwqHxxBn7R74wmWpFE/zSOykSvRJM8zW2Y8Uui2Gy2c07MsSdPwS3mcj2QHEX9c7G+8XvuzTg\\u003d\\u003d\"],\"valcode\":[\"WYA4\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"WYA4\"],\"username\":[\"adminjyd100\"]}', '2024-01-10 15:21:19', 2);
+INSERT INTO `sys_user_oper_log` VALUES (108, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '113.109.27.84', '839988', '172.18.0.1', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dcf14d892415ae311275fb175908eff79\"],\"password\":[\"J9R9asM15zwM+iEKaj4P5+GwU6wMNk4yBqC0INV5Q21ghxqWeTlogmeXjWODiIext4CeFZdu45X+nR9suauMgg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"cf14d892415ae311275fb175908eff79\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"cf14d892415ae311275fb175908eff79\"],\"username\":[\"adminjyd100\"],\"password\":[\"J9R9asM15zwM+iEKaj4P5+GwU6wMNk4yBqC0INV5Q21ghxqWeTlogmeXjWODiIext4CeFZdu45X+nR9suauMgg\\u003d\\u003d\"],\"valcode\":[\"vjvU\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"vjvU\"],\"username\":[\"adminjyd100\"]}', '2024-01-11 09:43:35', 2);
+INSERT INTO `sys_user_oper_log` VALUES (109, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '113.109.27.84', '046309', '172.18.0.1', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dd32818bba97a548ee0a46fb129544c47\"],\"password\":[\"TuqZeEAZyd47qomo76EMzUy2DCfigeTnlgWKPA/50K2pPGfNntLvi5oYZm3ESe3SGZMwgVs8K4yR3RwQd9THbQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"d32818bba97a548ee0a46fb129544c47\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"d32818bba97a548ee0a46fb129544c47\"],\"username\":[\"adminjyd100\"],\"password\":[\"TuqZeEAZyd47qomo76EMzUy2DCfigeTnlgWKPA/50K2pPGfNntLvi5oYZm3ESe3SGZMwgVs8K4yR3RwQd9THbQ\\u003d\\u003d\"],\"valcode\":[\"nr6s\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"nr6s\"],\"username\":[\"adminjyd100\"]}', '2024-01-11 09:59:52', 2);
+INSERT INTO `sys_user_oper_log` VALUES (110, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.23.128.1', '265544', '192.168.2.129', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d358129c0dd38652d74dd91fe9313a180\"],\"password\":[\"MU+4jcJrk7zlPNfmGtxpscp4d6Nk06z2NvNy6zSRUN/DKK1U61pEV3Z2AE7bAMKwmNDcQzgfTT0t8LXcg+rAUQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"358129c0dd38652d74dd91fe9313a180\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"358129c0dd38652d74dd91fe9313a180\"],\"username\":[\"adminjyd100\"],\"password\":[\"MU+4jcJrk7zlPNfmGtxpscp4d6Nk06z2NvNy6zSRUN/DKK1U61pEV3Z2AE7bAMKwmNDcQzgfTT0t8LXcg+rAUQ\\u003d\\u003d\"],\"valcode\":[\"xc58\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"xc58\"],\"username\":[\"adminjyd100\"]}', '2024-01-11 11:39:25', 2);
+INSERT INTO `sys_user_oper_log` VALUES (111, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '113.109.27.84', '776680', '172.18.0.1', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d6f9b2f802a04770b3ac81ef9318c2f7f\"],\"password\":[\"F1H9hxlAr7A0txq9BbDIbVgMOTk8KiycROoogG56fZfupx1PuWIAcbWRQZuhEakhsx0UUQTUo20+JREH0OsbAg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"6f9b2f802a04770b3ac81ef9318c2f7f\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"6f9b2f802a04770b3ac81ef9318c2f7f\"],\"username\":[\"adminjyd100\"],\"password\":[\"F1H9hxlAr7A0txq9BbDIbVgMOTk8KiycROoogG56fZfupx1PuWIAcbWRQZuhEakhsx0UUQTUo20+JREH0OsbAg\\u003d\\u003d\"],\"valcode\":[\"eh5m\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"eh5m\"],\"username\":[\"adminjyd100\"]}', '2024-01-11 11:40:37', 2);
+INSERT INTO `sys_user_oper_log` VALUES (112, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.23.128.1', '912469', '192.168.2.129', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d3b214b482a071b7f458cc5b2ce7e4059\"],\"password\":[\"FWFBUae5F4kbiZESDzqVie2OMCm5AaVCHuAuippC33AmwxORzfrfxS5RoGvo9Hhv4Eh66hid3Ne5S8qSAKei2A\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"3b214b482a071b7f458cc5b2ce7e4059\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"3b214b482a071b7f458cc5b2ce7e4059\"],\"username\":[\"adminjyd100\"],\"password\":[\"FWFBUae5F4kbiZESDzqVie2OMCm5AaVCHuAuippC33AmwxORzfrfxS5RoGvo9Hhv4Eh66hid3Ne5S8qSAKei2A\\u003d\\u003d\"],\"valcode\":[\"FFTG\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"FFTG\"],\"username\":[\"adminjyd100\"]}', '2024-01-11 11:42:34', 2);
+INSERT INTO `sys_user_oper_log` VALUES (113, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '113.109.27.84', '970904', '172.18.0.1', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d4ee1f987d8ac951b90dcc07235cb71c0\"],\"password\":[\"eVrY4oN2JJLiB3kPzmRL4quMD9yYxigsJY9SYyRgtfeBrm6VoY2WfIk87d5orSbifJg4m9HmddGSlBTDDjJceA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"4ee1f987d8ac951b90dcc07235cb71c0\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"4ee1f987d8ac951b90dcc07235cb71c0\"],\"username\":[\"adminjyd100\"],\"password\":[\"eVrY4oN2JJLiB3kPzmRL4quMD9yYxigsJY9SYyRgtfeBrm6VoY2WfIk87d5orSbifJg4m9HmddGSlBTDDjJceA\\u003d\\u003d\"],\"valcode\":[\"hhs3\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"hhs3\"],\"username\":[\"adminjyd100\"]}', '2024-01-11 13:59:04', 2);
+INSERT INTO `sys_user_oper_log` VALUES (114, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '58.153.172.122', '010167', '172.18.0.1', '{\"REQUEST_QUERY_STR\":[\"sign\\u003da9b1cb5e6cb75b0f67b0ddd4a93bf09b\"],\"password\":[\"MX4geI2NFXov0ny7P1L6Q2b28XbUEorDpCkx1jzgRDNXgz2tdBCLcNeC8A/4F+Hx4OA3XDcclWr7V3TgmnX/lQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"a9b1cb5e6cb75b0f67b0ddd4a93bf09b\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"a9b1cb5e6cb75b0f67b0ddd4a93bf09b\"],\"username\":[\"adminjyd100\"],\"password\":[\"MX4geI2NFXov0ny7P1L6Q2b28XbUEorDpCkx1jzgRDNXgz2tdBCLcNeC8A/4F+Hx4OA3XDcclWr7V3TgmnX/lQ\\u003d\\u003d\"],\"valcode\":[\"685B\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"685B\"],\"username\":[\"adminjyd100\"]}', '2024-01-11 17:37:22', 2);
+INSERT INTO `sys_user_oper_log` VALUES (115, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '58.153.172.122', '433751', '172.18.0.1', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d99f17784c7252848011959628e474747\"],\"password\":[\"Qm2FCrDFGYZiTOravThg8ybigIUvPzZF0wKldrlfgmXIVXgs/suSRyu/JmCLZo97niF1sahKwf9HlRiMTHbV8g\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"99f17784c7252848011959628e474747\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"99f17784c7252848011959628e474747\"],\"username\":[\"adminjyd100\"],\"password\":[\"Qm2FCrDFGYZiTOravThg8ybigIUvPzZF0wKldrlfgmXIVXgs/suSRyu/JmCLZo97niF1sahKwf9HlRiMTHbV8g\\u003d\\u003d\"],\"valcode\":[\"AG9A\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"AG9A\"],\"username\":[\"adminjyd100\"]}', '2024-01-11 17:48:03', 2);
+INSERT INTO `sys_user_oper_log` VALUES (116, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.17.96.1', '414450', '192.168.2.129', '{\"REQUEST_QUERY_STR\":[\"sign\\u003da3b63e4a3f0072add8749ef6eb04bb0b\"],\"password\":[\"hHmjVEuZcvc8czfKRMUQUKDKMEOLCz4dwbHrkDk4bwaYJp88ABENtQl7oPeeQ9zjvxrmY3qIaiiutJaTF5bcHw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"a3b63e4a3f0072add8749ef6eb04bb0b\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"a3b63e4a3f0072add8749ef6eb04bb0b\"],\"username\":[\"adminjyd100\"],\"password\":[\"hHmjVEuZcvc8czfKRMUQUKDKMEOLCz4dwbHrkDk4bwaYJp88ABENtQl7oPeeQ9zjvxrmY3qIaiiutJaTF5bcHw\\u003d\\u003d\"],\"valcode\":[\"DGH8\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"DGH8\"],\"username\":[\"adminjyd100\"]}', '2024-01-12 17:30:04', 2);
+INSERT INTO `sys_user_oper_log` VALUES (117, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.192.1', '234879', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d532535416149ab65ec79c57f684c641e\"],\"password\":[\"FTB2SHXVsNCokVeC5T1hPWwJVXRxJnQSK0WZGRVdgJ53AJijK8Znp/PN5h4fnOO+GNkDYBjRKBFu1tUdJyh3Cw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"532535416149ab65ec79c57f684c641e\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"532535416149ab65ec79c57f684c641e\"],\"username\":[\"adminjyd100\"],\"password\":[\"FTB2SHXVsNCokVeC5T1hPWwJVXRxJnQSK0WZGRVdgJ53AJijK8Znp/PN5h4fnOO+GNkDYBjRKBFu1tUdJyh3Cw\\u003d\\u003d\"],\"valcode\":[\"uuqp\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"uuqp\"],\"username\":[\"adminjyd100\"]}', '2024-01-22 18:20:44', 2);
+INSERT INTO `sys_user_oper_log` VALUES (118, '系统模块', 2, '修改功能菜单数据,code为10001', 'adminjyd100', 1, '192.168.192.1', '540454', '192.168.2.165', '{\"sysRightName\":[\"功能菜单\"],\"REQUEST_QUERY_STR\":[\"sysRightCode\\u003d10001\\u0026hiddenCode\\u003d10001\\u0026sysRightName\\u003d%E5%8A%9F%E8%83%BD%E8%8F%9C%E5%8D%95\\u0026sysRightUrl\\u003dsys%2Fsys_SysRight_ListData.action\\u0026icon\\u003d3\\u0026orderCode\\u003d10001\\u0026enable\\u003d1\\u0026sno\\u003d10001\"],\"sysRightUrl\":[\"sys/sys_SysRight_ListData.action\"],\"hiddenCode\":[\"10001\"],\"sno\":[\"10001\"],\"enable\":[\"1\"],\"icon\":[\"3\"],\"orderCode\":[\"10001\"],\"REQUEST_PARAM_MAP\":[{\"sysRightCode\":[\"10001\"],\"hiddenCode\":[\"10001\"],\"sysRightName\":[\"功能菜单\"],\"sysRightUrl\":[\"sys/sys_SysRight_ListData.action\"],\"icon\":[\"3\"],\"orderCode\":[\"10001\"],\"enable\":[\"1\"],\"sno\":[\"10001\"]}],\"sysRightCode\":[\"10001\"]}', '2024-01-22 18:20:51', 2);
+INSERT INTO `sys_user_oper_log` VALUES (119, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.208.1', '379671', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003daddfaa24546b9eace28d12d6b54a34cd\"],\"password\":[\"gHbsWMV51Y/Egm1kDXRN/yJqucavXZau6er9DLK2ybTj0ywMxfDrsvatryYVeADkoE92C9xLp6AqfZWEdzplFw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"addfaa24546b9eace28d12d6b54a34cd\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"addfaa24546b9eace28d12d6b54a34cd\"],\"username\":[\"adminjyd100\"],\"password\":[\"gHbsWMV51Y/Egm1kDXRN/yJqucavXZau6er9DLK2ybTj0ywMxfDrsvatryYVeADkoE92C9xLp6AqfZWEdzplFw\\u003d\\u003d\"],\"valcode\":[\"5NFK\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"5NFK\"],\"username\":[\"adminjyd100\"]}', '2024-01-23 10:07:07', 2);
+INSERT INTO `sys_user_oper_log` VALUES (120, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.208.1', '332634', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d8777b93b27dfc5f8ebaba8c4657d547c\"],\"password\":[\"HXqIoGG3ZJNiePrg3wYT05nfT3wpyO9BbwQokWqu26LmUoFwkMSOkexjpM5TRsrwy7EHKyFb1edyNEUlkSWtfA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"8777b93b27dfc5f8ebaba8c4657d547c\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"8777b93b27dfc5f8ebaba8c4657d547c\"],\"username\":[\"adminjyd100\"],\"password\":[\"HXqIoGG3ZJNiePrg3wYT05nfT3wpyO9BbwQokWqu26LmUoFwkMSOkexjpM5TRsrwy7EHKyFb1edyNEUlkSWtfA\\u003d\\u003d\"],\"valcode\":[\"xfxv\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"xfxv\"],\"username\":[\"adminjyd100\"]}', '2024-01-23 10:09:42', 2);
+INSERT INTO `sys_user_oper_log` VALUES (121, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.208.1', '568386', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003db84b9cc7a322b3df9074679df8a3beef\"],\"password\":[\"GRhE07BC/wGt0u8LkbUKIxszxXkIF87xPC64zGA72ttctzwLil/Mp3hawenGfZIWAuDqEH1HPjAjp1UknkTYdg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"b84b9cc7a322b3df9074679df8a3beef\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"b84b9cc7a322b3df9074679df8a3beef\"],\"username\":[\"adminjyd100\"],\"password\":[\"GRhE07BC/wGt0u8LkbUKIxszxXkIF87xPC64zGA72ttctzwLil/Mp3hawenGfZIWAuDqEH1HPjAjp1UknkTYdg\\u003d\\u003d\"],\"valcode\":[\"getr\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"getr\"],\"username\":[\"adminjyd100\"]}', '2024-01-23 10:11:47', 2);
+INSERT INTO `sys_user_oper_log` VALUES (122, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.208.1', '672061', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003de985102fca081df3d6f9ea13b9c6b99c\"],\"password\":[\"TnQhUDQDkHzWnygHgtuwNse5tL6NMS1alIkCi8e4btNKUgwLcy5OZChKf+NGEB0oJu6IgO2NKTMCPO1A+O+iuw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"e985102fca081df3d6f9ea13b9c6b99c\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"e985102fca081df3d6f9ea13b9c6b99c\"],\"username\":[\"adminjyd100\"],\"password\":[\"TnQhUDQDkHzWnygHgtuwNse5tL6NMS1alIkCi8e4btNKUgwLcy5OZChKf+NGEB0oJu6IgO2NKTMCPO1A+O+iuw\\u003d\\u003d\"],\"valcode\":[\"drp3\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"drp3\"],\"username\":[\"adminjyd100\"]}', '2024-01-23 10:35:27', 2);
+INSERT INTO `sys_user_oper_log` VALUES (123, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.208.1', '547759', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d419a847a3c0912c8c0443b255b740d91\"],\"password\":[\"ApulIgbUDU6JmMKRpA5BnpgqV+VkAavDm6xf+bHisradLcQXiC7S8zGObqgFmgjKjMPlEHNch3kVBYzioE300Q\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"419a847a3c0912c8c0443b255b740d91\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"419a847a3c0912c8c0443b255b740d91\"],\"username\":[\"adminjyd100\"],\"password\":[\"ApulIgbUDU6JmMKRpA5BnpgqV+VkAavDm6xf+bHisradLcQXiC7S8zGObqgFmgjKjMPlEHNch3kVBYzioE300Q\\u003d\\u003d\"],\"valcode\":[\"32T9\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"32T9\"],\"username\":[\"adminjyd100\"]}', '2024-01-23 10:58:50', 2);
+INSERT INTO `sys_user_oper_log` VALUES (124, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.208.1', '384799', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d2bafab2d441c4e6c4a16462490ebb63e\"],\"password\":[\"JFRP3v7RoSbjwJeXmekQh4sB7XGskDCKnHgJJ10DSh2yrKPNc2YO+oe/AdYfG4UkwltcX0D05UEKv+t4WV9PLg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"2bafab2d441c4e6c4a16462490ebb63e\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"2bafab2d441c4e6c4a16462490ebb63e\"],\"username\":[\"adminjyd100\"],\"password\":[\"JFRP3v7RoSbjwJeXmekQh4sB7XGskDCKnHgJJ10DSh2yrKPNc2YO+oe/AdYfG4UkwltcX0D05UEKv+t4WV9PLg\\u003d\\u003d\"],\"valcode\":[\"5EWK\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"5EWK\"],\"username\":[\"adminjyd100\"]}', '2024-01-23 11:42:24', 2);
+INSERT INTO `sys_user_oper_log` VALUES (125, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.208.1', '826760', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d8977806d4b555d982b41b759f9c1bfb6\"],\"password\":[\"D5L+E1oK5lZ4Bo4blvhoavx6b1vPXCDub6QyadR07zXj54Cn3mJWEYt1FrCNW+xSHXLVqo58uEnkpNTf4uunWw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"8977806d4b555d982b41b759f9c1bfb6\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"8977806d4b555d982b41b759f9c1bfb6\"],\"username\":[\"adminjyd100\"],\"password\":[\"D5L+E1oK5lZ4Bo4blvhoavx6b1vPXCDub6QyadR07zXj54Cn3mJWEYt1FrCNW+xSHXLVqo58uEnkpNTf4uunWw\\u003d\\u003d\"],\"valcode\":[\"u2pl\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"u2pl\"],\"username\":[\"adminjyd100\"]}', '2024-01-23 12:35:50', 2);
+INSERT INTO `sys_user_oper_log` VALUES (126, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.165', '542519', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d3a2d92add214d88406e2de057b0fcb18\"],\"password\":[\"b/Hnf5kayLxXDz7Gf9oodmyqv6PQZ+A69kthqPERqHDB/aEpueH0Wb4C9ilYlX6vnwI0IGHs1xrNrLnrt0Z72Q\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"3a2d92add214d88406e2de057b0fcb18\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"3a2d92add214d88406e2de057b0fcb18\"],\"username\":[\"adminjyd100\"],\"password\":[\"b/Hnf5kayLxXDz7Gf9oodmyqv6PQZ+A69kthqPERqHDB/aEpueH0Wb4C9ilYlX6vnwI0IGHs1xrNrLnrt0Z72Q\\u003d\\u003d\"],\"valcode\":[\"su87\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"su87\"],\"username\":[\"adminjyd100\"]}', '2024-01-23 19:19:49', 2);
+INSERT INTO `sys_user_oper_log` VALUES (127, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.165', '271255', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d7596a1f664f07e8009a687667ab840b8\"],\"password\":[\"R9du8PvISaVFp+d6M95fhmXAFfgkku8DyxKPhF6vaEa4uZnkUEENulV85Y0ZtHfdB4JkKg0A5m4VDFMUBrCS9w\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"7596a1f664f07e8009a687667ab840b8\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"7596a1f664f07e8009a687667ab840b8\"],\"username\":[\"adminjyd100\"],\"password\":[\"R9du8PvISaVFp+d6M95fhmXAFfgkku8DyxKPhF6vaEa4uZnkUEENulV85Y0ZtHfdB4JkKg0A5m4VDFMUBrCS9w\\u003d\\u003d\"],\"valcode\":[\"xy9m\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"xy9m\"],\"username\":[\"adminjyd100\"]}', '2024-01-23 19:23:23', 2);
+INSERT INTO `sys_user_oper_log` VALUES (128, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.17.96.1', '290353', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d46236bc2a1796089c7de6f9ec12c338a\"],\"password\":[\"DS4O5tMCT5lZr3KiYNWP4e2BHZ9PhQolXiFoGv7PvDTQ+5FJLYT04pusFGGzr4hhKo2YVSkQ69hvXmMh22pXpA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"46236bc2a1796089c7de6f9ec12c338a\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"46236bc2a1796089c7de6f9ec12c338a\"],\"username\":[\"adminjyd100\"],\"password\":[\"DS4O5tMCT5lZr3KiYNWP4e2BHZ9PhQolXiFoGv7PvDTQ+5FJLYT04pusFGGzr4hhKo2YVSkQ69hvXmMh22pXpA\\u003d\\u003d\"],\"valcode\":[\"9y3d\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"9y3d\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 09:28:17', 2);
+INSERT INTO `sys_user_oper_log` VALUES (129, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.17.96.1', '249696', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d2f552aded9b3aaa83f05144ca46565da\"],\"password\":[\"eqcTJykUqy6+COnj3gvNDaxSXTRXkAJp53vCSduIgHT4BhzGdXoCKJ8a5C99B1Iz6UBxykTPaw8VUDofC2ug2g\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"2f552aded9b3aaa83f05144ca46565da\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"2f552aded9b3aaa83f05144ca46565da\"],\"username\":[\"adminjyd100\"],\"password\":[\"eqcTJykUqy6+COnj3gvNDaxSXTRXkAJp53vCSduIgHT4BhzGdXoCKJ8a5C99B1Iz6UBxykTPaw8VUDofC2ug2g\\u003d\\u003d\"],\"valcode\":[\"GQRB\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"GQRB\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 10:55:39', 2);
+INSERT INTO `sys_user_oper_log` VALUES (130, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.17.96.1', '264155', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d069a083e9d9f5cee072421011ea87b5a\"],\"password\":[\"dWCjDV//OoXTfzbe51teuN9mxsC9FDhyGuBTn/+gFtc7cWk6N7T05uNen7iUi9iT4mN7yYQ0Lp9A4GA7Ukzlyw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"069a083e9d9f5cee072421011ea87b5a\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"069a083e9d9f5cee072421011ea87b5a\"],\"username\":[\"adminjyd100\"],\"password\":[\"dWCjDV//OoXTfzbe51teuN9mxsC9FDhyGuBTn/+gFtc7cWk6N7T05uNen7iUi9iT4mN7yYQ0Lp9A4GA7Ukzlyw\\u003d\\u003d\"],\"valcode\":[\"AE7x\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"AE7x\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 11:22:44', 2);
+INSERT INTO `sys_user_oper_log` VALUES (131, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.17.96.1', '838766', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d8b91ed8014ad1a1ac7fc466a9e560fc1\"],\"password\":[\"baJvslzP9jtd9JM+5q6yhcDdND63CNNiNFX8ufzONHfh1nvPP8ZeHhLdlkgAYAoOhFuH7ROwQyuCSda7aWwxCg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"8b91ed8014ad1a1ac7fc466a9e560fc1\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"8b91ed8014ad1a1ac7fc466a9e560fc1\"],\"username\":[\"adminjyd100\"],\"password\":[\"baJvslzP9jtd9JM+5q6yhcDdND63CNNiNFX8ufzONHfh1nvPP8ZeHhLdlkgAYAoOhFuH7ROwQyuCSda7aWwxCg\\u003d\\u003d\"],\"valcode\":[\"x6dq\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"x6dq\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 11:25:45', 2);
+INSERT INTO `sys_user_oper_log` VALUES (132, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.17.96.1', '200720', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dc2e1e097312684e256956f1731c2a0f2\"],\"password\":[\"ZdNaHGr4HJLeVeCMLC8D9RPoZNjTcGijxo/5HFODajPytjjuscuqoHh5GbwnjclxCtlkLBdYNysvNB1ttbaiUg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"c2e1e097312684e256956f1731c2a0f2\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"c2e1e097312684e256956f1731c2a0f2\"],\"username\":[\"adminjyd100\"],\"password\":[\"ZdNaHGr4HJLeVeCMLC8D9RPoZNjTcGijxo/5HFODajPytjjuscuqoHh5GbwnjclxCtlkLBdYNysvNB1ttbaiUg\\u003d\\u003d\"],\"valcode\":[\"m3TK\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"m3TK\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 11:54:26', 2);
+INSERT INTO `sys_user_oper_log` VALUES (133, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.17.96.1', '689378', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d0dda4a05ce2a662025a12125d9a0f311\"],\"password\":[\"JIKcMRgzX8GOenxN+l+9ucqw9uQciNLnLOAAZyoCgEG0iMT0iiGrA1fzJ0TiSvgCQ/JpOENdY3WVarS4l+Khgg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"0dda4a05ce2a662025a12125d9a0f311\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"0dda4a05ce2a662025a12125d9a0f311\"],\"username\":[\"adminjyd100\"],\"password\":[\"JIKcMRgzX8GOenxN+l+9ucqw9uQciNLnLOAAZyoCgEG0iMT0iiGrA1fzJ0TiSvgCQ/JpOENdY3WVarS4l+Khgg\\u003d\\u003d\"],\"valcode\":[\"qs8G\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"qs8G\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 13:26:25', 2);
+INSERT INTO `sys_user_oper_log` VALUES (134, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.17.96.1', '446379', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d352e2174dd9862d62ee91b6661663319\"],\"password\":[\"cTjwNkAy2j5PoOGb7fcuE06k5D5TUJMRxcsHZPjOUWayAQVktgkVOFjqmELTp1Ie6oHVXEss6kRegyUeNH4bdg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"352e2174dd9862d62ee91b6661663319\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"352e2174dd9862d62ee91b6661663319\"],\"username\":[\"adminjyd100\"],\"password\":[\"cTjwNkAy2j5PoOGb7fcuE06k5D5TUJMRxcsHZPjOUWayAQVktgkVOFjqmELTp1Ie6oHVXEss6kRegyUeNH4bdg\\u003d\\u003d\"],\"valcode\":[\"2ADE\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"2ADE\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 13:42:55', 2);
+INSERT INTO `sys_user_oper_log` VALUES (135, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.17.96.1', '969054', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d8621e4ae3f2f33c7cdad2ceee50c9b46\"],\"password\":[\"MkMoJ3ForEJn2NwHveWfJpvWiFBEXgUYkV447DWM6fEqeJD8SrYplFrBtNQzOY4LD8CEXjaZIq577D25cy4LLQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"8621e4ae3f2f33c7cdad2ceee50c9b46\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"8621e4ae3f2f33c7cdad2ceee50c9b46\"],\"username\":[\"adminjyd100\"],\"password\":[\"MkMoJ3ForEJn2NwHveWfJpvWiFBEXgUYkV447DWM6fEqeJD8SrYplFrBtNQzOY4LD8CEXjaZIq577D25cy4LLQ\\u003d\\u003d\"],\"valcode\":[\"vu7s\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"vu7s\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 15:06:46', 2);
+INSERT INTO `sys_user_oper_log` VALUES (136, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.21.144.1', '689341', '192.168.2.165', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d607b4810cef827d2d43792b42677b390\"],\"password\":[\"LUGjHgNEG1GZMuoWpBL7x3oIP33p5p8Mw1062Kon95h2YJlE/Wf9TMK7oIRVR+q5W7qM6vSU+rIWPTNp6O7A1A\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"607b4810cef827d2d43792b42677b390\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"607b4810cef827d2d43792b42677b390\"],\"username\":[\"adminjyd100\"],\"password\":[\"LUGjHgNEG1GZMuoWpBL7x3oIP33p5p8Mw1062Kon95h2YJlE/Wf9TMK7oIRVR+q5W7qM6vSU+rIWPTNp6O7A1A\\u003d\\u003d\"],\"valcode\":[\"93rt\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"93rt\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 15:53:23', 2);
+INSERT INTO `sys_user_oper_log` VALUES (137, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '934992', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d5f627a6210a22ce458fa47968bbad2c2\"],\"password\":[\"X6esZwXQyUnepsXNS8cQiIEyFvBcaijaON7Q3YYcezzRyz6jTYHd6ZhQFHjWsMAKWbYr0//RdLi7RNVuApu6hg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"5f627a6210a22ce458fa47968bbad2c2\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"5f627a6210a22ce458fa47968bbad2c2\"],\"username\":[\"adminjyd100\"],\"password\":[\"X6esZwXQyUnepsXNS8cQiIEyFvBcaijaON7Q3YYcezzRyz6jTYHd6ZhQFHjWsMAKWbYr0//RdLi7RNVuApu6hg\\u003d\\u003d\"],\"valcode\":[\"c7p8\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"c7p8\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 16:49:36', 2);
+INSERT INTO `sys_user_oper_log` VALUES (138, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '627429', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d61bc886eb0f4d0bb587697cd4f91bcf6\"],\"password\":[\"iHcWbDaKS7Z9ZnWUL9Rt7SAEt0HkrmjA/hGoyE1BSDqVKOO2FU1dmP2mTt1mB1YHeiLOaAHWEMfCNAlpW221zg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"61bc886eb0f4d0bb587697cd4f91bcf6\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"61bc886eb0f4d0bb587697cd4f91bcf6\"],\"username\":[\"adminjyd100\"],\"password\":[\"iHcWbDaKS7Z9ZnWUL9Rt7SAEt0HkrmjA/hGoyE1BSDqVKOO2FU1dmP2mTt1mB1YHeiLOaAHWEMfCNAlpW221zg\\u003d\\u003d\"],\"valcode\":[\"fdg5\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"fdg5\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 16:50:17', 2);
+INSERT INTO `sys_user_oper_log` VALUES (139, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '384365', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d0bd42da4a03d37bdf843cb4c5be8f005\"],\"password\":[\"IQWotoDzCKASLpJEaLBiqnlnXdDHWjPoNgafjLUh7q5uh9BIwFeoZGwRUGddJao19QqFWk9NdXyiu25oOkCW5Q\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"0bd42da4a03d37bdf843cb4c5be8f005\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"0bd42da4a03d37bdf843cb4c5be8f005\"],\"username\":[\"adminjyd100\"],\"password\":[\"IQWotoDzCKASLpJEaLBiqnlnXdDHWjPoNgafjLUh7q5uh9BIwFeoZGwRUGddJao19QqFWk9NdXyiu25oOkCW5Q\\u003d\\u003d\"],\"valcode\":[\"63s8\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"63s8\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 17:35:04', 2);
+INSERT INTO `sys_user_oper_log` VALUES (140, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '615626', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003db5b633bee2c5e5230044e5f6308c8874\"],\"password\":[\"dYQDDTOyXl0zrjPycBIDOd5sPBQlb6KXbbnQHTk0yUbVmMQ48wWzPpo+7UCwKoeRUmlkDw4+4rIgEBV41UI7Hw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"b5b633bee2c5e5230044e5f6308c8874\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"b5b633bee2c5e5230044e5f6308c8874\"],\"username\":[\"adminjyd100\"],\"password\":[\"dYQDDTOyXl0zrjPycBIDOd5sPBQlb6KXbbnQHTk0yUbVmMQ48wWzPpo+7UCwKoeRUmlkDw4+4rIgEBV41UI7Hw\\u003d\\u003d\"],\"valcode\":[\"nxyc\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"nxyc\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 17:36:49', 2);
+INSERT INTO `sys_user_oper_log` VALUES (141, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '513222', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d7685198600cddb5ac410c252f780b605\"],\"password\":[\"J1hybfjimukxlUl2OOsphddtFGES7j9VKbzO9JzFrJz7tUxbkj1iizK3lO0S2odZeFdQzRxWbiV2UUbajf+NjA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"7685198600cddb5ac410c252f780b605\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"7685198600cddb5ac410c252f780b605\"],\"username\":[\"adminjyd100\"],\"password\":[\"J1hybfjimukxlUl2OOsphddtFGES7j9VKbzO9JzFrJz7tUxbkj1iizK3lO0S2odZeFdQzRxWbiV2UUbajf+NjA\\u003d\\u003d\"],\"valcode\":[\"995y\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"995y\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 17:37:55', 2);
+INSERT INTO `sys_user_oper_log` VALUES (142, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '494022', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003de7157169ec5fef25a92a573e8283a5ad\"],\"password\":[\"hQQKlBHHjoqtIQ3XFAlzcjZWKjypMFmzsK3LLpODfll8ipa+54w0wvLGpTfkf8GaLUGjzaM9DIAkYGIiCvYh4w\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"e7157169ec5fef25a92a573e8283a5ad\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"e7157169ec5fef25a92a573e8283a5ad\"],\"username\":[\"adminjyd100\"],\"password\":[\"hQQKlBHHjoqtIQ3XFAlzcjZWKjypMFmzsK3LLpODfll8ipa+54w0wvLGpTfkf8GaLUGjzaM9DIAkYGIiCvYh4w\\u003d\\u003d\"],\"valcode\":[\"djv5\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"djv5\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 17:39:33', 2);
+INSERT INTO `sys_user_oper_log` VALUES (143, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '206265', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dcb23e8d04aab61ce3af9c44b7fdaf139\"],\"password\":[\"IgswOEWHXUCXFFz+aDJgey8K2louKC9lI7d1u5M1xV4g5R8BediVzzjqwKw8g7LmMoYqWF4/iZGMNG7lsa+uWA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"cb23e8d04aab61ce3af9c44b7fdaf139\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"cb23e8d04aab61ce3af9c44b7fdaf139\"],\"username\":[\"adminjyd100\"],\"password\":[\"IgswOEWHXUCXFFz+aDJgey8K2louKC9lI7d1u5M1xV4g5R8BediVzzjqwKw8g7LmMoYqWF4/iZGMNG7lsa+uWA\\u003d\\u003d\"],\"valcode\":[\"axu4\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"axu4\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 17:52:17', 2);
+INSERT INTO `sys_user_oper_log` VALUES (144, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '186827', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003de242d17f085e95baaa1c0c1ca1aa53a6\"],\"password\":[\"P/RLiRu1vzdItpVBvVAyYl6HvsjgVHowTYDUibpvxLKSDo5fegBr4zu6UnjlJwG/0/zH+kAZ7EA5GcOePL5cQQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"e242d17f085e95baaa1c0c1ca1aa53a6\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"e242d17f085e95baaa1c0c1ca1aa53a6\"],\"username\":[\"adminjyd100\"],\"password\":[\"P/RLiRu1vzdItpVBvVAyYl6HvsjgVHowTYDUibpvxLKSDo5fegBr4zu6UnjlJwG/0/zH+kAZ7EA5GcOePL5cQQ\\u003d\\u003d\"],\"valcode\":[\"qxcb\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"qxcb\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 18:04:57', 2);
+INSERT INTO `sys_user_oper_log` VALUES (145, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '098935', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003da9e2e73c6445385468d1554ead17d265\"],\"password\":[\"aj9EWdpMiwf3UFIlfrIYmL97egeeMWMdkRswWwHhDP++5eYIx3KD8oT2O/eGWZksjsQgAFd9cWyAL18qL3pIFQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"a9e2e73c6445385468d1554ead17d265\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"a9e2e73c6445385468d1554ead17d265\"],\"username\":[\"adminjyd100\"],\"password\":[\"aj9EWdpMiwf3UFIlfrIYmL97egeeMWMdkRswWwHhDP++5eYIx3KD8oT2O/eGWZksjsQgAFd9cWyAL18qL3pIFQ\\u003d\\u003d\"],\"valcode\":[\"y9br\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"y9br\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 18:07:54', 2);
+INSERT INTO `sys_user_oper_log` VALUES (146, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '815306', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003de901b23eaa0c442e681ed6d985a0211d\"],\"password\":[\"GoPAigPCH725xC1dDe134NsL09ja4sjDJvQ5vqGSqIbSaDAZCvKjVRhFw4BtlqPdxbgZv1fc2G6aG4/2KZQhOg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"e901b23eaa0c442e681ed6d985a0211d\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"e901b23eaa0c442e681ed6d985a0211d\"],\"username\":[\"adminjyd100\"],\"password\":[\"GoPAigPCH725xC1dDe134NsL09ja4sjDJvQ5vqGSqIbSaDAZCvKjVRhFw4BtlqPdxbgZv1fc2G6aG4/2KZQhOg\\u003d\\u003d\"],\"valcode\":[\"t8bb\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"t8bb\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 19:34:31', 2);
+INSERT INTO `sys_user_oper_log` VALUES (147, '系统模块', 2, '修改功能菜单数据,code为10001', 'adminjyd100', 1, '172.29.96.1', '797297', '192.168.2.236', '{\"sysRightName\":[\"功能菜单\"],\"REQUEST_QUERY_STR\":[\"sysRightCode\\u003d10001\\u0026hiddenCode\\u003d10001\\u0026sysRightName\\u003d%E5%8A%9F%E8%83%BD%E8%8F%9C%E5%8D%95\\u0026sysRightUrl\\u003dsys%2Fsys_SysRight_ListData.action\\u0026icon\\u003d3\\u0026orderCode\\u003d10001\\u0026enable\\u003d1\\u0026sno\\u003d10001\"],\"sysRightUrl\":[\"sys/sys_SysRight_ListData.action\"],\"hiddenCode\":[\"10001\"],\"sno\":[\"10001\"],\"enable\":[\"1\"],\"icon\":[\"3\"],\"orderCode\":[\"10001\"],\"REQUEST_PARAM_MAP\":[{\"sysRightCode\":[\"10001\"],\"hiddenCode\":[\"10001\"],\"sysRightName\":[\"功能菜单\"],\"sysRightUrl\":[\"sys/sys_SysRight_ListData.action\"],\"icon\":[\"3\"],\"orderCode\":[\"10001\"],\"enable\":[\"1\"],\"sno\":[\"10001\"]}],\"sysRightCode\":[\"10001\"]}', '2024-01-24 19:34:37', 2);
+INSERT INTO `sys_user_oper_log` VALUES (148, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '863924', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d0d2b8ec325d81c13ea01383e1aca06c8\"],\"password\":[\"eSGKJQbqTqdgZWxfAbUUvCPh0ZMFP1LfsZ4ZMH/V2t6tR31xDwDaVhlObR/sswaGhEEBFplySq4pmmyphQOzSg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"0d2b8ec325d81c13ea01383e1aca06c8\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"0d2b8ec325d81c13ea01383e1aca06c8\"],\"username\":[\"adminjyd100\"],\"password\":[\"eSGKJQbqTqdgZWxfAbUUvCPh0ZMFP1LfsZ4ZMH/V2t6tR31xDwDaVhlObR/sswaGhEEBFplySq4pmmyphQOzSg\\u003d\\u003d\"],\"valcode\":[\"l4kg\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"l4kg\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 19:37:24', 2);
+INSERT INTO `sys_user_oper_log` VALUES (149, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '992923', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003df25c83b9a9532e02a946494d712e57a8\"],\"password\":[\"GCUYC/zrfsSGQ6+k8VOA/TVP0i26VaKC/+EJvIqIUf5gYIMYYqKR9/4FFJNJ/poS+h7RP7XTe3GdF7u7duGRHw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"f25c83b9a9532e02a946494d712e57a8\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"f25c83b9a9532e02a946494d712e57a8\"],\"username\":[\"adminjyd100\"],\"password\":[\"GCUYC/zrfsSGQ6+k8VOA/TVP0i26VaKC/+EJvIqIUf5gYIMYYqKR9/4FFJNJ/poS+h7RP7XTe3GdF7u7duGRHw\\u003d\\u003d\"],\"valcode\":[\"mbsv\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"mbsv\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 19:40:24', 2);
+INSERT INTO `sys_user_oper_log` VALUES (150, '系统模块', 3, '管理员删除了角色表管理数据,ID为10,11,20,21,22,30,40,50,51,52', 'adminjyd100', 1, '172.29.96.1', '798912', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dfaa8e55299f33a52141dc315d8b8ebc3\"],\"sign\":[\"faa8e55299f33a52141dc315d8b8ebc3\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"faa8e55299f33a52141dc315d8b8ebc3\"],\"deleteId\":[\"10,11,20,21,22,30,40,50,51,52\"]}],\"deleteId\":[\"10,11,20,21,22,30,40,50,51,52\"]}', '2024-01-24 19:42:05', 2);
+INSERT INTO `sys_user_oper_log` VALUES (151, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '434125', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003db686326ef3d436fa709ad1156bf1498a\"],\"password\":[\"c+cCvmTH0XUqOSiVWv+ngnDzChyz3QAUpbFkAh3xcuAZ+Kxk63ZXdRJOaaM5GFhiuGjgwqJJXQZiQyprmVDLJA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"b686326ef3d436fa709ad1156bf1498a\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"b686326ef3d436fa709ad1156bf1498a\"],\"username\":[\"adminjyd100\"],\"password\":[\"c+cCvmTH0XUqOSiVWv+ngnDzChyz3QAUpbFkAh3xcuAZ+Kxk63ZXdRJOaaM5GFhiuGjgwqJJXQZiQyprmVDLJA\\u003d\\u003d\"],\"valcode\":[\"385s\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"385s\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 19:42:43', 2);
+INSERT INTO `sys_user_oper_log` VALUES (152, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '468742', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d128a5303b7f59ca7c7b612211dadbb5b\"],\"password\":[\"iqtfAxDOspr3f+wqHRiMbCwpa+3jEp2nxvsGINGzxlbrRAQNZjDrsL2oqSDKwwtyq67Gf8IP31vuH11Pm+B3PQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"128a5303b7f59ca7c7b612211dadbb5b\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"128a5303b7f59ca7c7b612211dadbb5b\"],\"username\":[\"adminjyd100\"],\"password\":[\"iqtfAxDOspr3f+wqHRiMbCwpa+3jEp2nxvsGINGzxlbrRAQNZjDrsL2oqSDKwwtyq67Gf8IP31vuH11Pm+B3PQ\\u003d\\u003d\"],\"valcode\":[\"6rvs\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"6rvs\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 19:58:52', 2);
+INSERT INTO `sys_user_oper_log` VALUES (153, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '134912', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dd9609357cd6574b9f159656e67a42f6b\"],\"password\":[\"h88ej2ShISYXcY0JsY6lKBuCD+4F68W6Ki6k5KAirYeC7AouFCeP3DrE9X7mlv+lekBEhlomkE4ZUK3r6EjYqw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"d9609357cd6574b9f159656e67a42f6b\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"d9609357cd6574b9f159656e67a42f6b\"],\"username\":[\"adminjyd100\"],\"password\":[\"h88ej2ShISYXcY0JsY6lKBuCD+4F68W6Ki6k5KAirYeC7AouFCeP3DrE9X7mlv+lekBEhlomkE4ZUK3r6EjYqw\\u003d\\u003d\"],\"valcode\":[\"wgtx\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"wgtx\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 20:01:30', 2);
+INSERT INTO `sys_user_oper_log` VALUES (154, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '319133', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d698e7772ef66c924015be8f399be8a55\"],\"password\":[\"OH3hndjyGWgs+lVLHvklWAXgPBXz0AO/n80996+cnYbxEkb31Sg8XafCxeKy8YrIZ3Zt6JpRLRpL08L3/to4pA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"698e7772ef66c924015be8f399be8a55\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"698e7772ef66c924015be8f399be8a55\"],\"username\":[\"adminjyd100\"],\"password\":[\"OH3hndjyGWgs+lVLHvklWAXgPBXz0AO/n80996+cnYbxEkb31Sg8XafCxeKy8YrIZ3Zt6JpRLRpL08L3/to4pA\\u003d\\u003d\"],\"valcode\":[\"w34j\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"w34j\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 20:07:52', 2);
+INSERT INTO `sys_user_oper_log` VALUES (155, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.29.96.1', '016892', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d07f77cf4cbbf4732e9718c7e6d9eaa11\"],\"password\":[\"DMI4QvpJsEa+dI7XVWsdIsvijCz6QuFE/2mS5IShJ/IDhloBrxdiv5UzF3YfjXurhfbaqDTJSCLJO4M8FOlWhQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"07f77cf4cbbf4732e9718c7e6d9eaa11\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"07f77cf4cbbf4732e9718c7e6d9eaa11\"],\"username\":[\"adminjyd100\"],\"password\":[\"DMI4QvpJsEa+dI7XVWsdIsvijCz6QuFE/2mS5IShJ/IDhloBrxdiv5UzF3YfjXurhfbaqDTJSCLJO4M8FOlWhQ\\u003d\\u003d\"],\"valcode\":[\"378c\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"378c\"],\"username\":[\"adminjyd100\"]}', '2024-01-24 20:09:45', 2);
+INSERT INTO `sys_user_oper_log` VALUES (156, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.25.240.1', '267331', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dec6ee8ac8831389c69c1c258abedf021\"],\"password\":[\"M+1JBmtLvvJFkZgwegdmtF2blq35LMaG8eikMofoqbzRjCiIInfoQYrdVDQ8w4s7ueX8fTISXQuOF0XsJZKgzw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"ec6ee8ac8831389c69c1c258abedf021\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"ec6ee8ac8831389c69c1c258abedf021\"],\"username\":[\"adminjyd100\"],\"password\":[\"M+1JBmtLvvJFkZgwegdmtF2blq35LMaG8eikMofoqbzRjCiIInfoQYrdVDQ8w4s7ueX8fTISXQuOF0XsJZKgzw\\u003d\\u003d\"],\"valcode\":[\"49k9\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"49k9\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 09:46:45', 2);
+INSERT INTO `sys_user_oper_log` VALUES (157, '系统模块', 1, '添加角色表管理数据,ID为156', 'adminjyd100', 1, '172.25.240.1', '291111', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"roleName\\u003d%E8%B4%A2%E5%8A%A1\\u0026hiddenCode\\u003d\\u0026sysRight\\u003d20000\\u0026sysRight\\u003d20001\\u0026description\\u003d\"],\"hiddenCode\":[\"\"],\"sysRight\":[\"20000\",\"20001\"],\"roleName\":[\"财务\"],\"description\":[\"\"],\"REQUEST_PARAM_MAP\":[{\"roleName\":[\"财务\"],\"hiddenCode\":[\"\"],\"sysRight\":[\"20000\",\"20001\"],\"description\":[\"\"]}]}', '2024-01-25 09:48:09', 2);
+INSERT INTO `sys_user_oper_log` VALUES (158, '系统模块', 1, '添加角色表管理数据,ID为157', 'adminjyd100', 1, '172.25.240.1', '849515', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"roleName\\u003d%E9%94%80%E5%94%AE\\u0026hiddenCode\\u003d\\u0026sysRight\\u003d20000\\u0026sysRight\\u003d20001\\u0026description\\u003d\"],\"hiddenCode\":[\"\"],\"sysRight\":[\"20000\",\"20001\"],\"roleName\":[\"销售\"],\"description\":[\"\"],\"REQUEST_PARAM_MAP\":[{\"roleName\":[\"销售\"],\"hiddenCode\":[\"\"],\"sysRight\":[\"20000\",\"20001\"],\"description\":[\"\"]}]}', '2024-01-25 09:48:45', 2);
+INSERT INTO `sys_user_oper_log` VALUES (159, '系统模块', 1, '添加角色表管理数据,ID为158', 'adminjyd100', 1, '172.25.240.1', '458423', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"roleName\\u003d%E8%B4%A2%E5%8A%A1%E8%A7%92%E8%89%B2\\u0026hiddenCode\\u003d\\u0026sysRight\\u003d20000\\u0026sysRight\\u003d20001\\u0026description\\u003d\"],\"hiddenCode\":[\"\"],\"sysRight\":[\"20000\",\"20001\"],\"roleName\":[\"财务角色\"],\"description\":[\"\"],\"REQUEST_PARAM_MAP\":[{\"roleName\":[\"财务角色\"],\"hiddenCode\":[\"\"],\"sysRight\":[\"20000\",\"20001\"],\"description\":[\"\"]}]}', '2024-01-25 09:50:32', 2);
+INSERT INTO `sys_user_oper_log` VALUES (160, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.25.240.1', '111718', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dcfdc051ddeebba1d43c62f4c208b50a4\"],\"password\":[\"CkNYR0Qky7dlHAXXh/zVDZ16K9KjWWs7kiK4ITYyz9J+5YThJjZje7oHw+xh/y6PwtbpNjppFr+nIQNqccRepg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"cfdc051ddeebba1d43c62f4c208b50a4\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"cfdc051ddeebba1d43c62f4c208b50a4\"],\"username\":[\"adminjyd100\"],\"password\":[\"CkNYR0Qky7dlHAXXh/zVDZ16K9KjWWs7kiK4ITYyz9J+5YThJjZje7oHw+xh/y6PwtbpNjppFr+nIQNqccRepg\\u003d\\u003d\"],\"valcode\":[\"ujyx\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"ujyx\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 10:00:22', 2);
+INSERT INTO `sys_user_oper_log` VALUES (161, '系统模块', 1, '添加角色表管理数据,ID为54', 'adminjyd100', 1, '172.25.240.1', '956728', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"roleName\\u003d%E8%B4%A2%E5%8A%A1\\u0026hiddenCode\\u003d\\u0026sysRight\\u003d20000\\u0026sysRight\\u003d20001\\u0026description\\u003d\"],\"hiddenCode\":[\"\"],\"sysRight\":[\"20000\",\"20001\"],\"roleName\":[\"财务\"],\"description\":[\"\"],\"REQUEST_PARAM_MAP\":[{\"roleName\":[\"财务\"],\"hiddenCode\":[\"\"],\"sysRight\":[\"20000\",\"20001\"],\"description\":[\"\"]}]}', '2024-01-25 10:00:56', 2);
+INSERT INTO `sys_user_oper_log` VALUES (162, '系统模块', 1, '添加角色表管理数据,ID为55', 'adminjyd100', 1, '172.25.240.1', '596321', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"roleName\\u003d%E9%94%80%E5%94%AE\\u0026hiddenCode\\u003d\\u0026sysRight\\u003d20000\\u0026sysRight\\u003d20001\\u0026description\\u003d\"],\"hiddenCode\":[\"\"],\"sysRight\":[\"20000\",\"20001\"],\"roleName\":[\"销售\"],\"description\":[\"\"],\"REQUEST_PARAM_MAP\":[{\"roleName\":[\"销售\"],\"hiddenCode\":[\"\"],\"sysRight\":[\"20000\",\"20001\"],\"description\":[\"\"]}]}', '2024-01-25 10:01:25', 2);
+INSERT INTO `sys_user_oper_log` VALUES (163, '系统模块', 1, '添加角色表管理数据,ID为56', 'adminjyd100', 1, '172.25.240.1', '147768', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"roleName\\u003d%E4%BB%93%E5%BA%93\\u0026hiddenCode\\u003d\\u0026sysRight\\u003d20000\\u0026sysRight\\u003d20001\\u0026description\\u003d\"],\"hiddenCode\":[\"\"],\"sysRight\":[\"20000\",\"20001\"],\"roleName\":[\"仓库\"],\"description\":[\"\"],\"REQUEST_PARAM_MAP\":[{\"roleName\":[\"仓库\"],\"hiddenCode\":[\"\"],\"sysRight\":[\"20000\",\"20001\"],\"description\":[\"\"]}]}', '2024-01-25 10:01:48', 2);
+INSERT INTO `sys_user_oper_log` VALUES (164, '系统模块', 1, '登陆成功！', 'caiwu', 184, '172.25.240.1', '297166', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dcac8ffe1b1087b06099fece458e9bc84\"],\"password\":[\"Hn9BTRG+P6V3Ma9AFUV6MVaUfwFHIxiJHva6pb6+ogU94yZ+mNvzNwicgNf0To5L+2Px8HdFdSAZLpkexIFy5Q\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"cac8ffe1b1087b06099fece458e9bc84\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"cac8ffe1b1087b06099fece458e9bc84\"],\"username\":[\"caiwu\"],\"password\":[\"Hn9BTRG+P6V3Ma9AFUV6MVaUfwFHIxiJHva6pb6+ogU94yZ+mNvzNwicgNf0To5L+2Px8HdFdSAZLpkexIFy5Q\\u003d\\u003d\"],\"valcode\":[\"8abr\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"8abr\"],\"username\":[\"caiwu\"]}', '2024-01-25 10:16:21', 2);
+INSERT INTO `sys_user_oper_log` VALUES (165, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.25.240.1', '732147', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d0772a65f4721889fd2a0d7cad8a519c7\"],\"password\":[\"db7I0lWcuSYmKJXiEebJPLoGcXacnFWRU0y/uvdrEkqzR76CD/8zVte/p5k8G0yuTme5eay49EdzVZaR3O04yQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"0772a65f4721889fd2a0d7cad8a519c7\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"0772a65f4721889fd2a0d7cad8a519c7\"],\"username\":[\"adminjyd100\"],\"password\":[\"db7I0lWcuSYmKJXiEebJPLoGcXacnFWRU0y/uvdrEkqzR76CD/8zVte/p5k8G0yuTme5eay49EdzVZaR3O04yQ\\u003d\\u003d\"],\"valcode\":[\"nrer\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"nrer\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 10:34:23', 2);
+INSERT INTO `sys_user_oper_log` VALUES (166, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.25.240.1', '791670', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d8307fb2341b92b8e5be9e7b5cdb6a830\"],\"password\":[\"T+qp4M0902BkYQuVOURXybI3zwdRAH/ATK9ZRBwqZIfj0XDzf+ip1ae/tPNQQIbIKinINHHp/EnhYEjUJlp2bg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"8307fb2341b92b8e5be9e7b5cdb6a830\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"8307fb2341b92b8e5be9e7b5cdb6a830\"],\"username\":[\"adminjyd100\"],\"password\":[\"T+qp4M0902BkYQuVOURXybI3zwdRAH/ATK9ZRBwqZIfj0XDzf+ip1ae/tPNQQIbIKinINHHp/EnhYEjUJlp2bg\\u003d\\u003d\"],\"valcode\":[\"bkre\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"bkre\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 11:18:58', 2);
+INSERT INTO `sys_user_oper_log` VALUES (167, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.25.240.1', '324144', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003db28a51bb8f73ece94b18e4aca1cd24a8\"],\"password\":[\"JHePHVJN36Vi/sUyABh9k9GjKTCzaDvb9IgZgsLtUddacjyVrYw5BeKhAk+Sy00VVx3nD5bxK1whSlB61fXA0w\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"b28a51bb8f73ece94b18e4aca1cd24a8\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"b28a51bb8f73ece94b18e4aca1cd24a8\"],\"username\":[\"adminjyd100\"],\"password\":[\"JHePHVJN36Vi/sUyABh9k9GjKTCzaDvb9IgZgsLtUddacjyVrYw5BeKhAk+Sy00VVx3nD5bxK1whSlB61fXA0w\\u003d\\u003d\"],\"valcode\":[\"ma95\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"ma95\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 11:26:13', 2);
+INSERT INTO `sys_user_oper_log` VALUES (168, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.25.240.1', '266839', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d1694940a512433381f319ea831cf1e33\"],\"password\":[\"iwmgiRO5V3c5wV4XR/CW1psIbFDNQYehMQnoMwucdWHf9bBXx87g/ZsG3wGJuBlcwrGiTcWnXDaPhlRY/+6kKQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"1694940a512433381f319ea831cf1e33\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"1694940a512433381f319ea831cf1e33\"],\"username\":[\"adminjyd100\"],\"password\":[\"iwmgiRO5V3c5wV4XR/CW1psIbFDNQYehMQnoMwucdWHf9bBXx87g/ZsG3wGJuBlcwrGiTcWnXDaPhlRY/+6kKQ\\u003d\\u003d\"],\"valcode\":[\"6r5p\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"6r5p\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 11:44:31', 2);
+INSERT INTO `sys_user_oper_log` VALUES (169, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.25.240.1', '536263', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003de1dfd7d04ad71d5cd06a22d67ba9913a\"],\"password\":[\"B9+7UBQR7OOykBd2cNTjW9LKoEWO6VO4NqfaV2ihwM2HvlJHptv34+Ew/ehHzdmdBlozkBMxDOKB7qSnAjNH/w\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"e1dfd7d04ad71d5cd06a22d67ba9913a\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"e1dfd7d04ad71d5cd06a22d67ba9913a\"],\"username\":[\"adminjyd100\"],\"password\":[\"B9+7UBQR7OOykBd2cNTjW9LKoEWO6VO4NqfaV2ihwM2HvlJHptv34+Ew/ehHzdmdBlozkBMxDOKB7qSnAjNH/w\\u003d\\u003d\"],\"valcode\":[\"6qy8\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"6qy8\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 11:56:48', 2);
+INSERT INTO `sys_user_oper_log` VALUES (170, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '730467', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d2cc0fbdc052205f8677430d4391f4309\"],\"password\":[\"T7FRJOfkQ9Ubev4497S0B8Oc+fegHcxCq8Biw6zjcXIVrhTspldiCpfcONxYEbpvMoanvyDqUclxmHi2rb9dRQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"2cc0fbdc052205f8677430d4391f4309\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"2cc0fbdc052205f8677430d4391f4309\"],\"username\":[\"adminjyd100\"],\"password\":[\"T7FRJOfkQ9Ubev4497S0B8Oc+fegHcxCq8Biw6zjcXIVrhTspldiCpfcONxYEbpvMoanvyDqUclxmHi2rb9dRQ\\u003d\\u003d\"],\"valcode\":[\"68pc\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"68pc\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 14:30:43', 2);
+INSERT INTO `sys_user_oper_log` VALUES (171, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '689675', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d205cecd551b9e0f370dcb0598a164f10\"],\"password\":[\"JETUjTC9Nfq+gSwbVFq5RUSpS+rVEKlVFrP9cFzLJX+HVQWvS8cWRbtX+S4C3/Or1MWw8RXsOZEQxLosoPNXlg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"205cecd551b9e0f370dcb0598a164f10\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"205cecd551b9e0f370dcb0598a164f10\"],\"username\":[\"adminjyd100\"],\"password\":[\"JETUjTC9Nfq+gSwbVFq5RUSpS+rVEKlVFrP9cFzLJX+HVQWvS8cWRbtX+S4C3/Or1MWw8RXsOZEQxLosoPNXlg\\u003d\\u003d\"],\"valcode\":[\"jeff\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"jeff\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 14:39:37', 2);
+INSERT INTO `sys_user_oper_log` VALUES (172, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '181934', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d6922d1986a324b6230d858d93a3d48b1\"],\"password\":[\"cdoXqKi64lIu+5J6dQGUy3PHiena6Nd/vbZU97RSrjrRzbmT3OKl8Y8zENrPnlkuBM0km9E8XRuLDuMiHCQ75g\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"6922d1986a324b6230d858d93a3d48b1\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"6922d1986a324b6230d858d93a3d48b1\"],\"username\":[\"adminjyd100\"],\"password\":[\"cdoXqKi64lIu+5J6dQGUy3PHiena6Nd/vbZU97RSrjrRzbmT3OKl8Y8zENrPnlkuBM0km9E8XRuLDuMiHCQ75g\\u003d\\u003d\"],\"valcode\":[\"efbg\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"efbg\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 14:52:10', 2);
+INSERT INTO `sys_user_oper_log` VALUES (173, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '278037', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d6530c3ed840978035d73490b6bd9bfe4\"],\"password\":[\"eLbFhvV/uOi3Lhw4KhENiCv1jE0dagvhHukxAlFVnJI/VDQaTtwvr6anR5lp4sPwJCdO9pYHJauY73hLVpKtEA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"6530c3ed840978035d73490b6bd9bfe4\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"6530c3ed840978035d73490b6bd9bfe4\"],\"username\":[\"adminjyd100\"],\"password\":[\"eLbFhvV/uOi3Lhw4KhENiCv1jE0dagvhHukxAlFVnJI/VDQaTtwvr6anR5lp4sPwJCdO9pYHJauY73hLVpKtEA\\u003d\\u003d\"],\"valcode\":[\"b9rc\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"b9rc\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 14:53:52', 2);
+INSERT INTO `sys_user_oper_log` VALUES (174, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '767929', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dda4ce42521d971b073c0a4def2d56632\"],\"password\":[\"bV4EjqhCheFG7zkC8EeQIb6H/LMJ1Xfa1HgwZJHEqvaE8A48PlvcVc4FAxlHYXOk2CwKlD3TqOQw1HNidk/uDw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"da4ce42521d971b073c0a4def2d56632\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"da4ce42521d971b073c0a4def2d56632\"],\"username\":[\"adminjyd100\"],\"password\":[\"bV4EjqhCheFG7zkC8EeQIb6H/LMJ1Xfa1HgwZJHEqvaE8A48PlvcVc4FAxlHYXOk2CwKlD3TqOQw1HNidk/uDw\\u003d\\u003d\"],\"valcode\":[\"pu6d\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"pu6d\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 15:18:55', 2);
+INSERT INTO `sys_user_oper_log` VALUES (175, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '612341', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003df1691a8e41c64ba3ef5f043e6c12a4ae\"],\"password\":[\"U74HSgGtly92ROCNVAbXhznaXhvPUEexoTZSJy3ndH6RD4o3IDDwL2xpS8vTSbgl2TUTnHwYRMNQPfbU54i4lQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"f1691a8e41c64ba3ef5f043e6c12a4ae\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"f1691a8e41c64ba3ef5f043e6c12a4ae\"],\"username\":[\"adminjyd100\"],\"password\":[\"U74HSgGtly92ROCNVAbXhznaXhvPUEexoTZSJy3ndH6RD4o3IDDwL2xpS8vTSbgl2TUTnHwYRMNQPfbU54i4lQ\\u003d\\u003d\"],\"valcode\":[\"4gpv\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"4gpv\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 15:21:16', 2);
+INSERT INTO `sys_user_oper_log` VALUES (176, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '147258', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d3e53889a335df1518ca959a78c7dce9b\"],\"password\":[\"KFIqNvuVpr4Jcs7DiDIGE1HEK1CJ+/skkvkqgZUL+m+uYIpoMvE/8MYVsDhQGWjM0EbGrlXrzVg5D3F7UH/0GQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"3e53889a335df1518ca959a78c7dce9b\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"3e53889a335df1518ca959a78c7dce9b\"],\"username\":[\"adminjyd100\"],\"password\":[\"KFIqNvuVpr4Jcs7DiDIGE1HEK1CJ+/skkvkqgZUL+m+uYIpoMvE/8MYVsDhQGWjM0EbGrlXrzVg5D3F7UH/0GQ\\u003d\\u003d\"],\"valcode\":[\"bax9\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"bax9\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 15:47:00', 2);
+INSERT INTO `sys_user_oper_log` VALUES (177, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '919299', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003da0c17aeea2033ba716e148284cd8ccad\"],\"password\":[\"KfLDqct20DBTa1ctq7zR1SaDoA06EtX7NhRiGvn1XiH81AozFjCuJUayJHhkUaN0us91Lng8IY1gfXiSBsokxA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"a0c17aeea2033ba716e148284cd8ccad\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"a0c17aeea2033ba716e148284cd8ccad\"],\"username\":[\"adminjyd100\"],\"password\":[\"KfLDqct20DBTa1ctq7zR1SaDoA06EtX7NhRiGvn1XiH81AozFjCuJUayJHhkUaN0us91Lng8IY1gfXiSBsokxA\\u003d\\u003d\"],\"valcode\":[\"7x6k\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"7x6k\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 15:52:01', 2);
+INSERT INTO `sys_user_oper_log` VALUES (178, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '660508', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d3d6595dc0431af3589b348670f120ec3\"],\"password\":[\"c9tUUwk7qQ18ijWMQm85oY2oN5GX+KHq9hpygL6avvzMpAR2tBlXK63Bv2Zki6ist5Vvni0LQNiRFI+hed/4bQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"3d6595dc0431af3589b348670f120ec3\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"3d6595dc0431af3589b348670f120ec3\"],\"username\":[\"adminjyd100\"],\"password\":[\"c9tUUwk7qQ18ijWMQm85oY2oN5GX+KHq9hpygL6avvzMpAR2tBlXK63Bv2Zki6ist5Vvni0LQNiRFI+hed/4bQ\\u003d\\u003d\"],\"valcode\":[\"xxaj\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"xxaj\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 16:09:42', 2);
+INSERT INTO `sys_user_oper_log` VALUES (179, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '614886', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d655f8b636bf109dd486dd14d53cbea4b\"],\"password\":[\"IUG/HF9Up3Qpjrxf7ocbEELrUAWWFMZ+h8KzZt1/s25TfUzG3fjdOlCsk0+U6n+f3NvxUavZBclfC0HuFYoWAg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"655f8b636bf109dd486dd14d53cbea4b\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"655f8b636bf109dd486dd14d53cbea4b\"],\"username\":[\"adminjyd100\"],\"password\":[\"IUG/HF9Up3Qpjrxf7ocbEELrUAWWFMZ+h8KzZt1/s25TfUzG3fjdOlCsk0+U6n+f3NvxUavZBclfC0HuFYoWAg\\u003d\\u003d\"],\"valcode\":[\"g6sf\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"g6sf\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 16:17:58', 2);
+INSERT INTO `sys_user_oper_log` VALUES (180, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '690032', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dc1f92fb2db886ff8e95e2d087639518f\"],\"password\":[\"EbDJLtiAjLba0T3guBmCaVdGQgUnkDevlvv6LAlnuYUbOrMf3lqjIKnUArx9kNzBVXH23I+at3VG8t32+Ou5pg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"c1f92fb2db886ff8e95e2d087639518f\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"c1f92fb2db886ff8e95e2d087639518f\"],\"username\":[\"adminjyd100\"],\"password\":[\"EbDJLtiAjLba0T3guBmCaVdGQgUnkDevlvv6LAlnuYUbOrMf3lqjIKnUArx9kNzBVXH23I+at3VG8t32+Ou5pg\\u003d\\u003d\"],\"valcode\":[\"b6gj\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"b6gj\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 16:22:42', 2);
+INSERT INTO `sys_user_oper_log` VALUES (181, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '245444', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003db418ed4aa62e3e6570d96f58b4654009\"],\"password\":[\"MmMFamH7hTWz0EMqFzGhd5wfx/rS7k3OuMPae14jCyuF3ba1oZt8nCR34Ruz7irUG7MwXcnwTvKrQvhWrkPEzw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"b418ed4aa62e3e6570d96f58b4654009\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"b418ed4aa62e3e6570d96f58b4654009\"],\"username\":[\"adminjyd100\"],\"password\":[\"MmMFamH7hTWz0EMqFzGhd5wfx/rS7k3OuMPae14jCyuF3ba1oZt8nCR34Ruz7irUG7MwXcnwTvKrQvhWrkPEzw\\u003d\\u003d\"],\"valcode\":[\"shq3\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"shq3\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 16:41:01', 2);
+INSERT INTO `sys_user_oper_log` VALUES (182, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '381108', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dd9b866ad3431112d7ac1ef0f368e33dd\"],\"password\":[\"ByBSuV02GtrucczKo/ruKREreDpSInLSIqDZVrsMcrOdVmKQL6rgxlgS3LxOJgYyOZ60F7s8nCgj0Dmt5GyLSw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"d9b866ad3431112d7ac1ef0f368e33dd\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"d9b866ad3431112d7ac1ef0f368e33dd\"],\"username\":[\"adminjyd100\"],\"password\":[\"ByBSuV02GtrucczKo/ruKREreDpSInLSIqDZVrsMcrOdVmKQL6rgxlgS3LxOJgYyOZ60F7s8nCgj0Dmt5GyLSw\\u003d\\u003d\"],\"valcode\":[\"4s5w\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"4s5w\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 16:43:16', 2);
+INSERT INTO `sys_user_oper_log` VALUES (183, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '439377', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dc07e4725dbe267c55a92d56f27c496eb\"],\"password\":[\"VyPSg0vRjUPqL6MbtcHxi55Qj6H1JnfyUmRONFpjbZEB6rJ4vtjPzkTee3gbrSurNDsZKoKt/KZ0Fe/WrPcX3w\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"c07e4725dbe267c55a92d56f27c496eb\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"c07e4725dbe267c55a92d56f27c496eb\"],\"username\":[\"adminjyd100\"],\"password\":[\"VyPSg0vRjUPqL6MbtcHxi55Qj6H1JnfyUmRONFpjbZEB6rJ4vtjPzkTee3gbrSurNDsZKoKt/KZ0Fe/WrPcX3w\\u003d\\u003d\"],\"valcode\":[\"jd43\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"jd43\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 16:45:46', 2);
+INSERT INTO `sys_user_oper_log` VALUES (184, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '488981', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dc3d485b658ef098a188b7e6939331a19\"],\"password\":[\"M6oK49ePpgRQ26X1EupCVt2rfw0A5mL+ALDqgjLQoNtBSbIUxgH4dYTJwGDS+NjjdWaMfSLo2y0BQ8XBa9ij2A\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"c3d485b658ef098a188b7e6939331a19\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"c3d485b658ef098a188b7e6939331a19\"],\"username\":[\"adminjyd100\"],\"password\":[\"M6oK49ePpgRQ26X1EupCVt2rfw0A5mL+ALDqgjLQoNtBSbIUxgH4dYTJwGDS+NjjdWaMfSLo2y0BQ8XBa9ij2A\\u003d\\u003d\"],\"valcode\":[\"mfks\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"mfks\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 16:52:07', 2);
+INSERT INTO `sys_user_oper_log` VALUES (185, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '582350', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d9a70df5c8fd18fc3cb3718a32e0bf110\"],\"password\":[\"elHy3srUQddCoA1fujGL226WWUHBEwLuODciXE9yGNbQ36zSBmE7VYdcdJKbFXwZfkH+7imxeXQ/ioTv+9sRHA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"9a70df5c8fd18fc3cb3718a32e0bf110\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"9a70df5c8fd18fc3cb3718a32e0bf110\"],\"username\":[\"adminjyd100\"],\"password\":[\"elHy3srUQddCoA1fujGL226WWUHBEwLuODciXE9yGNbQ36zSBmE7VYdcdJKbFXwZfkH+7imxeXQ/ioTv+9sRHA\\u003d\\u003d\"],\"valcode\":[\"qmsd\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"qmsd\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 17:01:52', 2);
+INSERT INTO `sys_user_oper_log` VALUES (186, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '309238', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003df187d4b3e7503fe0dc9b68e00ad4660c\"],\"password\":[\"MB+qJDvQAPfrBFX9oJzzCz1ZS0pTSHdfYaB77Z1zPbu2SDinYbmadRmM8p1SdKsVL6r9yCD6LFtr63bQbgXmYQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"f187d4b3e7503fe0dc9b68e00ad4660c\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"f187d4b3e7503fe0dc9b68e00ad4660c\"],\"username\":[\"adminjyd100\"],\"password\":[\"MB+qJDvQAPfrBFX9oJzzCz1ZS0pTSHdfYaB77Z1zPbu2SDinYbmadRmM8p1SdKsVL6r9yCD6LFtr63bQbgXmYQ\\u003d\\u003d\"],\"valcode\":[\"Y24W\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"Y24W\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 17:03:51', 2);
+INSERT INTO `sys_user_oper_log` VALUES (187, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '839707', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dfca6f0a987d28924e7b583f7a9e70e37\"],\"password\":[\"VLbY0PCKKqAQuhmcA8+FNg2LElPNRweBEI98ocpUcZvs++zGXAMqUFiUOGB1KQRA1WKnoqE53YNXu4fwIOPWNg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"fca6f0a987d28924e7b583f7a9e70e37\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"fca6f0a987d28924e7b583f7a9e70e37\"],\"username\":[\"adminjyd100\"],\"password\":[\"VLbY0PCKKqAQuhmcA8+FNg2LElPNRweBEI98ocpUcZvs++zGXAMqUFiUOGB1KQRA1WKnoqE53YNXu4fwIOPWNg\\u003d\\u003d\"],\"valcode\":[\"bae6\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"bae6\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 17:11:53', 2);
+INSERT INTO `sys_user_oper_log` VALUES (188, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '647278', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dccbc707746f009532be3f5587ff87689\"],\"password\":[\"K206sZV66/shmkhNamlJesYWZSH4YyRocGGTsquiNyatIn0smShwFRrXHEMepK1sEJPsK3dou/IkBBIGmBZv8g\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"ccbc707746f009532be3f5587ff87689\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"ccbc707746f009532be3f5587ff87689\"],\"username\":[\"adminjyd100\"],\"password\":[\"K206sZV66/shmkhNamlJesYWZSH4YyRocGGTsquiNyatIn0smShwFRrXHEMepK1sEJPsK3dou/IkBBIGmBZv8g\\u003d\\u003d\"],\"valcode\":[\"2dly\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"2dly\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 17:23:32', 2);
+INSERT INTO `sys_user_oper_log` VALUES (189, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '283078', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d1c5f6a3b6cabf0e51f35248f3b4d2618\"],\"password\":[\"fKAkuJnHZxsZqeMBvtMGg0dzQHEn4kVzb9R6ArTl8b5rgoDE+NRgIjG3Du75zVqpGVG/SOLdCfX36tSlOegmxA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"1c5f6a3b6cabf0e51f35248f3b4d2618\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"1c5f6a3b6cabf0e51f35248f3b4d2618\"],\"username\":[\"adminjyd100\"],\"password\":[\"fKAkuJnHZxsZqeMBvtMGg0dzQHEn4kVzb9R6ArTl8b5rgoDE+NRgIjG3Du75zVqpGVG/SOLdCfX36tSlOegmxA\\u003d\\u003d\"],\"valcode\":[\"epfr\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"epfr\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 17:26:48', 2);
+INSERT INTO `sys_user_oper_log` VALUES (190, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '973989', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dcb9992d86dc374cc249d1f3267ecc77d\"],\"password\":[\"JcN3j930uYrhCI0hogoJkVp448je3UKvs5x1Arcr33xOW3DQVkqf+BsTw6zPCu4gUpvsc4uetA940gcsMX8iqQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"cb9992d86dc374cc249d1f3267ecc77d\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"cb9992d86dc374cc249d1f3267ecc77d\"],\"username\":[\"adminjyd100\"],\"password\":[\"JcN3j930uYrhCI0hogoJkVp448je3UKvs5x1Arcr33xOW3DQVkqf+BsTw6zPCu4gUpvsc4uetA940gcsMX8iqQ\\u003d\\u003d\"],\"valcode\":[\"25wd\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"25wd\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 17:28:04', 2);
+INSERT INTO `sys_user_oper_log` VALUES (191, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '861490', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d95675349dee6a7c36106ffe626823332\"],\"password\":[\"exmXugc5kfJi2e/oPA4a0lCdK7Geo8Ni8lz5GtwZk7UnK2BzLYJiSsksyWgIUMZAOjxDopohIALtWZRcBeN5Nw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"95675349dee6a7c36106ffe626823332\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"95675349dee6a7c36106ffe626823332\"],\"username\":[\"adminjyd100\"],\"password\":[\"exmXugc5kfJi2e/oPA4a0lCdK7Geo8Ni8lz5GtwZk7UnK2BzLYJiSsksyWgIUMZAOjxDopohIALtWZRcBeN5Nw\\u003d\\u003d\"],\"valcode\":[\"6ndb\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"6ndb\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 18:13:07', 2);
+INSERT INTO `sys_user_oper_log` VALUES (192, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '854336', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d2cf2c69033240c9fff4f43469483dc37\"],\"password\":[\"grcuEzHrHIqUBL7Y33ad3xzv28Z0b/hucJd5OaGIulUQbSAMWtQho3HOExsdMGo8IomXv3x/yuH2G/QcNE6I/A\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"2cf2c69033240c9fff4f43469483dc37\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"2cf2c69033240c9fff4f43469483dc37\"],\"username\":[\"adminjyd100\"],\"password\":[\"grcuEzHrHIqUBL7Y33ad3xzv28Z0b/hucJd5OaGIulUQbSAMWtQho3HOExsdMGo8IomXv3x/yuH2G/QcNE6I/A\\u003d\\u003d\"],\"valcode\":[\"3qab\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"3qab\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 18:56:12', 2);
+INSERT INTO `sys_user_oper_log` VALUES (193, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '372801', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d2aef8afcfcd1ccd178ffc7face940c09\"],\"password\":[\"J+BGeYC59huudpmq0X7kzSJpz6Ug03sLU974YieG8q30IupnCYfzL/VjynALdwqubTFLsq5Uh2/4uRQ387MRCA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"2aef8afcfcd1ccd178ffc7face940c09\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"2aef8afcfcd1ccd178ffc7face940c09\"],\"username\":[\"adminjyd100\"],\"password\":[\"J+BGeYC59huudpmq0X7kzSJpz6Ug03sLU974YieG8q30IupnCYfzL/VjynALdwqubTFLsq5Uh2/4uRQ387MRCA\\u003d\\u003d\"],\"valcode\":[\"3v34\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"3v34\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 19:45:11', 2);
+INSERT INTO `sys_user_oper_log` VALUES (194, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '049205', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d11ee1acff0994e1a28b6542205ed5db5\"],\"password\":[\"dlE5YJZF6WcIKLiEjBSE8BWsez2SPUK3KTFr7K/knRzpT2HozH5rTMbcKNgwRp88rBP06Tu96URsendwLYNq4Q\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"11ee1acff0994e1a28b6542205ed5db5\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"11ee1acff0994e1a28b6542205ed5db5\"],\"username\":[\"adminjyd100\"],\"password\":[\"dlE5YJZF6WcIKLiEjBSE8BWsez2SPUK3KTFr7K/knRzpT2HozH5rTMbcKNgwRp88rBP06Tu96URsendwLYNq4Q\\u003d\\u003d\"],\"valcode\":[\"s6kt\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"s6kt\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 20:21:42', 2);
+INSERT INTO `sys_user_oper_log` VALUES (195, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.236', '091441', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d9eec355c5491a0b5ef74849a0538971e\"],\"password\":[\"cwo5I//B3oq3xSRhm+giM3GI632GBIKYbTJdAgLDDjRsHtzpqIel59hefGC9zsKc3xACvQMBgXNFtDwt+DJ6CA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"9eec355c5491a0b5ef74849a0538971e\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"9eec355c5491a0b5ef74849a0538971e\"],\"username\":[\"adminjyd100\"],\"password\":[\"cwo5I//B3oq3xSRhm+giM3GI632GBIKYbTJdAgLDDjRsHtzpqIel59hefGC9zsKc3xACvQMBgXNFtDwt+DJ6CA\\u003d\\u003d\"],\"valcode\":[\"7ncb\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"7ncb\"],\"username\":[\"adminjyd100\"]}', '2024-01-25 20:35:45', 2);
+INSERT INTO `sys_user_oper_log` VALUES (196, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.20.32.1', '294407', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d3f30f3505e8ff25cac207a65a7af67f2\"],\"password\":[\"+kCPsVSA9ArKtssN96KqBgBhaxY3brtZ/xUhp51fTsbK5SrWH6C4h/TS6H4kcaneQlagRjMuOpZDd9PVZgiO\"],\"smscode\":[\"123456\"],\"sign\":[\"3f30f3505e8ff25cac207a65a7af67f2\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"3f30f3505e8ff25cac207a65a7af67f2\"],\"username\":[\"adminjyd100\"],\"password\":[\"+kCPsVSA9ArKtssN96KqBgBhaxY3brtZ/xUhp51fTsbK5SrWH6C4h/TS6H4kcaneQlagRjMuOpZDd9PVZgiO\"],\"valcode\":[\"88BF\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"88BF\"],\"username\":[\"adminjyd100\"]}', '2024-01-26 09:57:38', 2);
+INSERT INTO `sys_user_oper_log` VALUES (197, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.20.32.1', '846290', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003de9a5b6c126c304ad4094199a05d30049\"],\"password\":[\"gyfnTnZ10iPgk061adAUYKxria3tSQ1tMs78Lkh0G5IB72c4ywjeOYb0Dx8GZdkESaYrLSIpsZY10r2gqW4Z8A\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"e9a5b6c126c304ad4094199a05d30049\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"e9a5b6c126c304ad4094199a05d30049\"],\"username\":[\"adminjyd100\"],\"password\":[\"gyfnTnZ10iPgk061adAUYKxria3tSQ1tMs78Lkh0G5IB72c4ywjeOYb0Dx8GZdkESaYrLSIpsZY10r2gqW4Z8A\\u003d\\u003d\"],\"valcode\":[\"QEQ9\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"QEQ9\"],\"username\":[\"adminjyd100\"]}', '2024-01-26 09:58:38', 2);
+INSERT INTO `sys_user_oper_log` VALUES (198, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.20.32.1', '304676', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003daf2de7636f1f226a41694de93faa31af\"],\"password\":[\"NO6lNjqOvaYtadFrDDK6GAnPWnvka8/ZTDAnaiP+hec8dNAzMY2JkBSRYYlpuTFGQ1zaeusV3FbncPFbPT4i3w\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"af2de7636f1f226a41694de93faa31af\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"af2de7636f1f226a41694de93faa31af\"],\"username\":[\"adminjyd100\"],\"password\":[\"NO6lNjqOvaYtadFrDDK6GAnPWnvka8/ZTDAnaiP+hec8dNAzMY2JkBSRYYlpuTFGQ1zaeusV3FbncPFbPT4i3w\\u003d\\u003d\"],\"valcode\":[\"xfda\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"xfda\"],\"username\":[\"adminjyd100\"]}', '2024-01-26 10:25:15', 2);
+INSERT INTO `sys_user_oper_log` VALUES (199, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.20.32.1', '839018', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003db7845d991bd104a77ebebeabaa358b69\"],\"password\":[\"HpJpKn9Mx/nhksyJEUkePqtkmSW1DCYiwkPiC1FZuqQFFP9tzmVkIY2vK4+VmretYsGRzfMBVkQHo5A3X7qO4w\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"b7845d991bd104a77ebebeabaa358b69\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"b7845d991bd104a77ebebeabaa358b69\"],\"username\":[\"adminjyd100\"],\"password\":[\"HpJpKn9Mx/nhksyJEUkePqtkmSW1DCYiwkPiC1FZuqQFFP9tzmVkIY2vK4+VmretYsGRzfMBVkQHo5A3X7qO4w\\u003d\\u003d\"],\"valcode\":[\"h399\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"h399\"],\"username\":[\"adminjyd100\"]}', '2024-01-26 10:56:18', 2);
+INSERT INTO `sys_user_oper_log` VALUES (200, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.20.32.1', '562923', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003db892bda1670c8433fc733565a0843296\"],\"password\":[\"NBCHNcdv6snwUkS406bTQpxojgoJaxjmVcaNA9Thn9QAAj5ByYpw1cdZN2Q1bu66HV48XpI0zAQyD8FW0WMrLw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"b892bda1670c8433fc733565a0843296\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"b892bda1670c8433fc733565a0843296\"],\"username\":[\"adminjyd100\"],\"password\":[\"NBCHNcdv6snwUkS406bTQpxojgoJaxjmVcaNA9Thn9QAAj5ByYpw1cdZN2Q1bu66HV48XpI0zAQyD8FW0WMrLw\\u003d\\u003d\"],\"valcode\":[\"c3v5\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"c3v5\"],\"username\":[\"adminjyd100\"]}', '2024-01-26 11:10:17', 2);
+INSERT INTO `sys_user_oper_log` VALUES (201, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.20.32.1', '711143', '192.168.2.236', '{\"REQUEST_QUERY_STR\":[\"sign\\u003db1422cf6535edfa6f3f120546486bb0e\"],\"password\":[\"gq+TWkSaIZT/5kVtRceXAhZjjCjiMpCMOpBJWgTBUDqeY2P1k36dntUBeP9+8aVMSG/sfyURmU6PtaKqhC0uEA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"b1422cf6535edfa6f3f120546486bb0e\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"b1422cf6535edfa6f3f120546486bb0e\"],\"username\":[\"adminjyd100\"],\"password\":[\"gq+TWkSaIZT/5kVtRceXAhZjjCjiMpCMOpBJWgTBUDqeY2P1k36dntUBeP9+8aVMSG/sfyURmU6PtaKqhC0uEA\\u003d\\u003d\"],\"valcode\":[\"53cm\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"53cm\"],\"username\":[\"adminjyd100\"]}', '2024-01-26 11:11:17', 2);
+INSERT INTO `sys_user_oper_log` VALUES (202, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.17.240.1', '686896', '192.168.2.131', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d929c772232997691c3246fee94f34e79\"],\"password\":[\"c+2HoAzdnc+x6IZDT+R7BygJH3E4OdZLyzsQZTWBAsbykytgfCfSLxd5J82GC5Nz5HgTajDogn+oiBJrD8RNcA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"929c772232997691c3246fee94f34e79\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"929c772232997691c3246fee94f34e79\"],\"username\":[\"adminjyd100\"],\"password\":[\"c+2HoAzdnc+x6IZDT+R7BygJH3E4OdZLyzsQZTWBAsbykytgfCfSLxd5J82GC5Nz5HgTajDogn+oiBJrD8RNcA\\u003d\\u003d\"],\"valcode\":[\"xkts\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"xkts\"],\"username\":[\"adminjyd100\"]}', '2024-01-27 10:44:54', 2);
+INSERT INTO `sys_user_oper_log` VALUES (203, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.17.240.1', '365128', '192.168.2.131', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d140a24a5e4fc76bb50e4e203c24ac6f7\"],\"password\":[\"gyHsucda4uO/a4u8mbQQx7P25ydBZHyfItYGVSAZ7L3sEevaAHBS0Pv17F3K7RNPpJEInPlZlCCes8Y+e6vU/g\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"140a24a5e4fc76bb50e4e203c24ac6f7\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"140a24a5e4fc76bb50e4e203c24ac6f7\"],\"username\":[\"adminjyd100\"],\"password\":[\"gyHsucda4uO/a4u8mbQQx7P25ydBZHyfItYGVSAZ7L3sEevaAHBS0Pv17F3K7RNPpJEInPlZlCCes8Y+e6vU/g\\u003d\\u003d\"],\"valcode\":[\"f3wg\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"f3wg\"],\"username\":[\"adminjyd100\"]}', '2024-01-27 11:29:19', 2);
+INSERT INTO `sys_user_oper_log` VALUES (204, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.17.240.1', '293970', '192.168.2.131', '{\"REQUEST_QUERY_STR\":[\"sign\\u003da65e91a46510e9761332d8a3dee42892\"],\"password\":[\"NF66+sWpBrzfXkwPWi1YMnH2t2ts+WMWeosf3rAAAJ2iQgqk9XVQKeDfHKjacfjW0WNiUMmGa3NmhYr5vLYoKg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"a65e91a46510e9761332d8a3dee42892\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"a65e91a46510e9761332d8a3dee42892\"],\"username\":[\"adminjyd100\"],\"password\":[\"NF66+sWpBrzfXkwPWi1YMnH2t2ts+WMWeosf3rAAAJ2iQgqk9XVQKeDfHKjacfjW0WNiUMmGa3NmhYr5vLYoKg\\u003d\\u003d\"],\"valcode\":[\"dbpd\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"dbpd\"],\"username\":[\"adminjyd100\"]}', '2024-01-27 11:42:33', 2);
+INSERT INTO `sys_user_oper_log` VALUES (205, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.17.240.1', '681975', '192.168.2.131', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d35f5c35f3dc21c29b7065c58a09395f2\"],\"password\":[\"RgbHShcnCZsdo1FDqbclSKkIFL72uRHw4CEjulTSyHq0dW+HHsOyZnHdpzcAobuJa0OnIrnrZ4PaFgZc6xcD6w\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"35f5c35f3dc21c29b7065c58a09395f2\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"35f5c35f3dc21c29b7065c58a09395f2\"],\"username\":[\"adminjyd100\"],\"password\":[\"RgbHShcnCZsdo1FDqbclSKkIFL72uRHw4CEjulTSyHq0dW+HHsOyZnHdpzcAobuJa0OnIrnrZ4PaFgZc6xcD6w\\u003d\\u003d\"],\"valcode\":[\"c4kv\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"c4kv\"],\"username\":[\"adminjyd100\"]}', '2024-01-27 12:11:43', 2);
+INSERT INTO `sys_user_oper_log` VALUES (206, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.17.240.1', '357075', '192.168.2.131', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d728d5a7093910d538c83d91e997818dd\"],\"password\":[\"JlvIXfCaAxCr2srlQ9W+t1hvGcKPtCCAE0dqsijgUrCMSHHL9mDzk6pJSHI8bQH8gTXaQZqw7gXC9orE0IdyxA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"728d5a7093910d538c83d91e997818dd\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"728d5a7093910d538c83d91e997818dd\"],\"username\":[\"adminjyd100\"],\"password\":[\"JlvIXfCaAxCr2srlQ9W+t1hvGcKPtCCAE0dqsijgUrCMSHHL9mDzk6pJSHI8bQH8gTXaQZqw7gXC9orE0IdyxA\\u003d\\u003d\"],\"valcode\":[\"8ybu\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"8ybu\"],\"username\":[\"adminjyd100\"]}', '2024-01-27 12:12:54', 2);
+INSERT INTO `sys_user_oper_log` VALUES (207, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '329220', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d5800965416087ec1921ad1b2b7a72580\"],\"password\":[\"LmqNh+2DhuU0vSUm6fXm8TOTYCf6OUnEjAmi4GgQVw/+aMvYfEX2Qpmcmx+QSev4o8uehBWxHaXVYv4/KQZ9VQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"5800965416087ec1921ad1b2b7a72580\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"5800965416087ec1921ad1b2b7a72580\"],\"username\":[\"adminjyd100\"],\"password\":[\"LmqNh+2DhuU0vSUm6fXm8TOTYCf6OUnEjAmi4GgQVw/+aMvYfEX2Qpmcmx+QSev4o8uehBWxHaXVYv4/KQZ9VQ\\u003d\\u003d\"],\"valcode\":[\"c2vn\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"c2vn\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 12:09:25', 2);
+INSERT INTO `sys_user_oper_log` VALUES (208, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '259629', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d8da8372af247ec9a304e6125a70acb7e\"],\"password\":[\"VonAL3WXGCAxpDlbmWCKG8VuHpepEyE6pEEtwaPtSUwFEfkNPrzIZsJ8I3GovBC7WEe8Xp0Vmm9JUohysDE8aQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"8da8372af247ec9a304e6125a70acb7e\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"8da8372af247ec9a304e6125a70acb7e\"],\"username\":[\"adminjyd100\"],\"password\":[\"VonAL3WXGCAxpDlbmWCKG8VuHpepEyE6pEEtwaPtSUwFEfkNPrzIZsJ8I3GovBC7WEe8Xp0Vmm9JUohysDE8aQ\\u003d\\u003d\"],\"valcode\":[\"2nf2\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"2nf2\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 12:18:00', 2);
+INSERT INTO `sys_user_oper_log` VALUES (209, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '818420', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d87ea53e9dfe394289c18f5f2c957e8b2\"],\"password\":[\"V1i7JxCi0Y1siQdjH15GZPMFPh/ELbyq3t6qkr5VWNnbx3yoPUwU/OjBhAfaw4I2Cey2RgAdY3QFnywHDdMFIw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"87ea53e9dfe394289c18f5f2c957e8b2\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"87ea53e9dfe394289c18f5f2c957e8b2\"],\"username\":[\"adminjyd100\"],\"password\":[\"V1i7JxCi0Y1siQdjH15GZPMFPh/ELbyq3t6qkr5VWNnbx3yoPUwU/OjBhAfaw4I2Cey2RgAdY3QFnywHDdMFIw\\u003d\\u003d\"],\"valcode\":[\"xph5\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"xph5\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 13:38:46', 2);
+INSERT INTO `sys_user_oper_log` VALUES (210, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '442955', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d140776fed37dec50db98d1012cae6500\"],\"password\":[\"Ey2+EpswSPAMhQQYhm1ig7ghLNbWwfB3Wwy+GZt3HzbcXkAx5H9hwY/nay62q9gTGNxHWhyK0KWbMv0cehNMEg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"140776fed37dec50db98d1012cae6500\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"140776fed37dec50db98d1012cae6500\"],\"username\":[\"adminjyd100\"],\"password\":[\"Ey2+EpswSPAMhQQYhm1ig7ghLNbWwfB3Wwy+GZt3HzbcXkAx5H9hwY/nay62q9gTGNxHWhyK0KWbMv0cehNMEg\\u003d\\u003d\"],\"valcode\":[\"wxj3\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"wxj3\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 15:02:08', 2);
+INSERT INTO `sys_user_oper_log` VALUES (211, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '218814', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d77b3e914a0954af1f83bbf832f20e099\"],\"password\":[\"PTx0Md0ztclI6gZl0cDlUwzG62JEPOjjmgb5oqFa3zJQcRVEXScX/Im+9SChZR/3jZwyZuYDnpiL3vjKKFSagw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"77b3e914a0954af1f83bbf832f20e099\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"77b3e914a0954af1f83bbf832f20e099\"],\"username\":[\"adminjyd100\"],\"password\":[\"PTx0Md0ztclI6gZl0cDlUwzG62JEPOjjmgb5oqFa3zJQcRVEXScX/Im+9SChZR/3jZwyZuYDnpiL3vjKKFSagw\\u003d\\u003d\"],\"valcode\":[\"2lkc\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"2lkc\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 16:53:58', 2);
+INSERT INTO `sys_user_oper_log` VALUES (212, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '707984', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d592177398daa6f79d20f1d3fbeeaaa37\"],\"password\":[\"NbAcNVma3UZose/xccjO81Q28Isv618nr/35JJwp5iicBdAMFHICBjzFFlp0BPy9l4oqO46ADq5MiJ53DSo5+w\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"592177398daa6f79d20f1d3fbeeaaa37\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"592177398daa6f79d20f1d3fbeeaaa37\"],\"username\":[\"adminjyd100\"],\"password\":[\"NbAcNVma3UZose/xccjO81Q28Isv618nr/35JJwp5iicBdAMFHICBjzFFlp0BPy9l4oqO46ADq5MiJ53DSo5+w\\u003d\\u003d\"],\"valcode\":[\"5emm\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"5emm\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 16:56:04', 2);
+INSERT INTO `sys_user_oper_log` VALUES (213, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '440444', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d39dc223b7f7dede82872333aa4ed3fc8\"],\"password\":[\"CxlEh+AsWHeZcUZ5muzl5r5rAFzon6/DYALtx3Iirs3Y++WsLFiY7ptveVRItpVaRjQOcnBL8EfNsbqxZ5vOQQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"39dc223b7f7dede82872333aa4ed3fc8\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"39dc223b7f7dede82872333aa4ed3fc8\"],\"username\":[\"adminjyd100\"],\"password\":[\"CxlEh+AsWHeZcUZ5muzl5r5rAFzon6/DYALtx3Iirs3Y++WsLFiY7ptveVRItpVaRjQOcnBL8EfNsbqxZ5vOQQ\\u003d\\u003d\"],\"valcode\":[\"7dsd\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"7dsd\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 17:06:21', 2);
+INSERT INTO `sys_user_oper_log` VALUES (214, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '096713', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dcd1c0bb60c285294324763b848a84ddf\"],\"password\":[\"KzpoUQxxEirxVop3gIfPYBZ7OfqLZZTMz+sgZYNJ07Lz1xBUfwBCf8Kf2O+ZoVG0rsNoZVlBOrGlehiiQ2IGMg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"cd1c0bb60c285294324763b848a84ddf\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"cd1c0bb60c285294324763b848a84ddf\"],\"username\":[\"adminjyd100\"],\"password\":[\"KzpoUQxxEirxVop3gIfPYBZ7OfqLZZTMz+sgZYNJ07Lz1xBUfwBCf8Kf2O+ZoVG0rsNoZVlBOrGlehiiQ2IGMg\\u003d\\u003d\"],\"valcode\":[\"xepg\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"xepg\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 17:07:34', 2);
+INSERT INTO `sys_user_oper_log` VALUES (215, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '624970', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d12e5eb58bceb42f7990c2fdbe76d9299\"],\"password\":[\"EidrZBdfNlAzURQpWX2hCa7AXC4Rs785Jp6rks89Qmj1z+xbwR4i+hgWAvBDQOYVQgBtCqdIyT+mSh/JteiZjw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"12e5eb58bceb42f7990c2fdbe76d9299\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"12e5eb58bceb42f7990c2fdbe76d9299\"],\"username\":[\"adminjyd100\"],\"password\":[\"EidrZBdfNlAzURQpWX2hCa7AXC4Rs785Jp6rks89Qmj1z+xbwR4i+hgWAvBDQOYVQgBtCqdIyT+mSh/JteiZjw\\u003d\\u003d\"],\"valcode\":[\"tts4\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"tts4\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 17:09:25', 2);
+INSERT INTO `sys_user_oper_log` VALUES (216, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '654650', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d6833241820a8426c72fa5ac22dce602d\"],\"password\":[\"e/Lw5zxymLsms12wIwUpSct8irK0rpKRQe+zHvL1XUcHo9J1zK7mgSe46fkhAv1mREWHExdS+bWYhvaeZ8wRqw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"6833241820a8426c72fa5ac22dce602d\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"6833241820a8426c72fa5ac22dce602d\"],\"username\":[\"adminjyd100\"],\"password\":[\"e/Lw5zxymLsms12wIwUpSct8irK0rpKRQe+zHvL1XUcHo9J1zK7mgSe46fkhAv1mREWHExdS+bWYhvaeZ8wRqw\\u003d\\u003d\"],\"valcode\":[\"5mpw\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"5mpw\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 17:10:33', 2);
+INSERT INTO `sys_user_oper_log` VALUES (217, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '274846', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d31df656207641c3ced8618f5f1e51536\"],\"password\":[\"FFljA6mpF0U4OVviJqFecjy7WnmIRLqk4yYeWBHc0SjLCWjV9MMfU7b/B6kWdfpdtFSo3aRkTGD89VLUuyrcYQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"31df656207641c3ced8618f5f1e51536\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"31df656207641c3ced8618f5f1e51536\"],\"username\":[\"adminjyd100\"],\"password\":[\"FFljA6mpF0U4OVviJqFecjy7WnmIRLqk4yYeWBHc0SjLCWjV9MMfU7b/B6kWdfpdtFSo3aRkTGD89VLUuyrcYQ\\u003d\\u003d\"],\"valcode\":[\"9t9b\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"9t9b\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 17:12:32', 2);
+INSERT INTO `sys_user_oper_log` VALUES (218, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '857743', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d5db5e85842a004112bc2880434f7496f\"],\"password\":[\"VXhA/mDmBppX0jBkq5x6nM23etp4NyfFLyzdvJgH6zP7ATDeFmHFFQfEwgEtMzhifl1eoM3ZOw/1cKnjq94vhw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"5db5e85842a004112bc2880434f7496f\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"5db5e85842a004112bc2880434f7496f\"],\"username\":[\"adminjyd100\"],\"password\":[\"VXhA/mDmBppX0jBkq5x6nM23etp4NyfFLyzdvJgH6zP7ATDeFmHFFQfEwgEtMzhifl1eoM3ZOw/1cKnjq94vhw\\u003d\\u003d\"],\"valcode\":[\"ymp6\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"ymp6\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 17:29:56', 2);
+INSERT INTO `sys_user_oper_log` VALUES (219, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '707392', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d815507e091866f85dd0ca884a1e879fc\"],\"password\":[\"Pgw6wz9VQe8eM6cj0Olf4fXRzOxrlLApBzxyBWu6K4d+ORPMbCKRJ9GDwnde6t/tGkn5craxN+lwTeGNatq2kg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"815507e091866f85dd0ca884a1e879fc\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"815507e091866f85dd0ca884a1e879fc\"],\"username\":[\"adminjyd100\"],\"password\":[\"Pgw6wz9VQe8eM6cj0Olf4fXRzOxrlLApBzxyBWu6K4d+ORPMbCKRJ9GDwnde6t/tGkn5craxN+lwTeGNatq2kg\\u003d\\u003d\"],\"valcode\":[\"ppgd\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"ppgd\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 18:04:48', 2);
+INSERT INTO `sys_user_oper_log` VALUES (220, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '059694', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dd0be5b1dfa53a3cdac8d6be2d9a27ff6\"],\"password\":[\"gSwPZvZiZUPwDK8qJ8zqnJHDOX+sCVeTgSYczEHHJll8+x4DFXGVQGynI9fF1Ch8jIdEy7hyEMH2+Uc+dzSdXw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"d0be5b1dfa53a3cdac8d6be2d9a27ff6\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"d0be5b1dfa53a3cdac8d6be2d9a27ff6\"],\"username\":[\"adminjyd100\"],\"password\":[\"gSwPZvZiZUPwDK8qJ8zqnJHDOX+sCVeTgSYczEHHJll8+x4DFXGVQGynI9fF1Ch8jIdEy7hyEMH2+Uc+dzSdXw\\u003d\\u003d\"],\"valcode\":[\"dvdr\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"dvdr\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 18:31:35', 2);
+INSERT INTO `sys_user_oper_log` VALUES (221, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '821152', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d30ae7daa9481b053e73e2d87e54917a5\"],\"password\":[\"GAiAqhEl1mcRp2IULy/LMyLlBkyFDG6KRDPkERmCpUuF8j5NJM9Rjr17WjzGbCVXGIsCn9RBbhu8we5p2SB9Tw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"30ae7daa9481b053e73e2d87e54917a5\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"30ae7daa9481b053e73e2d87e54917a5\"],\"username\":[\"adminjyd100\"],\"password\":[\"GAiAqhEl1mcRp2IULy/LMyLlBkyFDG6KRDPkERmCpUuF8j5NJM9Rjr17WjzGbCVXGIsCn9RBbhu8we5p2SB9Tw\\u003d\\u003d\"],\"valcode\":[\"kstd\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"kstd\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 19:11:09', 2);
+INSERT INTO `sys_user_oper_log` VALUES (222, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '126458', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d3a05b4ed80015a8f16c91392348bb7d0\"],\"password\":[\"Ug4tKq9z/P3qCim6/RjaMlImz9ozCHEAfl98htX8ZeVifTrZafxfyBlanDHrpXGPoR6+EBcHNnDp+qvqzs0gJg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"3a05b4ed80015a8f16c91392348bb7d0\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"3a05b4ed80015a8f16c91392348bb7d0\"],\"username\":[\"adminjyd100\"],\"password\":[\"Ug4tKq9z/P3qCim6/RjaMlImz9ozCHEAfl98htX8ZeVifTrZafxfyBlanDHrpXGPoR6+EBcHNnDp+qvqzs0gJg\\u003d\\u003d\"],\"valcode\":[\"y47u\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"y47u\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 19:11:51', 2);
+INSERT INTO `sys_user_oper_log` VALUES (223, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '172.27.208.1', '951096', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d5245c16a8ab0b410ae5def9ee55ca9d2\"],\"password\":[\"h79lds6d3PQd841nAz4xAUwEymsAWxYQQWldmtVaP0BiZSB4zs6ggKsnZ4oWZb2kWi1dR/gYi9VjH5e3IWYGcQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"5245c16a8ab0b410ae5def9ee55ca9d2\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"5245c16a8ab0b410ae5def9ee55ca9d2\"],\"username\":[\"adminjyd100\"],\"password\":[\"h79lds6d3PQd841nAz4xAUwEymsAWxYQQWldmtVaP0BiZSB4zs6ggKsnZ4oWZb2kWi1dR/gYi9VjH5e3IWYGcQ\\u003d\\u003d\"],\"valcode\":[\"6ums\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"6ums\"],\"username\":[\"adminjyd100\"]}', '2024-01-30 20:06:14', 2);
+INSERT INTO `sys_user_oper_log` VALUES (224, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '911794', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d2ca4ce0776ae7c4d28e72612ed75fe6b\"],\"password\":[\"MsKOtQ0DXWdY0Fj6vsOdY6NHgpuGB2uLzx6XpxmGGWObZoP5QkuyChPAOFuskqslcAxYJbJ27SE5aB5LZBb3qQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"2ca4ce0776ae7c4d28e72612ed75fe6b\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"2ca4ce0776ae7c4d28e72612ed75fe6b\"],\"username\":[\"adminjyd100\"],\"password\":[\"MsKOtQ0DXWdY0Fj6vsOdY6NHgpuGB2uLzx6XpxmGGWObZoP5QkuyChPAOFuskqslcAxYJbJ27SE5aB5LZBb3qQ\\u003d\\u003d\"],\"valcode\":[\"u8hl\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"u8hl\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 10:02:11', 2);
+INSERT INTO `sys_user_oper_log` VALUES (225, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '661691', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d9156ea697ceb96878bb37367d7bace7d\"],\"password\":[\"Hl47Akcis+ntN7tSCyD5SAdbBFqb0xkfCXcw+88eBchZAk3vi/GNN2EpnUG1vKKkjP4XE17Ss3RGKeDVjkGLyw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"9156ea697ceb96878bb37367d7bace7d\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"9156ea697ceb96878bb37367d7bace7d\"],\"username\":[\"adminjyd100\"],\"password\":[\"Hl47Akcis+ntN7tSCyD5SAdbBFqb0xkfCXcw+88eBchZAk3vi/GNN2EpnUG1vKKkjP4XE17Ss3RGKeDVjkGLyw\\u003d\\u003d\"],\"valcode\":[\"8wpd\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"8wpd\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 10:42:38', 2);
+INSERT INTO `sys_user_oper_log` VALUES (226, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '615723', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003da96a27fac23c52db710796c1c528e30c\"],\"password\":[\"NGQawNSAc81QMiK/fbFO8b6NB9AKMJxu1M7RjTSsUjtTC4+DtVDOTtnam4y6WkvCegMEQexqgT9ukl4THa63bw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"a96a27fac23c52db710796c1c528e30c\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"a96a27fac23c52db710796c1c528e30c\"],\"username\":[\"adminjyd100\"],\"password\":[\"NGQawNSAc81QMiK/fbFO8b6NB9AKMJxu1M7RjTSsUjtTC4+DtVDOTtnam4y6WkvCegMEQexqgT9ukl4THa63bw\\u003d\\u003d\"],\"valcode\":[\"t98c\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"t98c\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 10:44:42', 2);
+INSERT INTO `sys_user_oper_log` VALUES (227, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '211775', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d4a14366d6465c2c4d050a487867328bf\"],\"password\":[\"cGSNgm0z0ikW+9smvAc8DocOXTrr1J8uFujUG0GcEsymcKcIF/2atuvjAmvArfDV+enREo5bZNS5EWvmE/LgLA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"4a14366d6465c2c4d050a487867328bf\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"4a14366d6465c2c4d050a487867328bf\"],\"username\":[\"adminjyd100\"],\"password\":[\"cGSNgm0z0ikW+9smvAc8DocOXTrr1J8uFujUG0GcEsymcKcIF/2atuvjAmvArfDV+enREo5bZNS5EWvmE/LgLA\\u003d\\u003d\"],\"valcode\":[\"n36d\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"n36d\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 11:05:41', 2);
+INSERT INTO `sys_user_oper_log` VALUES (228, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '685095', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dd0772719f59b7efb6e7de7a9a2bfc537\"],\"password\":[\"Z6mMygLOvPRa9dob6nYyPg/TxzDuq5AEfBAyQ0BxMxk5FWcxmwwWVUZMoM7NhiwjUHv4e2cbx5GhT2KW5jKGuQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"d0772719f59b7efb6e7de7a9a2bfc537\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"d0772719f59b7efb6e7de7a9a2bfc537\"],\"username\":[\"adminjyd100\"],\"password\":[\"Z6mMygLOvPRa9dob6nYyPg/TxzDuq5AEfBAyQ0BxMxk5FWcxmwwWVUZMoM7NhiwjUHv4e2cbx5GhT2KW5jKGuQ\\u003d\\u003d\"],\"valcode\":[\"jhwm\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"jhwm\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 11:20:06', 2);
+INSERT INTO `sys_user_oper_log` VALUES (229, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '592007', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d7efb3e245bd9ab046e37f3a073aa1325\"],\"password\":[\"G6XDaD+P+L1Tk/RYouA0qsqrwr5vbcA90l6uV2czrfRJTu0IMFJPlQESQU1rbSgSNA+su3tIeCJnUpQr6fC29Q\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"7efb3e245bd9ab046e37f3a073aa1325\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"7efb3e245bd9ab046e37f3a073aa1325\"],\"username\":[\"adminjyd100\"],\"password\":[\"G6XDaD+P+L1Tk/RYouA0qsqrwr5vbcA90l6uV2czrfRJTu0IMFJPlQESQU1rbSgSNA+su3tIeCJnUpQr6fC29Q\\u003d\\u003d\"],\"valcode\":[\"2c77\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"2c77\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 11:21:13', 2);
+INSERT INTO `sys_user_oper_log` VALUES (230, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '031917', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d3c4b8d75c691e5b68489dfd3b11ed1b6\"],\"password\":[\"W73MPnyDq8lJHvRJNaEEMmDnXKvYy9IEjR9nEiRaH+Nn0G2CVoTy7mYrLc8pxIGFblAR4VKGBbbt0JwRLmyJkA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"3c4b8d75c691e5b68489dfd3b11ed1b6\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"3c4b8d75c691e5b68489dfd3b11ed1b6\"],\"username\":[\"adminjyd100\"],\"password\":[\"W73MPnyDq8lJHvRJNaEEMmDnXKvYy9IEjR9nEiRaH+Nn0G2CVoTy7mYrLc8pxIGFblAR4VKGBbbt0JwRLmyJkA\\u003d\\u003d\"],\"valcode\":[\"fefl\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"fefl\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 11:25:02', 2);
+INSERT INTO `sys_user_oper_log` VALUES (231, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '794960', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d805b5f81757a63716c7969a6167c51ad\"],\"password\":[\"fsTLumMIZZRiRSAPhsHtgiOjFVpuGAHUlb1iqBiasA8JRuAnLjrMNzu0FS4Rsr2W2vqnIG+sv8xcMcErpIH8sw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"805b5f81757a63716c7969a6167c51ad\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"805b5f81757a63716c7969a6167c51ad\"],\"username\":[\"adminjyd100\"],\"password\":[\"fsTLumMIZZRiRSAPhsHtgiOjFVpuGAHUlb1iqBiasA8JRuAnLjrMNzu0FS4Rsr2W2vqnIG+sv8xcMcErpIH8sw\\u003d\\u003d\"],\"valcode\":[\"y3cp\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"y3cp\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 11:25:26', 2);
+INSERT INTO `sys_user_oper_log` VALUES (232, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '195159', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003db4c70b8ee539846ba3ea04915997cb5f\"],\"password\":[\"hQW7JwZxZzdfrxa2Wj2fSL1RaRJ7qqj2THUVmzGVqpIa9ICrhz3ZxnLL+neTNbWcR78cxQ+NPU9rQrGZZAlPjQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"b4c70b8ee539846ba3ea04915997cb5f\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"b4c70b8ee539846ba3ea04915997cb5f\"],\"username\":[\"adminjyd100\"],\"password\":[\"hQW7JwZxZzdfrxa2Wj2fSL1RaRJ7qqj2THUVmzGVqpIa9ICrhz3ZxnLL+neTNbWcR78cxQ+NPU9rQrGZZAlPjQ\\u003d\\u003d\"],\"valcode\":[\"s78j\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"s78j\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 11:42:53', 2);
+INSERT INTO `sys_user_oper_log` VALUES (233, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '074891', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003defd93510208cb1dca732814df4c8c347\"],\"password\":[\"Xn0pd72FDSF3t24ZR2P/aeCJ97ndtEdt2BW/7ppqbrlqWT38mjx0y2qvG0I/Qr7H7zfkgLFjgCLIAfKrTDDwTg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"efd93510208cb1dca732814df4c8c347\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"efd93510208cb1dca732814df4c8c347\"],\"username\":[\"adminjyd100\"],\"password\":[\"Xn0pd72FDSF3t24ZR2P/aeCJ97ndtEdt2BW/7ppqbrlqWT38mjx0y2qvG0I/Qr7H7zfkgLFjgCLIAfKrTDDwTg\\u003d\\u003d\"],\"valcode\":[\"mpqj\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"mpqj\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 11:52:45', 2);
+INSERT INTO `sys_user_oper_log` VALUES (234, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '823461', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d1bfbf2d3e1431eee38be956a129ef884\"],\"password\":[\"LlQgyKgosEtNs3HB/Clwo5GlUiG6wnlOet+Szt8T2h2LM4gQwMrVJfnLN8CRLfWyrUrLMTmQRAYyMAq7paFGpA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"1bfbf2d3e1431eee38be956a129ef884\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"1bfbf2d3e1431eee38be956a129ef884\"],\"username\":[\"adminjyd100\"],\"password\":[\"LlQgyKgosEtNs3HB/Clwo5GlUiG6wnlOet+Szt8T2h2LM4gQwMrVJfnLN8CRLfWyrUrLMTmQRAYyMAq7paFGpA\\u003d\\u003d\"],\"valcode\":[\"NLW6\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"NLW6\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 11:57:24', 2);
+INSERT INTO `sys_user_oper_log` VALUES (235, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '518225', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d3fd7c1d06f1ebc6d37f31118b8df237c\"],\"password\":[\"Be0FdR6C3fgA0PPZlV9jvMlPRTRv2JbvOPhrsSmZ9LXaI2u7rf2zA9c+iWiXfkhjgyea8tqNAvmUTenq0lb9cw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"3fd7c1d06f1ebc6d37f31118b8df237c\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"3fd7c1d06f1ebc6d37f31118b8df237c\"],\"username\":[\"adminjyd100\"],\"password\":[\"Be0FdR6C3fgA0PPZlV9jvMlPRTRv2JbvOPhrsSmZ9LXaI2u7rf2zA9c+iWiXfkhjgyea8tqNAvmUTenq0lb9cw\\u003d\\u003d\"],\"valcode\":[\"wypp\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"wypp\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 13:37:39', 2);
+INSERT INTO `sys_user_oper_log` VALUES (236, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '674088', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003def48874b49c4c845063be3ad3c7fe171\"],\"password\":[\"XANTHGFghtSt7wGZPHLZSg3rKtXkbqVtgmh+gJYg7nxPE5VXCOEtUMhVxppjB928YoQyKjqiKml7sRxYa7539w\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"ef48874b49c4c845063be3ad3c7fe171\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"ef48874b49c4c845063be3ad3c7fe171\"],\"username\":[\"adminjyd100\"],\"password\":[\"XANTHGFghtSt7wGZPHLZSg3rKtXkbqVtgmh+gJYg7nxPE5VXCOEtUMhVxppjB928YoQyKjqiKml7sRxYa7539w\\u003d\\u003d\"],\"valcode\":[\"tjk7\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"tjk7\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 13:46:38', 2);
+INSERT INTO `sys_user_oper_log` VALUES (237, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '931912', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dffd3709c0e6cf4ce04b06270acb2a93a\"],\"password\":[\"WaSwS5ZGlr+yjMTIq/cclkXzjT37Vk7SYlNn8/MxuQuDe+ccydqMRZdLh1BbWozobPgKBR4AQhVKMGEb2Uf4OQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"ffd3709c0e6cf4ce04b06270acb2a93a\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"ffd3709c0e6cf4ce04b06270acb2a93a\"],\"username\":[\"adminjyd100\"],\"password\":[\"WaSwS5ZGlr+yjMTIq/cclkXzjT37Vk7SYlNn8/MxuQuDe+ccydqMRZdLh1BbWozobPgKBR4AQhVKMGEb2Uf4OQ\\u003d\\u003d\"],\"valcode\":[\"3s5T\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"3s5T\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 13:47:28', 2);
+INSERT INTO `sys_user_oper_log` VALUES (238, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '321202', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003de33c70bd69072fc5fdd3bea437c69a77\"],\"password\":[\"SzUNPUTVZBdVMz+BQBC8XetUYrgkiHs30rvx6cySgn5cX1H0VTDfHB45Abf5BgTUMVJemyCH1OyFgBA2YBNw0Q\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"e33c70bd69072fc5fdd3bea437c69a77\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"e33c70bd69072fc5fdd3bea437c69a77\"],\"username\":[\"adminjyd100\"],\"password\":[\"SzUNPUTVZBdVMz+BQBC8XetUYrgkiHs30rvx6cySgn5cX1H0VTDfHB45Abf5BgTUMVJemyCH1OyFgBA2YBNw0Q\\u003d\\u003d\"],\"valcode\":[\"fjjs\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"fjjs\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 13:50:56', 2);
+INSERT INTO `sys_user_oper_log` VALUES (239, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '643027', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d867d0fefed8dde2b9dc5a54451030729\"],\"password\":[\"IYdILVYNDZkDQ/VFCE4EUWEINY9X5Wu4ark5jcv/1A1Uu8bob3rcVRMCSjg3QX8S460ukI/rq7EihMpvQ7r85w\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"867d0fefed8dde2b9dc5a54451030729\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"867d0fefed8dde2b9dc5a54451030729\"],\"username\":[\"adminjyd100\"],\"password\":[\"IYdILVYNDZkDQ/VFCE4EUWEINY9X5Wu4ark5jcv/1A1Uu8bob3rcVRMCSjg3QX8S460ukI/rq7EihMpvQ7r85w\\u003d\\u003d\"],\"valcode\":[\"gpkq\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"gpkq\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 17:03:38', 2);
+INSERT INTO `sys_user_oper_log` VALUES (240, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '420476', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003da3c886c965a7db04e001c00226b3413f\"],\"password\":[\"P/QZQItqj6IVWXStJkh3o+BXOi99hmOdv1vFCQHbHYUQfyrllHHOEvSMNgJkDz8UmlVHjpvoxvCYqnvmuMNnWw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"a3c886c965a7db04e001c00226b3413f\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"a3c886c965a7db04e001c00226b3413f\"],\"username\":[\"adminjyd100\"],\"password\":[\"P/QZQItqj6IVWXStJkh3o+BXOi99hmOdv1vFCQHbHYUQfyrllHHOEvSMNgJkDz8UmlVHjpvoxvCYqnvmuMNnWw\\u003d\\u003d\"],\"valcode\":[\"k9nv\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"k9nv\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 18:15:58', 2);
+INSERT INTO `sys_user_oper_log` VALUES (241, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '331358', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d093c480d4ddc0c0d5fe8687a7cb4e395\"],\"password\":[\"OTRl5IPA2+BT+SEdA54kYPPZPxarMyGwAIMbCj3U+L9Srcpsi6o8ZhQ6/oxv9Ls7xJZnCUY0NnBbMMFM+XzX8A\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"093c480d4ddc0c0d5fe8687a7cb4e395\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"093c480d4ddc0c0d5fe8687a7cb4e395\"],\"username\":[\"adminjyd100\"],\"password\":[\"OTRl5IPA2+BT+SEdA54kYPPZPxarMyGwAIMbCj3U+L9Srcpsi6o8ZhQ6/oxv9Ls7xJZnCUY0NnBbMMFM+XzX8A\\u003d\\u003d\"],\"valcode\":[\"57ar\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"57ar\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 18:34:15', 2);
+INSERT INTO `sys_user_oper_log` VALUES (242, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '900960', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003df757295384bd91d7367311a6ca205640\"],\"password\":[\"aRRsRd4pD3+iHjM72d38yDY6rV8x5wLdMKczetscsPgivgtjluFKXECXKSLQaBtVDe/mDJZPWNfy/NksuK6kjw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"f757295384bd91d7367311a6ca205640\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"f757295384bd91d7367311a6ca205640\"],\"username\":[\"adminjyd100\"],\"password\":[\"aRRsRd4pD3+iHjM72d38yDY6rV8x5wLdMKczetscsPgivgtjluFKXECXKSLQaBtVDe/mDJZPWNfy/NksuK6kjw\\u003d\\u003d\"],\"valcode\":[\"8sud\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"8sud\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 18:48:28', 2);
+INSERT INTO `sys_user_oper_log` VALUES (243, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '146041', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003db69c04416b0cd87544e7616bb507c728\"],\"password\":[\"BINHr3D0ZUHQWApV48Bd0v2/9cjyFQgnYiKr6YZ9zDKc4I8zww7WLRh6TNJpeZ/ejGI6/NfznySn+dNsf+XS9Q\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"b69c04416b0cd87544e7616bb507c728\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"b69c04416b0cd87544e7616bb507c728\"],\"username\":[\"adminjyd100\"],\"password\":[\"BINHr3D0ZUHQWApV48Bd0v2/9cjyFQgnYiKr6YZ9zDKc4I8zww7WLRh6TNJpeZ/ejGI6/NfznySn+dNsf+XS9Q\\u003d\\u003d\"],\"valcode\":[\"hjsf\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"hjsf\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 18:57:23', 2);
+INSERT INTO `sys_user_oper_log` VALUES (244, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '726475', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d87f2b272a6d2949896846e558a58f424\"],\"password\":[\"MDpQgzl6HiFDX6mO0S+5I4YVZCHFhUqWM19G0WfJWY7c3VIqRXSohtoPZfkDkR9DqHYoMq0H/nDq8v5l367Q9g\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"87f2b272a6d2949896846e558a58f424\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"87f2b272a6d2949896846e558a58f424\"],\"username\":[\"adminjyd100\"],\"password\":[\"MDpQgzl6HiFDX6mO0S+5I4YVZCHFhUqWM19G0WfJWY7c3VIqRXSohtoPZfkDkR9DqHYoMq0H/nDq8v5l367Q9g\\u003d\\u003d\"],\"valcode\":[\"cjwd\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"cjwd\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 19:10:17', 2);
+INSERT INTO `sys_user_oper_log` VALUES (245, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '831240', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d7e428b5bafe1320f577f3d49c657b39c\"],\"password\":[\"cWz0Qoth7USRK2J8Ra9d+MwQUywSNU4NKjfj81mnQxvEzgXX5XBPgvqgM3u8YxGrVd/zwRDGPdrjsvmj7W0pOg\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"7e428b5bafe1320f577f3d49c657b39c\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"7e428b5bafe1320f577f3d49c657b39c\"],\"username\":[\"adminjyd100\"],\"password\":[\"cWz0Qoth7USRK2J8Ra9d+MwQUywSNU4NKjfj81mnQxvEzgXX5XBPgvqgM3u8YxGrVd/zwRDGPdrjsvmj7W0pOg\\u003d\\u003d\"],\"valcode\":[\"kvtl\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"kvtl\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 19:15:35', 2);
+INSERT INTO `sys_user_oper_log` VALUES (246, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '692063', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d339c514e296753c44d54270dc7135e85\"],\"password\":[\"Ly49C3WwiqYWYOwjLlroNcit45OpQotXXjXNxv1DVlm0zya8JeUh0isdCtBYkfvnV4z04OFVaoP8QP6KmNQ2iA\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"339c514e296753c44d54270dc7135e85\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"339c514e296753c44d54270dc7135e85\"],\"username\":[\"adminjyd100\"],\"password\":[\"Ly49C3WwiqYWYOwjLlroNcit45OpQotXXjXNxv1DVlm0zya8JeUh0isdCtBYkfvnV4z04OFVaoP8QP6KmNQ2iA\\u003d\\u003d\"],\"valcode\":[\"fxpu\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"fxpu\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 19:17:00', 2);
+INSERT INTO `sys_user_oper_log` VALUES (247, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '047496', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d9281acbb448bc229fa44ec81bdda4253\"],\"password\":[\"PMTp/mTpoZe/FMEhxCaPC6DjCFVJoFSnWp7kvKE+q+c8p+E3AMsDqt8j0Ot1pJNHLeyN2vcoL3lMD1B4vqsA5g\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"9281acbb448bc229fa44ec81bdda4253\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"9281acbb448bc229fa44ec81bdda4253\"],\"username\":[\"adminjyd100\"],\"password\":[\"PMTp/mTpoZe/FMEhxCaPC6DjCFVJoFSnWp7kvKE+q+c8p+E3AMsDqt8j0Ot1pJNHLeyN2vcoL3lMD1B4vqsA5g\\u003d\\u003d\"],\"valcode\":[\"4vlr\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"4vlr\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 19:22:12', 2);
+INSERT INTO `sys_user_oper_log` VALUES (248, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '688344', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d2a2b2f7015fdfef34c706409b1444358\"],\"password\":[\"gw0c7gQ7t8/wGwL1BGjoBgaejAl8xs+TPk6tiMxTfVxfmzk0zMheQusUBSXPk9HyD9kppEjIRz5Cqk8pGIT72A\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"2a2b2f7015fdfef34c706409b1444358\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"2a2b2f7015fdfef34c706409b1444358\"],\"username\":[\"adminjyd100\"],\"password\":[\"gw0c7gQ7t8/wGwL1BGjoBgaejAl8xs+TPk6tiMxTfVxfmzk0zMheQusUBSXPk9HyD9kppEjIRz5Cqk8pGIT72A\\u003d\\u003d\"],\"valcode\":[\"8mx4\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"8mx4\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 19:23:04', 2);
+INSERT INTO `sys_user_oper_log` VALUES (249, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '677444', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003d98994d75371aa28119332cff72576ba9\"],\"password\":[\"T3/L0EfKZ53Hf4cUYXMUPnBUob1lspirGIQtHThefm7BO3RGAxbyTMtzGWMe9qfl9mnmMXf2yqAcE9jj8+bweQ\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"98994d75371aa28119332cff72576ba9\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"98994d75371aa28119332cff72576ba9\"],\"username\":[\"adminjyd100\"],\"password\":[\"T3/L0EfKZ53Hf4cUYXMUPnBUob1lspirGIQtHThefm7BO3RGAxbyTMtzGWMe9qfl9mnmMXf2yqAcE9jj8+bweQ\\u003d\\u003d\"],\"valcode\":[\"xswp\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"xswp\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 19:39:59', 2);
+INSERT INTO `sys_user_oper_log` VALUES (250, '系统模块', 1, '登陆成功！', 'adminjyd100', 1, '192.168.2.166', '419978', '192.168.2.166', '{\"REQUEST_QUERY_STR\":[\"sign\\u003dfaefdbd9f2f29712f438fc055cbfa46d\"],\"password\":[\"WoyKSj3sc9gIRj00tTf341s0oze/yPJkqK/ttsHDSOjfbndgKR9R44IDcghkpG9LH3/MgKboysvquzcdH/SCtw\\u003d\\u003d\"],\"smscode\":[\"123456\"],\"sign\":[\"faefdbd9f2f29712f438fc055cbfa46d\"],\"REQUEST_PARAM_MAP\":[{\"sign\":[\"faefdbd9f2f29712f438fc055cbfa46d\"],\"username\":[\"adminjyd100\"],\"password\":[\"WoyKSj3sc9gIRj00tTf341s0oze/yPJkqK/ttsHDSOjfbndgKR9R44IDcghkpG9LH3/MgKboysvquzcdH/SCtw\\u003d\\u003d\"],\"valcode\":[\"h9ef\"],\"smscode\":[\"123456\"]}],\"valcode\":[\"h9ef\"],\"username\":[\"adminjyd100\"]}', '2024-01-31 20:47:04', 2);
 
-/*Data for the table `sys_user_oper_log` */
-
-insert  into `sys_user_oper_log`(`id`,`right_name`,`oper_type`,`detail`,`user_name`,`user_id`,`ip`,`logid`,`src_ip`,`req_args`,`oper_time`,`source`) values 
-(1,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','790801','192.168.0.106','{\"sign\":[\"2e7d645b181215bf5253fb89af946673\"],\"username\":[\"adminjyd100\"],\"password\":[\"DkXbn+1khoBm99psDFYLQ2tsdK5G5tNhSZb+58Z/I9N//IsSIhBHv9VPUVsBmRlPQMRtG7u3teEEBwcCitBixQ\\u003d\\u003d\"],\"valcode\":[\"ap4b\"],\"smscode\":[\"123456\"]}','2021-01-07 17:20:32',2),
-(2,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','512229','192.168.0.106','{\"sign\":[\"6fd577523bc69d7278fa185a4f148d9c\"],\"username\":[\"adminjyd100\"],\"password\":[\"HlbU4TVTpzk/Z2ALpAwZdDwhsu+18YuLyghN2SpBhPvJBMMLTyXII3nycQnVMTneInYVL9yv4Sw9FG/DnLJ9ZQ\\u003d\\u003d\"],\"valcode\":[\"8ul9\"],\"smscode\":[\"123456\"]}','2021-01-07 17:43:02',2),
-(3,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','132747','192.168.0.106','{\"sign\":[\"ed7a9635798922d313087deece2bdf97\"],\"username\":[\"adminjyd100\"],\"password\":[\"HPpSHhf158cFyY27MX9Ask3dw9U9AdTEuhou3JPwq4hI/P9WZGOBVF16xYKB5OrDJmRYvf3SPc1dk8LZ2t4OFA\\u003d\\u003d\"],\"valcode\":[\"vxu7\"],\"smscode\":[\"123456\"]}','2021-01-07 17:57:33',2),
-(4,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','124089','192.168.0.106','{\"sign\":[\"28f07e40bc9f80f0398b2844ed1cbb2d\"],\"username\":[\"adminjyd100\"],\"password\":[\"fsv88/ykXmSCJHzCeUoUZMH9FchCOLbj3TblTH2s01CUymmuKs8VoH5IaIbxzYj1R1R5S78kud5vO+OZer0+Yw\\u003d\\u003d\"],\"valcode\":[\"b9b4\"],\"smscode\":[\"123456\"]}','2021-01-07 18:01:43',2),
-(5,'系统模块',2,'修改角色表数据,id为10','adminjyd100',1,'172.28.80.1','800086','192.168.0.106','{\"roleName\":[\"总经办-领导\"],\"hiddenCode\":[\"10\"],\"sysRight\":[\"90002\",\"90001\",\"40003\",\"40002\",\"40001\",\"40004\",\"30002\",\"80003\",\"30001\",\"80002\",\"30004\",\"80001\",\"30003\",\"30020\",\"30021\",\"30006\",\"30005\",\"30008\",\"30007\",\"20001\",\"70001\",\"50002\",\"50001\",\"60002\",\"50004\",\"60001\",\"50003\",\"10002\",\"10001\",\"50005\",\"10004\",\"10003\",\"10006\",\"30019\",\"10005\",\"10000\",\"20000\",\"40000\",\"50000\",\"70000\",\"80000\"],\"description\":[\"总经办-领导7\"],\"sno\":[\"10\"]}','2021-01-07 18:02:29',2),
-(6,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','218404','192.168.0.106','{\"sign\":[\"63e6efd97d40430c242f3dcf50bd487f\"],\"username\":[\"adminjyd100\"],\"password\":[\"dmIYHHfXbca1fXZY+5YC0nAFo9O/kQCLEg2rAkFJDA11A+rw8ZrSMaYqHRqX1CUj87yBUoNvc64EaeeZl8/+1w\\u003d\\u003d\"],\"valcode\":[\"xqpv\"],\"smscode\":[\"123456\"]}','2021-01-08 10:25:23',2),
-(7,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','912047','192.168.0.106','{\"sign\":[\"34d60b402777a6e2fc1793e861fc4755\"],\"username\":[\"adminjyd100\"],\"password\":[\"KUoyr+zq4at63njlTLhFzsASle8qK6d/RomJexxsjMJ4te5qemM3hLW59va06PxM2xET1HyXY9tCZwqXVb0A/g\\u003d\\u003d\"],\"valcode\":[\"mxx5\"],\"smscode\":[\"123456\"]}','2021-01-08 11:09:06',2),
-(8,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','991049','192.168.0.106','{\"sign\":[\"a6206c99067634f19fa5a7e35cb0c454\"],\"username\":[\"adminjyd100\"],\"password\":[\"E5AjVISFruh9qSGuO782q6bbrd8ur4THZKHoeFGzbIorSpXWABENhSE9bmwKnTeUxIx9Ur8wEa0l0RkNOz1Evg\\u003d\\u003d\"],\"valcode\":[\"kyb8\"],\"smscode\":[\"123456\"]}','2021-01-08 11:29:07',2),
-(9,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','228297','192.168.0.106','{\"sign\":[\"64e28c0c0749a8156f975f4fd4f89c38\"],\"username\":[\"adminjyd100\"],\"password\":[\"f7lcXRQdtXCD9KVTbASJpTiTZlSS0ICBUItVoq+OWcrnARCExVo9CaUpT9hZnLvbgB7VY2lGNI7saDwjSGhhmg\\u003d\\u003d\"],\"valcode\":[\"gr8g\"],\"smscode\":[\"123456\"]}','2021-01-08 11:38:12',2),
-(10,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','970859','192.168.0.106','{\"sign\":[\"9568cac953a606795f4768361a7ddbc6\"],\"username\":[\"adminjyd100\"],\"password\":[\"N7lQ9z8c9h4l6TGVAlxiLuiLQS9zilOKTYQqKijMrf+sH5UlJPoIe6T6RusMzd1Tm5j+ZER7vMarkfyYiGoOtA\\u003d\\u003d\"],\"valcode\":[\"34CB\"],\"smscode\":[\"123456\"]}','2021-01-08 13:20:15',2),
-(11,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','525446','192.168.0.106','{\"sign\":[\"935a568aef60d4300a5cd23a2931adaa\"],\"username\":[\"adminjyd100\"],\"password\":[\"KAO60Yq6H5LE1Nsq/fqQrpz3jm70pWX1DTJ/CM9OTaH8TejDeawdotqwABUl8penWY3Yq7A/DuzcF9H5mBUvGw\\u003d\\u003d\"],\"valcode\":[\"ptqn\"],\"smscode\":[\"123456\"]}','2021-01-08 14:53:25',2),
-(12,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','496729','192.168.0.106','{\"sign\":[\"d744e0b859361eace048150d46435b87\"],\"username\":[\"adminjyd100\"],\"password\":[\"FuwI0Z5Ys5SsDAtantFRKEyW1e2qikx0k/0AwMQrwlMu8R2qaEMB4l1qs/WWC0Hsk/k5s1czkWWt/2RIwcdRnA\\u003d\\u003d\"],\"valcode\":[\"tc5k\"],\"smscode\":[\"123456\"]}','2021-01-20 14:58:23',2),
-(13,'系统模块',2,'修改角色表数据,id为10','adminjyd100',1,'172.28.80.1','331955','192.168.0.106','{\"roleName\":[\"总经办-领导\"],\"hiddenCode\":[\"10\"],\"sysRight\":[\"90002\",\"90001\",\"40003\",\"40002\",\"40001\",\"40004\",\"30002\",\"80003\",\"30001\",\"80002\",\"30004\",\"80001\",\"30003\",\"30020\",\"30021\",\"30006\",\"30005\",\"30008\",\"30007\",\"20001\",\"70001\",\"50002\",\"50001\",\"60002\",\"50004\",\"60001\",\"50003\",\"10002\",\"10001\",\"50005\",\"10004\",\"10003\",\"10006\",\"30019\",\"10005\",\"10000\",\"20000\",\"40000\",\"50000\",\"70000\",\"80000\"],\"description\":[\"总经办-领导7\"],\"sno\":[\"10\"]}','2021-01-20 14:59:13',2),
-(14,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','770837','192.168.0.106','{\"sign\":[\"80c00463b1ccc8a4e290a4166347d3d0\"],\"username\":[\"adminjyd100\"],\"password\":[\"HmzDklNm7nAD/ogbhejUouosHQPQgMqpkVCG4XtPjYVKJG/gIDDt6FxfUI/aXRIUce+ywMK5O+YJHSbdKaPWqw\\u003d\\u003d\"],\"valcode\":[\"y84l\"],\"smscode\":[\"123456\"]}','2021-01-20 15:01:40',2),
-(15,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','695971','192.168.0.106','{\"sign\":[\"9e4b48fb2d017c1ec720fbd7ad6acd3e\"],\"username\":[\"adminjyd100\"],\"password\":[\"CPt8mykFpYBp3Xefrr2oAgcCEmUxsxq+OO2nx2wjUfSxXf5Vgwk1Em0vQHvCchetrX3GIeHa7sd+duX3LCEzXA\\u003d\\u003d\"],\"valcode\":[\"jj8p\"],\"smscode\":[\"123456\"]}','2021-01-20 15:04:16',2),
-(16,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','925669','192.168.0.106','{\"sign\":[\"ec6efe196754433c6464846f91cd092f\"],\"username\":[\"adminjyd100\"],\"password\":[\"acbM3Vjs04RwOFgUudXVDDWkRp3hS9UQYV0qXq8LPrinaPOzKa7xdyMmaQIkWody7gMkQ311UXeEP9sAV1lnyg\\u003d\\u003d\"],\"valcode\":[\"5e4c\"],\"smscode\":[\"123456\"]}','2021-01-20 15:16:08',2),
-(17,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','668947','192.168.0.106','{\"sign\":[\"66b87e5522dede9a2a29b7909c60649a\"],\"username\":[\"adminjyd100\"],\"password\":[\"d62y3pIK8QJvYMwArcTvyYBkFE76p5JGYnkLvzuEySnADwkwsFB4WvFdNZwBD5Kcg/esHNfiJdlyM6JMg/CTdw\\u003d\\u003d\"],\"valcode\":[\"vbwx\"],\"smscode\":[\"123456\"]}','2021-01-20 15:16:32',2),
-(18,'系统模块',1,'登陆成功！','adminjyd100',1,'172.28.80.1','608195','192.168.0.106','{\"sign\":[\"1b23e722402746bed9079cf3a57e453e\"],\"username\":[\"adminjyd100\"],\"password\":[\"c5M756m3dIw1uPqIivTZZE/wm2fitEBi6C2ThRM7tThW4jog7jS4fs+bDBZe9cqc5LW60cYEHW6LkDe7WEW2Yg\\u003d\\u003d\"],\"valcode\":[\"22vk\"],\"smscode\":[\"123456\"]}','2021-01-20 15:23:24',2),
-(19,'系统模块',1,'登陆成功！','adminjyd100',1,'172.29.0.1','695012','192.168.0.106','{\"sign\":[\"f550c1be84a74da751066170c1fa96b4\"],\"username\":[\"adminjyd100\"],\"password\":[\"PWuA5uhc0znXXai8fbREsZeLmne+STp8xjEa4Maj03QUWZFMz+t1k8zlXxx6sCd+FJzN33f1GKYpvOqfMn6rmA\\u003d\\u003d\"],\"valcode\":[\"nrv4\"],\"smscode\":[\"123456\"]}','2021-01-23 19:54:27',2),
-(20,'系统模块',1,'登陆成功！','adminjyd100',1,'172.29.0.1','968843','192.168.0.106','{\"sign\":[\"0f95323f76031da1094d833a32087138\"],\"username\":[\"adminjyd100\"],\"password\":[\"JgqX4koKALmH1ZpAu8RvTU8K2TS5YRLxMRSEWOprb3YlPFAkdlkAUKiFcCwvaRQyFhbhqhlT+mG6tp0HSCbv0g\\u003d\\u003d\"],\"valcode\":[\"agjn\"],\"smscode\":[\"123456\"]}','2021-01-23 20:02:05',2),
-(21,'系统模块',1,'登陆成功！','adminjyd100',1,'172.29.0.1','622098','192.168.0.106','{\"sign\":[\"d46f57da0df8cedf9f4f8e34ce9d0a08\"],\"username\":[\"adminjyd100\"],\"password\":[\"R4zJuF7yy6RlKQHppEISMb4/F2xG4n1bCIV3Oc6XHUu6IAkIaPixyF8sDmime/uMJc5sAfOBl8wgSAnKpcyvhQ\\u003d\\u003d\"],\"valcode\":[\"b39y\"],\"smscode\":[\"123456\"]}','2021-01-23 20:18:40',2),
-(22,'系统模块',1,'登陆成功！','adminjyd100',1,'172.29.0.1','471894','192.168.0.106','{\"sign\":[\"097d74de9751218f19270b4de8c4f9e4\"],\"username\":[\"adminjyd100\"],\"password\":[\"VN5pvwD4128QYp6xPdh0FUB6rLpQtXw0KowzAzH4fDjuMWMhcVVE3pAr+8swuEgN58ZFIRTdrKpEdHLnNkFCVA\\u003d\\u003d\"],\"valcode\":[\"rlhs\"],\"smscode\":[\"123456\"]}','2021-01-23 20:23:10',2),
-(23,'系统模块',1,'登陆成功！','adminjyd100',1,'172.29.0.1','292087','192.168.0.106','{\"sign\":[\"812333734b0642ee88659c6348414411\"],\"username\":[\"adminjyd100\"],\"password\":[\"UHrINMnCHoJ0RvWk7TwZjSVSQRpJpFUHIy7pKKq4l3JkeJWcFa3CeMJNlZ7jP6jDNjqVsVzj6i/4ihVL3MlSvQ\\u003d\\u003d\"],\"valcode\":[\"vbwx\"],\"smscode\":[\"123456\"]}','2021-01-23 20:58:03',2),
-(24,'系统模块',1,'登陆成功！','adminjyd100',1,'172.29.0.1','806180','192.168.0.106','{\"sign\":[\"61e394e6008fa6d9b3ea23cacdb87e7c\"],\"username\":[\"adminjyd100\"],\"password\":[\"Mn20Uf7VcxK5qnsLpOLQAvdx/AAe+0W7AfPSD005YtGrE/EtU17b7xUBDVPFSQBVX2He7jqtNovFxTM01EEsDw\\u003d\\u003d\"],\"valcode\":[\"8b3r\"],\"smscode\":[\"123456\"]}','2021-01-23 21:40:50',2),
-(25,'系统模块',1,'登陆成功！','adminjyd100',1,'172.29.0.1','653105','192.168.0.106','{\"sign\":[\"0996588cef19a2ab38413d620cd87c76\"],\"username\":[\"adminjyd100\"],\"password\":[\"M/AaUmIG2cX5RZ+pvSxjZ7A8iWIxxbFp4pi6rsF1ktXJLCahkTgXxf0CXi1xM3d7qpkuHOSboSB980kMUw00jg\\u003d\\u003d\"],\"valcode\":[\"uq8n\"],\"smscode\":[\"123456\"]}','2021-01-25 21:29:42',2),
-(26,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','178641','10.130.1.68','{\"sign\":[\"e5c8909d225415f03994b5a4e19121dc\"],\"username\":[\"adminjyd100\"],\"password\":[\"TE5W7jBCx3IlBhhiXC5b5qstbkCp0BOFuWvPLqzWudp1pFRwpG0qZmcbR/rwwbThUoWmGnLExWVzO7R2nnE85A\\u003d\\u003d\"],\"valcode\":[\"njhh\"],\"smscode\":[\"123456\"]}','2021-04-14 14:22:43',2),
-(27,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','605115','10.130.1.68','{\"sign\":[\"da6917075360ba54672cbb80b550cf4a\"],\"username\":[\"adminjyd100\"],\"password\":[\"Q58PAIGelNLQvpA95PjXO6LkrgHU1O7I7aDCYnpFxdI3RNjSq76Afug/8KnAso4OuUoCxIFw607UrizNeCGUFw\\u003d\\u003d\"],\"valcode\":[\"dm3n\"],\"smscode\":[\"123456\"]}','2021-04-14 15:22:14',2),
-(28,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','321764','10.130.1.68','{\"sign\":[\"46f18d8c12c8cac2eef5056d66b3cc4e\"],\"username\":[\"adminjyd100\"],\"password\":[\"alvyp/DpOpojJ3z6g2vrd+JKV0LB7rKInLKZfpunL06JrfOEdVOPOuWhuBdDyUO7GQOx/wa4v0yc8+vQS7/10w\\u003d\\u003d\"],\"valcode\":[\"yv3h\"],\"smscode\":[\"123456\"]}','2021-04-14 15:29:09',2),
-(29,'系统模块',2,'修改功能菜单数据,code为10000','adminjyd100',1,'172.24.48.1','083172','10.130.1.68','{\"sysRightCode\":[\"10000\"],\"hiddenCode\":[\"10000\"],\"sysRightName\":[\"系统管理\"],\"sysRightUrl\":[\"\"],\"icon\":[\"1\"],\"orderCode\":[\"10000\"],\"enable\":[\"1\"],\"sno\":[\"10000\"]}','2021-04-14 15:50:36',2),
-(30,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','806407','10.130.1.68','{\"sign\":[\"580b26b944bf2fd982568644d0f8123d\"],\"username\":[\"adminjyd100\"],\"password\":[\"hNOYlvDfhwwEChbncDJO7+DuVbEboY1035D0tJsiKfdHeODxiupKRlXY3ATKXHQMfVgWgX7cAbFN7/EPnBF+Aw\\u003d\\u003d\"],\"valcode\":[\"4vmd\"],\"smscode\":[\"123456\"]}','2021-04-14 15:52:29',2),
-(31,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','964302','10.130.1.68','{\"sign\":[\"6691b0e64b47b5099799031f92cdd561\"],\"username\":[\"adminjyd100\"],\"password\":[\"KSW3t5hNirhE4nknh3jzSfAzcl8RzyVNkSlob5GDl1P37RoW2JSl8BY0qPpZg11NmQWWZsaVoDenhIR9thJFFA\\u003d\\u003d\"],\"valcode\":[\"evfu\"],\"smscode\":[\"123456\"]}','2021-04-14 16:07:17',2),
-(32,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','171218','10.130.1.68','{\"sign\":[\"c5d9a53c4fde12595f104e6c9ae90a1a\"],\"username\":[\"adminjyd100\"],\"password\":[\"EkvTKJR6nkSoE9w9n+O+lppSOaDGQGoSbaM9+7HvELZqAfjYP/6he9lFang4eIXk7SQfIgxemakb7KpMqa5aPQ\\u003d\\u003d\"],\"valcode\":[\"x4fj\"],\"smscode\":[\"123456\"]}','2021-04-14 16:13:28',2),
-(33,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','033483','10.130.1.68','{\"sign\":[\"a3941a717a3f702dd373d67a80b60980\"],\"username\":[\"adminjyd100\"],\"password\":[\"LcrpE0+KoDVrpmqp9a94d1YTmyDpJdXZpj7msJftTcWjUyMINKWgFSzkhycJc3ocefLuXgI75BS3DTscm16Z0g\\u003d\\u003d\"],\"valcode\":[\"yhku\"],\"smscode\":[\"123456\"]}','2021-04-14 18:18:03',2),
-(34,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','380076','10.130.1.68','{\"sign\":[\"11a287d81a988bee6018c0703a77ff6c\"],\"username\":[\"adminjyd100\"],\"password\":[\"AuZRvCZVqxuoz9pbTfEC7qy66C890JFhFHedHhAoMzhbI2eDNsF105uSfRAOfHEF+b71pDqcOCos3yj9LnqsFw\\u003d\\u003d\"],\"valcode\":[\"asnw\"],\"smscode\":[\"123456\"]}','2021-04-14 18:21:11',2),
-(35,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','743681','10.130.1.68','{\"sign\":[\"dfa630100844f682ac34be24de76a94a\"],\"username\":[\"adminjyd100\"],\"password\":[\"fGQjeafLAFZUfvAWekazqTIqS8Dl3snsY713nL6Byw1HEFwiuYdGrIyxX7tSXcfpqCr73bNAg9xut4kQUqzLAA\\u003d\\u003d\"],\"valcode\":[\"hu3n\"],\"smscode\":[\"123456\"]}','2021-04-14 18:24:59',2),
-(36,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','523847','10.130.1.68','{\"sign\":[\"56a017e5c790f55306d7fbb148e14c76\"],\"username\":[\"adminjyd100\"],\"password\":[\"XCDDzjyL6IjWU8RmsLu91Uc/LLU7rx2lP0t1XNv5CTHIJwhMcxPajwJV1C23xOIZJE1199nSlqWqUtT57EdUOQ\\u003d\\u003d\"],\"valcode\":[\"ts6m\"],\"smscode\":[\"123456\"]}','2021-04-14 18:27:07',2),
-(37,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','023072','10.130.1.68','{\"sign\":[\"1d2749dde46a1b0d6556a1b27f03cd33\"],\"username\":[\"adminjyd100\"],\"password\":[\"MJXFOerWtpD5MBM1edj6E0IhbHzQbAzuQanmudx5E/kdnjNngO5zF287VeW9aLU2/Xp/Oi9TR7lOkliWUZBoYA\\u003d\\u003d\"],\"valcode\":[\"65va\"],\"smscode\":[\"123456\"]}','2021-04-14 18:28:06',2),
-(38,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','459572','192.168.0.100','{\"sign\":[\"ca7711d1b40b17bf0b8416e52ddce6d4\"],\"username\":[\"adminjyd100\"],\"password\":[\"HrVbiyyYcyYSYTa4Ye/7IvEsbbE9hlzLddjpyi52KPBbRjCw+gGqr+OWPXD+xBtcigqt2S1rZ8uiljfGCVHNhg\\u003d\\u003d\"],\"valcode\":[\"w3gc\"],\"smscode\":[\"123456\"]}','2021-04-16 22:18:52',2),
-(39,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','168429','192.168.0.100','{\"sign\":[\"7fbabb4b6a4b5667bdc0f2febfa8629f\"],\"username\":[\"adminjyd100\"],\"password\":[\"dsIx5dcZsD8hi+RnBh6kpTkTRC0y/dh83C6k5qp/B6jfPOJSDXvXXhY/QVyg6zUSrAx1zHY3auyyDO8/ZHWnZA\\u003d\\u003d\"],\"valcode\":[\"pm4b\"],\"smscode\":[\"123456\"]}','2021-04-16 23:23:19',2),
-(40,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','300332','192.168.0.100','{\"sign\":[\"8ad597e6fe398596a4faa2aadf41d31c\"],\"username\":[\"adminjyd100\"],\"password\":[\"Ywh4BlxetZfmncalX7umiRUmIcc8hJj/ZwbUq/TYo2ygEeqJEeZ0CZ8LJfc1MosPZi3HqQ3aPtSJX9lm/jesww\\u003d\\u003d\"],\"valcode\":[\"b5xm\"],\"smscode\":[\"123456\"]}','2021-04-17 09:50:37',2),
-(41,'系统模块',1,'登陆成功！','adminjyd100',1,'172.24.48.1','121338','192.168.0.100','{\"sign\":[\"4729bfe917e1e8e1bf93338aa1bd85b1\"],\"username\":[\"adminjyd100\"],\"password\":[\"g0pOQQqaCRJne1uj6rqJU5LQBE9CDvo4LiNh1tRXweo56A6tv33udaHcF8n/qgKzi9sY7/5SUnKeu79wqmhNtg\\u003d\\u003d\"],\"valcode\":[\"ge8g\"],\"smscode\":[\"123456\"]}','2021-04-17 12:30:09',2);
-
-/*Table structure for table `sys_user_role` */
-
+-- ----------------------------
+-- Table structure for sys_user_role
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
-
-CREATE TABLE `sys_user_role` (
-  `sys_user_role_sno` int(11) NOT NULL AUTO_INCREMENT COMMENT '流水号',
-  `sys_user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `sys_role_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户角色',
+CREATE TABLE `sys_user_role`  (
+  `sys_user_role_sno` int NOT NULL AUTO_INCREMENT COMMENT '流水号',
+  `sys_user_id` int NOT NULL DEFAULT 0 COMMENT '用户ID',
+  `sys_role_id` int NOT NULL DEFAULT 0 COMMENT '用户角色',
   `update_time` datetime NOT NULL COMMENT '更新时间',
-  `updator` varchar(30) NOT NULL DEFAULT ' ' COMMENT '更新人',
-  PRIMARY KEY (`sys_user_role_sno`)
-) ENGINE=InnoDB AUTO_INCREMENT=184 DEFAULT CHARSET=utf8 COMMENT='用户角色表';
+  `updator` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT ' ' COMMENT '更新人',
+  PRIMARY KEY (`sys_user_role_sno`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '用户角色表' ROW_FORMAT = DYNAMIC;
 
-/*Data for the table `sys_user_role` */
+-- ----------------------------
+-- Records of sys_user_role
+-- ----------------------------
+INSERT INTO `sys_user_role` VALUES (1, 1, 0, '2024-01-24 20:37:26', '管理员');
+INSERT INTO `sys_user_role` VALUES (4, 184, 54, '2024-01-25 10:13:46', '管理员');
+INSERT INTO `sys_user_role` VALUES (5, 185, 55, '2024-01-25 10:15:09', '管理员');
 
-insert  into `sys_user_role`(`sys_user_role_sno`,`sys_user_id`,`sys_role_id`,`update_time`,`updator`) values 
-(2,4,30,'2019-09-03 10:42:37','管理员'),
-(5,11,0,'2019-09-23 17:28:43','管理员'),
-(6,14,0,'2019-09-27 10:25:13','管理员'),
-(7,20,0,'2019-09-27 10:49:36','管理员'),
-(9,38,52,'2019-10-08 15:20:48',' '),
-(10,41,50,'2019-10-08 15:36:53','管理员'),
-(11,44,50,'2019-10-08 16:22:06','管理员'),
-(12,45,50,'2019-10-08 17:55:27','管理员'),
-(13,46,50,'2019-10-08 18:23:30','王赛男'),
-(14,47,50,'2019-10-08 18:25:18','王赛男'),
-(15,48,50,'2019-10-08 18:29:29','管理员'),
-(16,49,50,'2019-10-08 18:30:04','管理员'),
-(17,50,52,'2019-10-09 09:09:54','王赛男'),
-(18,51,51,'2019-10-09 09:10:46','王赛男'),
-(19,52,50,'2019-10-09 11:52:54','林少儿'),
-(20,53,51,'2019-10-09 14:14:58','管理员'),
-(21,54,50,'2019-10-09 14:41:43','管理员'),
-(22,55,51,'2019-10-09 14:42:23','王赛男'),
-(23,56,50,'2019-10-09 16:14:15','王理叁'),
-(24,57,50,'2019-10-09 16:20:18','管理员'),
-(25,58,52,'2019-10-09 16:35:37','管理员'),
-(26,59,52,'2019-10-09 16:39:06','管理员'),
-(27,60,51,'2019-10-09 16:39:35','管理员'),
-(28,61,51,'2019-10-09 16:39:57','管理员'),
-(29,62,50,'2019-10-09 16:40:24','管理员'),
-(30,63,50,'2019-10-09 16:40:44','管理员'),
-(31,64,52,'2019-10-09 16:45:39','王赛男'),
-(32,65,51,'2019-10-09 16:46:12','王赛男'),
-(33,66,50,'2019-10-09 16:46:42','王赛男'),
-(34,67,0,'2019-10-09 19:49:04','管理员'),
-(35,68,52,'2019-10-09 20:45:23','王赛男'),
-(36,69,51,'2019-10-09 20:46:49','王赛男'),
-(37,70,52,'2019-10-09 20:48:57','王赛男'),
-(38,71,52,'2019-10-09 20:56:56','王赛男'),
-(39,72,52,'2019-10-10 10:58:14','王赛男'),
-(40,73,51,'2019-10-10 10:59:23','王赛男'),
-(41,74,50,'2019-10-10 11:01:55','王赛男'),
-(42,75,50,'2019-10-10 11:01:55','王赛男'),
-(43,76,50,'2019-10-10 11:01:55','王赛男'),
-(44,77,50,'2019-10-10 11:11:44','王赛男'),
-(45,78,50,'2019-10-10 11:11:44','王赛男'),
-(46,79,50,'2019-10-10 11:11:45','王赛男'),
-(47,80,50,'2019-10-10 11:11:45','王赛男'),
-(48,81,50,'2019-10-10 11:13:33','王赛男'),
-(49,82,50,'2019-10-10 11:20:12','王赛男'),
-(50,83,50,'2019-10-10 11:25:15','王赛男'),
-(51,71,50,'2019-10-10 14:19:52','管理员'),
-(52,71,50,'2019-10-10 14:25:35','管理员'),
-(53,71,50,'2019-10-10 14:29:24','管理员'),
-(54,71,50,'2019-10-10 14:32:20','管理员'),
-(55,84,52,'2019-10-10 15:03:13','管理员'),
-(56,85,51,'2019-10-10 15:04:05','管理员'),
-(57,86,50,'2019-10-10 15:04:13','管理员'),
-(58,87,50,'2019-10-10 15:04:13','管理员'),
-(59,88,50,'2019-10-10 15:04:13','管理员'),
-(60,89,52,'2019-10-10 15:40:57','王赛男'),
-(61,72,52,'2019-10-10 15:41:50','王赛男'),
-(62,72,52,'2019-10-10 15:59:28','王赛男'),
-(65,90,52,'2019-10-11 20:58:45','管理员'),
-(67,92,52,'2019-10-12 09:52:36','管理员'),
-(68,93,52,'2019-10-12 10:14:42','管理员'),
-(69,94,52,'2019-10-12 10:15:22','管理员'),
-(71,96,51,'2019-10-12 10:16:53','管理员'),
-(72,97,50,'2019-10-12 10:17:23','管理员'),
-(73,98,50,'2019-10-12 10:17:52','管理员'),
-(74,99,51,'2019-10-12 11:00:42','管理员'),
-(75,100,50,'2019-10-12 11:02:00','管理员'),
-(77,102,51,'2019-10-14 10:14:08','管理员'),
-(78,103,52,'2019-10-14 10:24:24','王赛男'),
-(79,104,51,'2019-10-14 10:25:31','王赛男'),
-(80,105,50,'2019-10-14 10:26:11','王赛男'),
-(81,106,50,'2019-10-14 10:26:11','王赛男'),
-(82,107,50,'2019-10-14 10:26:11','王赛男'),
-(83,108,50,'2019-10-14 10:59:57','管理员'),
-(84,109,52,'2019-10-14 11:18:44','管理员'),
-(85,110,51,'2019-10-14 11:19:26','管理员'),
-(86,111,51,'2019-10-14 12:05:00','王赛男'),
-(87,112,52,'2019-10-14 12:05:25','王赛男'),
-(88,112,52,'2019-10-14 12:06:30','王赛男'),
-(89,113,50,'2019-10-14 14:44:29','管理员'),
-(90,114,510,'2019-10-31 18:22:00','管理员'),
-(91,115,510,'2019-10-31 11:32:22','管理员'),
-(92,116,510,'2019-10-31 11:28:50','管理员'),
-(93,117,510,'2019-10-31 11:22:19','管理员'),
-(94,118,50,'2019-10-14 14:51:24','管理员'),
-(95,104,52,'2019-10-14 14:53:21','王赛男'),
-(96,105,51,'2019-10-14 14:54:01','王赛男'),
-(97,106,50,'2019-10-14 14:54:25','王赛男'),
-(98,107,52,'2019-10-14 14:55:00','王赛男'),
-(99,111,51,'2019-10-14 14:55:26','王赛男'),
-(100,119,50,'2019-10-14 14:56:01','王赛男'),
-(101,120,50,'2019-10-14 14:58:50','王赛男'),
-(102,121,50,'2019-10-14 14:58:50','王赛男'),
-(103,122,50,'2019-10-14 14:58:50','王赛男'),
-(104,123,52,'2019-10-14 17:59:36','王赛男'),
-(105,124,52,'2019-10-14 18:00:17','王赛男'),
-(106,125,51,'2019-10-14 18:00:52','王赛男'),
-(107,126,50,'2019-10-14 18:01:13','王赛男'),
-(108,127,52,'2019-10-15 15:21:56','管理员'),
-(109,128,51,'2019-10-15 15:22:20','管理员'),
-(110,129,50,'2019-10-15 15:22:43','管理员'),
-(111,130,10,'2019-10-16 11:17:53','管理员'),
-(112,131,50,'2019-10-16 11:24:38','管理员'),
-(113,131,50,'2019-10-16 11:26:34','管理员'),
-(114,131,50,'2019-10-16 11:39:19','管理员'),
-(115,131,50,'2019-10-16 11:41:02','管理员'),
-(116,131,50,'2019-10-16 11:46:15','管理员'),
-(119,133,0,'2019-10-19 10:04:53','管理员'),
-(120,3,30,'2019-10-21 11:05:52','王赛男'),
-(121,134,52,'2019-10-24 15:02:40','王赛男'),
-(122,135,51,'2019-10-24 15:03:19','王赛男'),
-(123,136,50,'2019-10-24 15:06:33','管理员'),
-(124,137,52,'2019-10-24 15:27:12','王赛男'),
-(125,138,52,'2019-10-24 15:30:30','王赛男'),
-(126,139,51,'2019-10-24 15:31:59','王赛男'),
-(127,140,50,'2019-10-24 15:32:18','王赛男'),
-(128,141,30,'2019-10-24 18:00:45','管理员'),
-(129,142,50,'2019-10-25 10:06:59','管理员'),
-(130,143,50,'2019-10-25 10:06:59','管理员'),
-(131,144,50,'2019-10-25 10:06:59','管理员'),
-(132,145,50,'2019-10-25 10:06:59','管理员'),
-(133,146,52,'2019-10-25 10:09:59','管理员'),
-(134,147,51,'2019-10-25 10:10:22','管理员'),
-(135,148,50,'2019-10-25 10:10:50','管理员'),
-(136,149,50,'2019-10-25 10:15:51','管理员'),
-(137,150,50,'2019-10-25 10:15:52','管理员'),
-(138,151,50,'2019-10-25 10:15:52','管理员'),
-(139,152,50,'2019-10-25 10:15:52','管理员'),
-(140,153,50,'2019-10-29 14:41:05','王赛男'),
-(144,101,0,'2019-10-31 11:18:11','管理员'),
-(145,154,52,'2019-11-07 17:33:25','管理员'),
-(146,155,52,'2019-11-11 15:01:34','管理员'),
-(147,156,51,'2019-11-11 15:02:10','管理员'),
-(148,157,50,'2019-11-11 15:02:40','管理员'),
-(149,158,52,'2019-11-11 15:03:14','管理员'),
-(150,159,52,'2019-11-11 15:07:16','管理员'),
-(151,160,51,'2019-11-11 15:09:00','管理员'),
-(152,161,50,'2019-11-11 15:09:24','管理员'),
-(153,162,51,'2019-11-11 15:53:46','管理员'),
-(154,163,510,'2019-11-11 18:06:35','管理员'),
-(155,164,50,'2019-11-12 09:47:12','林少儿'),
-(156,165,52,'2019-11-12 15:47:38','管理员'),
-(157,166,51,'2019-11-12 15:48:01','管理员'),
-(158,167,50,'2019-11-12 15:48:44','管理员'),
-(159,168,52,'2019-11-14 09:50:29','管理员'),
-(160,169,51,'2019-11-14 09:54:02','管理员'),
-(161,170,50,'2019-11-14 10:07:21','管理员'),
-(162,171,52,'2019-11-15 09:41:25','管理员'),
-(163,172,51,'2019-11-15 09:42:02','管理员'),
-(164,173,50,'2019-11-15 09:42:33','管理员'),
-(165,174,52,'2019-11-15 15:31:20','管理员'),
-(166,175,51,'2019-11-15 15:32:30','管理员'),
-(167,176,50,'2019-11-15 15:32:54','管理员'),
-(168,177,52,'2019-11-21 10:00:47','管理员'),
-(169,178,51,'2019-11-21 10:01:22','管理员'),
-(170,179,50,'2019-11-21 10:01:54','管理员'),
-(171,180,52,'2019-11-21 17:39:32','管理员'),
-(172,181,51,'2019-11-21 17:40:01','管理员'),
-(173,182,50,'2019-11-21 17:40:40','管理员'),
-(175,5,50,'2019-11-27 14:11:07','管理员'),
-(179,95,51,'2019-11-27 14:15:22','管理员'),
-(180,95,0,'2019-11-27 14:15:22','管理员'),
-(183,183,52,'2021-04-14 18:27:23','管理员');
-
-/*Table structure for table `sys_user_roletype` */
-
+-- ----------------------------
+-- Table structure for sys_user_roletype
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_user_roletype`;
-
-CREATE TABLE `sys_user_roletype` (
-  `sys_user_roletype_sno` int(11) NOT NULL AUTO_INCREMENT COMMENT '流水号',
-  `sys_user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `sys_roletype_code` int(11) NOT NULL DEFAULT '0' COMMENT '角色类型',
+CREATE TABLE `sys_user_roletype`  (
+  `sys_user_roletype_sno` int NOT NULL AUTO_INCREMENT COMMENT '流水号',
+  `sys_user_id` int NOT NULL DEFAULT 0 COMMENT '用户ID',
+  `sys_roletype_code` int NOT NULL DEFAULT 0 COMMENT '角色类型',
   `update_time` datetime NOT NULL COMMENT '更新时间',
-  `updator` varchar(30) NOT NULL DEFAULT ' ' COMMENT '更新人',
-  PRIMARY KEY (`sys_user_roletype_sno`),
-  UNIQUE KEY `UI_SUR` (`sys_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8 COMMENT='用户角色表';
+  `updator` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT ' ' COMMENT '更新人',
+  PRIMARY KEY (`sys_user_roletype_sno`) USING BTREE,
+  UNIQUE INDEX `UI_SUR`(`sys_user_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 208 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '用户角色表' ROW_FORMAT = DYNAMIC;
 
-/*Data for the table `sys_user_roletype` */
+-- ----------------------------
+-- Records of sys_user_roletype
+-- ----------------------------
+INSERT INTO `sys_user_roletype` VALUES (203, 1, 0, '2024-01-24 20:37:26', '管理员');
+INSERT INTO `sys_user_roletype` VALUES (206, 184, 200, '2024-01-25 10:13:46', '管理员');
+INSERT INTO `sys_user_roletype` VALUES (207, 185, 400, '2024-01-25 10:15:09', '管理员');
 
-insert  into `sys_user_roletype`(`sys_user_roletype_sno`,`sys_user_id`,`sys_roletype_code`,`update_time`,`updator`) values 
-(1,1,0,'2019-08-30 16:45:42',' '),
-(3,4,300,'2019-09-03 10:42:37','管理员'),
-(5,6,520,'2019-09-11 17:14:06','管理员'),
-(6,7,520,'2019-09-17 14:40:05','管理员'),
-(7,8,510,'2019-09-17 14:41:49','管理员'),
-(8,9,510,'2019-09-20 16:39:32','管理员'),
-(9,10,510,'2019-09-18 18:25:28','管理员'),
-(11,11,0,'2019-09-23 17:28:43','管理员'),
-(12,12,500,'2019-09-25 16:13:17','管理员'),
-(13,13,520,'2019-09-25 19:03:17','王赛男'),
-(15,15,500,'2019-09-26 10:04:58','管理员'),
-(16,16,500,'2019-09-26 10:09:45','管理员'),
-(17,17,500,'2019-09-26 10:11:40','管理员'),
-(18,18,500,'2019-09-26 10:19:08','管理员'),
-(19,19,500,'2019-09-26 15:54:18','管理员'),
-(20,14,510,'2019-09-27 10:25:13','管理员'),
-(21,20,0,'2019-09-27 10:49:36','管理员'),
-(22,21,500,'2019-09-27 11:09:39','管理员'),
-(23,22,520,'2019-09-27 18:00:09','林少儿'),
-(24,23,520,'2019-09-29 10:39:15','王赛男'),
-(25,24,520,'2019-09-29 10:49:43','王赛男'),
-(26,25,520,'2019-09-29 11:34:44','管理员'),
-(27,26,520,'2019-09-29 11:44:26','管理员'),
-(28,27,520,'2019-09-29 11:46:48','管理员'),
-(29,28,520,'2019-09-29 11:47:34','管理员'),
-(30,29,510,'2019-09-29 11:48:07','管理员'),
-(31,30,500,'2019-09-29 11:48:35','管理员'),
-(32,31,500,'2019-09-29 11:49:08','管理员'),
-(33,32,510,'2019-09-29 11:49:39','管理员'),
-(34,33,510,'2019-09-29 15:27:50','管理员'),
-(35,34,520,'2019-09-29 21:08:08','管理员'),
-(36,35,520,'2019-09-30 09:54:05','管理员'),
-(37,36,510,'2019-09-30 09:55:25','管理员'),
-(38,37,500,'2019-09-30 09:57:26','管理员'),
-(40,38,520,'2019-10-08 14:31:48','管理员'),
-(41,39,500,'2019-10-08 15:22:50','管理员'),
-(42,40,500,'2019-10-08 15:22:50','管理员'),
-(43,41,500,'2019-10-08 15:36:53','管理员'),
-(44,42,510,'2019-10-08 15:42:56','管理员'),
-(45,43,500,'2019-10-08 15:43:45','管理员'),
-(46,44,500,'2019-10-08 16:22:06','管理员'),
-(47,45,500,'2019-10-08 17:55:27','管理员'),
-(48,46,500,'2019-10-08 18:23:30','王赛男'),
-(49,47,500,'2019-10-08 18:25:18','王赛男'),
-(50,48,500,'2019-10-08 18:29:29','管理员'),
-(51,49,500,'2019-10-08 18:30:04','管理员'),
-(52,50,520,'2019-10-09 09:09:54','王赛男'),
-(53,51,510,'2019-10-09 09:10:46','王赛男'),
-(54,52,500,'2019-10-09 11:52:54','林少儿'),
-(55,53,510,'2019-10-09 14:14:58','管理员'),
-(56,54,500,'2019-10-09 14:41:43','管理员'),
-(57,55,510,'2019-10-09 14:42:23','王赛男'),
-(58,56,500,'2019-10-09 16:14:15','王理叁'),
-(59,57,500,'2019-10-09 16:20:18','管理员'),
-(60,58,520,'2019-10-09 16:35:37','管理员'),
-(61,59,520,'2019-10-09 16:39:06','管理员'),
-(62,60,510,'2019-10-09 16:39:35','管理员'),
-(63,61,510,'2019-10-09 16:39:57','管理员'),
-(64,62,500,'2019-10-09 16:40:24','管理员'),
-(65,63,500,'2019-10-09 16:40:44','管理员'),
-(66,64,520,'2019-10-09 16:45:39','王赛男'),
-(67,65,510,'2019-10-09 16:46:12','王赛男'),
-(68,66,500,'2019-10-09 16:46:42','王赛男'),
-(69,67,0,'2019-10-09 19:49:04','管理员'),
-(70,68,520,'2019-10-09 20:45:23','王赛男'),
-(71,69,510,'2019-10-09 20:46:49','王赛男'),
-(72,70,520,'2019-10-09 20:48:57','王赛男'),
-(73,71,500,'2019-10-10 14:32:20','王赛男'),
-(74,72,520,'2019-10-10 15:59:28','王赛男'),
-(75,73,510,'2019-10-10 10:59:23','王赛男'),
-(76,74,500,'2019-10-10 11:01:55','王赛男'),
-(77,75,500,'2019-10-10 11:01:55','王赛男'),
-(78,76,500,'2019-10-10 11:01:55','王赛男'),
-(79,77,500,'2019-10-10 11:11:44','王赛男'),
-(80,78,500,'2019-10-10 11:11:44','王赛男'),
-(81,79,500,'2019-10-10 11:11:45','王赛男'),
-(82,80,500,'2019-10-10 11:11:45','王赛男'),
-(83,81,500,'2019-10-10 11:13:33','王赛男'),
-(84,82,500,'2019-10-10 11:20:12','王赛男'),
-(85,83,500,'2019-10-10 11:25:15','王赛男'),
-(86,84,520,'2019-10-10 15:03:13','管理员'),
-(87,85,510,'2019-10-10 15:04:05','管理员'),
-(88,86,500,'2019-10-10 15:04:13','管理员'),
-(89,87,500,'2019-10-10 15:04:13','管理员'),
-(90,88,500,'2019-10-10 15:04:13','管理员'),
-(91,89,520,'2019-10-10 15:40:57','王赛男'),
-(93,90,520,'2019-10-11 20:58:45','管理员'),
-(95,92,520,'2019-10-12 09:52:36','管理员'),
-(96,93,520,'2019-10-12 10:14:42','管理员'),
-(97,94,520,'2019-10-12 10:15:22','管理员'),
-(99,96,510,'2019-10-12 10:16:53','管理员'),
-(100,97,500,'2019-10-12 10:17:23','管理员'),
-(101,98,500,'2019-10-12 10:17:52','管理员'),
-(102,99,510,'2019-10-12 11:00:42','管理员'),
-(103,100,500,'2019-10-12 11:01:59','管理员'),
-(105,102,510,'2019-10-14 10:14:08','管理员'),
-(106,103,520,'2019-10-14 10:24:24','王赛男'),
-(107,104,520,'2019-10-14 14:53:21','王赛男'),
-(108,105,510,'2019-10-14 14:54:01','王赛男'),
-(109,106,500,'2019-10-14 14:54:25','王赛男'),
-(110,107,520,'2019-10-14 14:55:00','王赛男'),
-(111,108,500,'2019-10-14 10:59:57','管理员'),
-(112,109,520,'2019-10-14 11:18:44','管理员'),
-(113,110,510,'2019-10-14 11:19:26','管理员'),
-(114,111,510,'2019-10-14 14:55:26','王赛男'),
-(115,112,520,'2019-10-14 12:06:30','王赛男'),
-(116,113,500,'2019-10-14 14:44:29','管理员'),
-(117,114,510,'2019-10-31 18:22:00','管理员'),
-(118,115,510,'2019-10-31 11:32:22','管理员'),
-(119,116,510,'2019-10-31 11:28:49','管理员'),
-(120,117,510,'2019-10-31 11:22:19','管理员'),
-(121,118,500,'2019-10-14 14:51:24','管理员'),
-(122,119,500,'2019-10-14 14:56:01','王赛男'),
-(123,120,500,'2019-10-14 14:58:50','王赛男'),
-(124,121,500,'2019-10-14 14:58:50','王赛男'),
-(125,122,500,'2019-10-14 14:58:50','王赛男'),
-(126,123,520,'2019-10-14 17:59:36','王赛男'),
-(127,124,520,'2019-10-14 18:00:17','王赛男'),
-(128,125,510,'2019-10-14 18:00:52','王赛男'),
-(129,126,500,'2019-10-14 18:01:13','王赛男'),
-(130,127,520,'2019-10-15 15:21:56','管理员'),
-(131,128,510,'2019-10-15 15:22:20','管理员'),
-(132,129,500,'2019-10-15 15:22:43','管理员'),
-(133,130,110,'2019-10-16 11:17:53','管理员'),
-(134,131,500,'2019-10-16 11:46:15','管理员'),
-(137,133,0,'2019-10-19 10:04:53','管理员'),
-(138,3,0,'2019-10-21 11:05:52','王赛男'),
-(139,134,520,'2019-10-24 15:02:40','王赛男'),
-(140,135,510,'2019-10-24 15:03:19','王赛男'),
-(141,136,500,'2019-10-24 15:06:33','管理员'),
-(142,137,520,'2019-10-24 15:27:12','王赛男'),
-(143,138,520,'2019-10-24 15:30:30','王赛男'),
-(144,139,510,'2019-10-24 15:31:59','王赛男'),
-(145,140,500,'2019-10-24 15:32:18','王赛男'),
-(146,141,0,'2019-10-24 18:00:45','管理员'),
-(147,142,500,'2019-10-25 10:06:59','管理员'),
-(148,143,500,'2019-10-25 10:06:59','管理员'),
-(149,144,500,'2019-10-25 10:06:59','管理员'),
-(150,145,500,'2019-10-25 10:06:59','管理员'),
-(151,146,520,'2019-10-25 10:09:59','管理员'),
-(152,147,510,'2019-10-25 10:10:22','管理员'),
-(153,148,500,'2019-10-25 10:10:50','管理员'),
-(154,149,500,'2019-10-25 10:15:51','管理员'),
-(155,150,500,'2019-10-25 10:15:52','管理员'),
-(156,151,500,'2019-10-25 10:15:52','管理员'),
-(157,152,500,'2019-10-25 10:15:52','管理员'),
-(158,153,500,'2019-10-29 14:41:05','王赛男'),
-(162,101,0,'2019-10-31 11:18:11','管理员'),
-(163,154,520,'2019-11-07 17:33:25','管理员'),
-(164,155,520,'2019-11-11 15:01:34','管理员'),
-(165,156,510,'2019-11-11 15:02:10','管理员'),
-(166,157,500,'2019-11-11 15:02:40','管理员'),
-(167,158,520,'2019-11-11 15:03:14','管理员'),
-(168,159,520,'2019-11-11 15:07:16','管理员'),
-(169,160,510,'2019-11-11 15:09:00','管理员'),
-(170,161,500,'2019-11-11 15:09:24','管理员'),
-(171,162,510,'2019-11-11 15:53:46','管理员'),
-(172,163,510,'2019-11-11 18:06:35','管理员'),
-(173,164,500,'2019-11-12 09:47:12','林少儿'),
-(174,165,520,'2019-11-12 15:47:38','管理员'),
-(175,166,510,'2019-11-12 15:48:01','管理员'),
-(176,167,500,'2019-11-12 15:48:44','管理员'),
-(177,168,520,'2019-11-14 09:50:29','管理员'),
-(178,169,510,'2019-11-14 09:54:02','管理员'),
-(179,170,500,'2019-11-14 10:07:21','管理员'),
-(180,171,520,'2019-11-15 09:41:25','管理员'),
-(181,172,510,'2019-11-15 09:42:02','管理员'),
-(182,173,500,'2019-11-15 09:42:33','管理员'),
-(183,174,520,'2019-11-15 15:31:20','管理员'),
-(184,175,510,'2019-11-15 15:32:30','管理员'),
-(185,176,500,'2019-11-15 15:32:54','管理员'),
-(186,177,520,'2019-11-21 10:00:47','管理员'),
-(187,178,510,'2019-11-21 10:01:22','管理员'),
-(188,179,500,'2019-11-21 10:01:54','管理员'),
-(189,180,520,'2019-11-21 17:39:32','管理员'),
-(190,181,510,'2019-11-21 17:40:01','管理员'),
-(191,182,500,'2019-11-21 17:40:40','管理员'),
-(193,5,500,'2019-11-27 14:11:07','管理员'),
-(197,95,510,'2019-11-27 14:15:22','管理员'),
-(200,183,520,'2021-04-14 18:27:23','管理员');
-
-/*Table structure for table `sys_users_lock` */
-
+-- ----------------------------
+-- Table structure for sys_users_lock
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_users_lock`;
+CREATE TABLE `sys_users_lock`  (
+  `sys_user_id` int NOT NULL DEFAULT 0 COMMENT '后台用户id',
+  `pass_cnt` int NULL DEFAULT 5 COMMENT '密码输入错误的次数',
+  `last_time` datetime NULL DEFAULT NULL COMMENT '最后一次输入错误时间',
+  `first_time` datetime NULL DEFAULT NULL COMMENT '密码输入错误的第一次时间',
+  PRIMARY KEY (`sys_user_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '后台用户错误次数限制表格' ROW_FORMAT = DYNAMIC;
 
-CREATE TABLE `sys_users_lock` (
-  `sys_user_id` int(11) NOT NULL DEFAULT '0' COMMENT '后台用户id',
-  `pass_cnt` int(11) DEFAULT '5' COMMENT '密码输入错误的次数',
-  `last_time` datetime DEFAULT NULL COMMENT '最后一次输入错误时间',
-  `first_time` datetime DEFAULT NULL COMMENT '密码输入错误的第一次时间',
-  PRIMARY KEY (`sys_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台用户错误次数限制表格';
+-- ----------------------------
+-- Records of sys_users_lock
+-- ----------------------------
+INSERT INTO `sys_users_lock` VALUES (1, 5, '2024-01-31 19:39:49', '2024-01-31 19:16:43');
+INSERT INTO `sys_users_lock` VALUES (184, 5, '2024-01-25 10:16:08', '2024-01-25 10:16:01');
 
-/*Data for the table `sys_users_lock` */
-
-insert  into `sys_users_lock`(`sys_user_id`,`pass_cnt`,`last_time`,`first_time`) values 
-(1,5,'2021-04-14 18:16:38','2021-04-14 18:16:38');
-
-/*Table structure for table `sys_users_session` */
-
+-- ----------------------------
+-- Table structure for sys_users_session
+-- ----------------------------
 DROP TABLE IF EXISTS `sys_users_session`;
+CREATE TABLE `sys_users_session`  (
+  `sys_user_id` int NOT NULL COMMENT '后台登陆用户id',
+  `session_id` varchar(60) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT 'session后台',
+  `status` int NULL DEFAULT 0 COMMENT '状态：1.成功 2.失败',
+  `login_ip` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '登陆ip',
+  `login_time` datetime NULL DEFAULT NULL COMMENT '登陆时间',
+  PRIMARY KEY (`sys_user_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '后台session单点登陆表格' ROW_FORMAT = DYNAMIC;
 
-CREATE TABLE `sys_users_session` (
-  `sys_user_id` int(11) NOT NULL COMMENT '后台登陆用户id',
-  `session_id` varchar(60) DEFAULT '' COMMENT 'session后台',
-  `status` int(11) DEFAULT '0' COMMENT '状态：1.成功 2.失败',
-  `login_ip` varchar(20) DEFAULT '' COMMENT '登陆ip',
-  `login_time` datetime DEFAULT NULL COMMENT '登陆时间',
-  PRIMARY KEY (`sys_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台session单点登陆表格';
+-- ----------------------------
+-- Records of sys_users_session
+-- ----------------------------
+INSERT INTO `sys_users_session` VALUES (1, '4669A24E64105286EF8BFEF06ABC0B8D', 1, '192.168.2.166', '2024-01-31 20:47:04');
+INSERT INTO `sys_users_session` VALUES (184, '53F0A3AA102AEDD1BECD69AEB2B00515', 1, '172.25.240.1', '2024-01-25 10:16:21');
 
-/*Data for the table `sys_users_session` */
-
-insert  into `sys_users_session`(`sys_user_id`,`session_id`,`status`,`login_ip`,`login_time`) values 
-(1,'D85BF71B2C590595159D7FEA4D354733',1,'172.24.48.1','2021-04-17 12:30:09');
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+SET FOREIGN_KEY_CHECKS = 1;

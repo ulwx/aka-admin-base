@@ -147,7 +147,7 @@ $(function() {
 			}
 		}
 	});
-
+	var isTimeOutAlert=false;
 	function check_time_out(XMLHttpRequest) {
 		if (XMLHttpRequest.getResponseHeader) {
 			var sessionstatus = XMLHttpRequest
@@ -158,19 +158,32 @@ $(function() {
 
 					var xmlDoc = XMLHttpRequest.responseText;
 					var ret = eval('(' + xmlDoc + ')');// $.evalJSON(xmlDoc);
-
-					alert(ret.content);
-					if (window.top) {
-						window.top.location = ret.login;
-					} else {
-						window.location = ret.login;
+					if(ret.content!=null) {
+						///
+					}else{
+						ret=ret.data;
 					}
+					if(!isTimeOutAlert) {
+						isTimeOutAlert=true;
+						alert(ret.content);
+						if (window.top) {
+							window.top.location = ret.login;
+						} else {
+							window.location = ret.login;
+						}
+					}
+
+
 				} else if (sessionstatus == "control") {
 					// 如果访问控制就处理 ，指定要跳转的页面
 
 					var xmlDoc = XMLHttpRequest.responseText;
 					var ret = eval('(' + xmlDoc + ')');// $.evalJSON(xmlDoc);
-
+					if(ret.content!=null) {
+						///
+					}else{
+						ret=ret.data;
+					}
 					alert(ret.content);
 					if (ret.exit == 1) {
 						if (window.top) {

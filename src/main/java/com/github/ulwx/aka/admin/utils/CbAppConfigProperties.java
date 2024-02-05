@@ -1,7 +1,6 @@
 package com.github.ulwx.aka.admin.utils;
 
 import com.github.ulwx.aka.webmvc.AkaWebMvcProperties.ServiceImpl;
-import com.ulwx.tool.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -10,8 +9,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @ConfigurationProperties("aka.admin-base")
 public class CbAppConfigProperties implements InitializingBean, ApplicationContextAware {
@@ -229,22 +229,24 @@ public class CbAppConfigProperties implements InitializingBean, ApplicationConte
     }
 
     public static class AccessFilter{
-        private List<String> accessPlugins=new ArrayList<>();
-        private LinkedHashSet notFilterUrls=new LinkedHashSet();
+        @NestedConfigurationProperty
+        private Map<String,String> accessPlugins=new LinkedHashMap<>();
+        @NestedConfigurationProperty
+        private Map<String,String> notFilterUrls=new LinkedHashMap<>();;
 
-        public List<String> getAccessPlugins() {
+        public Map<String, String> getAccessPlugins() {
             return accessPlugins;
         }
 
-        public void setAccessPlugins(List<String> accessPlugins) {
+        public void setAccessPlugins(Map<String, String> accessPlugins) {
             this.accessPlugins = accessPlugins;
         }
 
-        public LinkedHashSet getNotFilterUrls() {
+        public Map<String, String> getNotFilterUrls() {
             return notFilterUrls;
         }
 
-        public void setNotFilterUrls(LinkedHashSet notFilterUrls) {
+        public void setNotFilterUrls(Map<String, String> notFilterUrls) {
             this.notFilterUrls = notFilterUrls;
         }
     }

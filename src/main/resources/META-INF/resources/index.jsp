@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<title>简易贷营销系统</title>
+<title>派速捷云平台</title>
 
 <jsp:include page="/head.jsp" flush="true"></jsp:include>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.plug/jsencrypt.js"></script>

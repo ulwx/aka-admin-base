@@ -12,7 +12,7 @@
     <% SessionUserInfo info = (SessionUserInfo) request.getSession().getAttribute(com.github.ulwx.aka.webmvc.WebMvcCbConstants.USER); %>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <title>简易贷营销系统</title>
+    <title>派速捷云平台</title>
     <jsp:include page="/head.jsp" flush="true"></jsp:include>
 
 
@@ -476,7 +476,7 @@
         //绑定tab的双击事件、右键事件
         function bindTabEvent() {
 
-            $(".tabs-inner").live('contextmenu', function (e) {
+            $(".tabs-inner").on('contextmenu', function (e) {
                 //alert(5678);
                 $('#mm').menu('show', {
                     left: e.pageX,

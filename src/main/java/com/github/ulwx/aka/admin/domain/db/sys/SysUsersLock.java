@@ -1,8 +1,9 @@
 package com.github.ulwx.aka.admin.domain.db.sys;
-
+import java.util.*;
+import java.sql.*;
+import java.time.*;
 import com.github.ulwx.aka.dbutils.tool.support.ObjectUtils;
-
-import java.time.LocalDateTime;
+import com.github.ulwx.aka.dbutils.database.annotation.AkaColumn;
 
 /*********************************************
 后台用户错误次数限制表格
@@ -17,24 +18,28 @@ public class SysUsersLock implements java.io.Serializable {
 	public void setSysUserId(Integer sysUserId){
 		this.sysUserId = sysUserId;
 	}
+	@AkaColumn(isNullable=false)
 	public Integer getSysUserId(){
 		return sysUserId;
 	}
 	public void setPassCnt(Integer passCnt){
 		this.passCnt = passCnt;
 	}
+	
 	public Integer getPassCnt(){
 		return passCnt;
 	}
 	public void setLastTime(LocalDateTime lastTime){
 		this.lastTime = lastTime;
 	}
+	
 	public LocalDateTime getLastTime(){
 		return lastTime;
 	}
 	public void setFirstTime(LocalDateTime firstTime){
 		this.firstTime = firstTime;
 	}
+	
 	public LocalDateTime getFirstTime(){
 		return firstTime;
 	}
@@ -43,6 +48,6 @@ public class SysUsersLock implements java.io.Serializable {
 		return  ObjectUtils.toString(this);
 	}
 
-	private static final long serialVersionUID =-2066322875L;
+	private static final long serialVersionUID =176306666L;
 
 }

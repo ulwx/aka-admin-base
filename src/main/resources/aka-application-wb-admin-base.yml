@@ -53,23 +53,26 @@ aka:
       # 当访问控制过滤器F3AccessFilter在检测在Session里具有用户session时才调用access-plugins设置的插件。
       # 访问控制的插件必须继承com.github.ulwx.aka.webmvc.filter.AccessPlugin接口，
       access-plugins:
-        #是否需要包含
-        - com.github.ulwx.aka.admin.filter.SessionFilter
-        - com.github.ulwx.aka.admin.filter.URLControlFilter
+        default:
+          #是否需要包含
+          - com.github.ulwx.aka.admin.filter.SessionFilter
+          - com.github.ulwx.aka.admin.filter.URLControlFilter
       # - com.github.ulwx.aka.admin.filter.SignFilter
       #设置哪些URL不需要在session里存在User对象
       not-filter-urls:
-        - sys_Login_loginJSON.action
-        - sys_Login_logoutJSON.action
-      #默认会包含error、message、json、login、forward、redirect、download、gate全局逻辑试图对应的jsp
-        - /download.jsp
-        - /forward.jsp
-        - /redirect.jsp
-        - /index.jsp
-        - /message.jsp
-        - /json.jsp
-        - /gate.jsp
-        - /index.jsp
+        default:
+          - sys_Login_loginJSON.action
+          - sys_Login_logoutJSON.action
+          - /sys/logout.action
+           #默认会包含error、message、json、login、forward、redirect、download、gate全局逻辑试图对应的jsp
+          - /download.jsp
+          - /forward.jsp
+          - /redirect.jsp
+          - /index.jsp
+          - /message.jsp
+          - /json.jsp
+          - /gate.jsp
+          - /index.jsp
 #   login-config:
 #      #新建用户时的初始化密码
 #      init-password: yscf888.com

@@ -6,16 +6,15 @@ import com.github.ulwx.aka.admin.domain.cus.CbEasyUIGridModel;
 import com.github.ulwx.aka.admin.domain.db.sys.SysRole;
 import com.github.ulwx.aka.admin.domain.db.sys.SysRoletype;
 import com.github.ulwx.aka.admin.domain.db.sys.SysUser;
+import com.github.ulwx.aka.admin.utils.CbConst;
 import com.github.ulwx.aka.admin.web.action.sys.domain.AdminUserInfo;
 import com.github.ulwx.aka.admin.web.action.sys.services.dao.sysdb.SysRoleDao;
 import com.github.ulwx.aka.admin.web.action.sys.services.dao.sysdb.SysRoletypeDao;
 import com.github.ulwx.aka.admin.web.action.sys.services.dao.sysdb.SysUserDao;
 import com.github.ulwx.aka.admin.web.action.sys.services.service.sys.UserInfoService;
-import com.github.ulwx.aka.admin.utils.CbConst;
 import com.github.ulwx.aka.dbutils.tool.PageBean;
 import com.github.ulwx.aka.webmvc.web.action.ActionContext;
 import com.github.ulwx.aka.webmvc.web.action.ActionSupport;
-import com.ulwx.tool.ArrayUtils;
 import com.ulwx.tool.RequestUtils;
 import com.ulwx.tool.StringUtils;
 import com.ulwx.tool.ValidationUtils;
@@ -107,7 +106,6 @@ public class SysUserAction extends ActionSupport {
 					}
 				}
 			}
-			
 			if(!StringUtils.isEmpty(adminUserInfo.getNikeName())) {
 				if(adminUserInfo.getNikeName().length()>10) {
 					return this.JsonViewError("昵称应小于10个字符！");
@@ -117,15 +115,11 @@ public class SysUserAction extends ActionSupport {
 			if(StringUtils.isEmpty(adminUserInfo.getSysRoleIds())) {
 				return this.JsonViewError("菜单角色必填！");
 			}
-				
-				
+
 			if(StringUtils.isEmpty(adminUserInfo.getSysRoleTypeCodes())) {
 				return this.JsonViewError("角色类型必填！");
 			}
-			
-			
-			
-			
+
 			logger.debug("adminUserInfo="+ObjectUtils.toString(adminUserInfo));
 			SysUser userInfo = beanGet.bean(UserInfoService.class).getAccountInfo(adminUserInfo.getAccount());
 			if(userInfo!=null) {
@@ -149,14 +143,6 @@ public class SysUserAction extends ActionSupport {
 		RequestUtils ru=this.getRequestUtils();
 		try {
 			AdminUserInfo[] adminUserInfos=ru.getJson("selInfos", AdminUserInfo[].class);
-			for(int i=0; i<adminUserInfos.length; i++) {
-				AdminUserInfo adminUserInfo=adminUserInfos[i];
-				String[] strs=adminUserInfo.getSysRoleTypeCodes().split(",");
-				if(ArrayUtils.indexOf(strs, "0")>=0) {
-					return this.JsonViewError("管理员不能删除!");
-				}
-				
-			}
 			beanGet.bean(UserInfoService.class).delUser(adminUserInfos);;
 			
 			return this.JsonViewSuc("删除成功！");

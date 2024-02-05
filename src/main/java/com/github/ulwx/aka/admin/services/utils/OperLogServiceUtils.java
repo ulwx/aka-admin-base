@@ -57,18 +57,18 @@ public class OperLogServiceUtils {
 			HttpSession session=request.getSession();
 			SessionUserInfo userInfo = (SessionUserInfo) session.getAttribute(WebMvcCbConstants.USER);
 			if(userInfo!=null) {
-				operLog.setUserId(userInfo.getUser().getId());
+				operLog.setUserId(Integer.valueOf(userInfo.getUser().getId()));
 				operLog.setUserName(userInfo.getUser().getAccount());
 				operLog.setOperTime(LocalDateTime.now());
 				operLog.setIp(CbIPAddressUtil.getRemoteAddr(request));
 			}else {
-				operLog.setUserId("0");
+				operLog.setUserId(0);
 				operLog.setUserName("0");
 				operLog.setOperTime(LocalDateTime.now());
 				operLog.setIp(CbIPAddressUtil.getRemoteAddr(request));
 			}
 		}else {
-			operLog.setUserId(myuserInfo.getUser().getId());
+			operLog.setUserId(Integer.valueOf(myuserInfo.getUser().getId()));
 			operLog.setUserName(myuserInfo.getUser().getAccount());
 			operLog.setOperTime(LocalDateTime.now());
 			operLog.setIp(CbIPAddressUtil.getRemoteAddr(request));

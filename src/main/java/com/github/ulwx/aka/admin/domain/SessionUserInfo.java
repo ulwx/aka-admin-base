@@ -1,12 +1,13 @@
 package com.github.ulwx.aka.admin.domain;
 
 
+import com.github.ulwx.aka.webmvc.SessionUser;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class SessionUserInfo {
+public class SessionUserInfo implements SessionUser {
 	private User user;
 	private UserRole[] roles;// 存放角色id
 	//RoleTypeCode->RoleType对象映射，RoleTypeCode一般对应岗位，用于处理数据权限，比如上级可以查看下级的数据
@@ -22,6 +23,21 @@ public class SessionUserInfo {
 
 	public User getUser() {
 		return user;
+	}
+
+	@Override
+	public String getUserName() {
+		return this.getUser().getName();
+	}
+
+	@Override
+	public String getAccount() {
+		 return this.getUser().getAccount();
+	}
+
+	@Override
+	public String getPhoneNumber() {
+		return this.getUser().getPhone();
 	}
 
 	public void setUser(User user) {

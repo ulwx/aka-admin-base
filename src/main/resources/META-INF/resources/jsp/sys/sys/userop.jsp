@@ -29,33 +29,7 @@
 	})
 
 	function initform(){
-	    
-		//$("#saveUserForm").form("clear");
-	
-	    $("input[name='originPw']:radio").click(function(){
-	    	if($(this).val()=='true'){
-				$("#password").textbox("setValue","<%=initPass%>");
-		    	$("#confirmPassword").textbox("setValue","<%=initPass%>");	
-		    	$("#password").textbox("readonly",true);
-		    	$("#confirmPassword").textbox("readonly",true);
-		    	
-		    	
-	    	}else{
-	    		$("#password").textbox("setValue","");
-	    		$("#confirmPassword").textbox("setValue","");
-	    		
-	    		$("#password").textbox("readonly",false);
-		    	$("#confirmPassword").textbox("readonly",false);
-	    	}
-	    	
-	    	
-	    	
-	    	clearEasyUiInvalidTip("#saveUserForm");
-	    	
-	    });
-	    
-	    $("input[name='originPw']:radio:first").click();
-	  
+
 	    clearEasyUiInvalidTip("#saveUserForm");
 	}
 	function initfirst(){
@@ -139,8 +113,8 @@
 		$('#saveUserForm').form('submit',{
 				url : url,
 				onSubmit : function(param) {
-					var ret = $(this).form('enableValidation').form(
-							'validate');
+					$(this).form('enableValidation');
+					var ret =$(this).form('validate');
 					if (!ret) {
 						$("body").hideLoading();
 					}
@@ -198,22 +172,13 @@
 				<div class="form-tips">最大长度10字符</div>
 		</div>
 		<div class="commonForm-items">
-			<select id="account" class="easyui-combobox" name="sex" id="sex" style="width:100%"
+			<select id="sex" class="easyui-combobox" name="sex" id="sex" style="width:100%"
 				data-options="label:'性别:' ,required:true" >
 				<option value="男" selected="selected">男</option>
 				<option value="女">女</option>
 			</select>
 		</div>
-		
-		<div class="commonForm-items">
-			<div class="form-item__label">初始密码:</div>
-			<div class="form-item__content">
-				<label>是:<input checked="checked" value="true" type="radio"
-					autocomplete="off" class="easyui-radio" id="originPw" name="originPw" /></label> <label>否:<input
-					value="false" type="radio" autocomplete="off" class="easyui-radio"
-					name="originPw" /></label> <label style="color: red">(初始密码为:<%=initPass%>)</label>
-			</div>
-		</div>
+
 		<div class="commonForm-items">
 			<input 
 				data-options="label:'密码:' ,required:true,showEye:false,validType:'password'" style="width:100%"
@@ -222,8 +187,8 @@
 		</div>
 		<div class="commonForm-items">
 			<input 
-				data-options="label:'确认密码:' ,required:true,showEye:false" validType="confirmPass['#password']" style="width:100%"
-				class="easyui-passwordbox" id="confirmPassword" name="confirmPassword" />
+				data-options="label:'确认密码:',required:true,showEye:false" style="width:100%"
+				class="easyui-passwordbox" id="confirmPassword" validType='confirmPass["#password"]' name="confirmPassword" />
 		</div>
 		<div class="commonForm-items">
 			<select id="sysRoleIds" name="sysRoleIds" class="easyui-combobox" style="width:100%"

@@ -1,13 +1,14 @@
 package com.github.ulwx.aka.admin.domain.db.sys;
-
+import java.util.*;
+import java.sql.*;
+import java.time.*;
 import com.github.ulwx.aka.dbutils.tool.support.ObjectUtils;
-
-import java.time.LocalDateTime;
+import com.github.ulwx.aka.dbutils.database.annotation.AkaColumn;
 
 /*********************************************
 后台session单点登陆表格
 ***********************************************/
-public class SysUsersSession  implements java.io.Serializable {
+public class SysUsersSession implements java.io.Serializable {
 
 	private Integer sysUserId;/*后台登陆用户id;len:10*/
 	private String sessionId;/*session后台;len:60*/
@@ -18,30 +19,35 @@ public class SysUsersSession  implements java.io.Serializable {
 	public void setSysUserId(Integer sysUserId){
 		this.sysUserId = sysUserId;
 	}
+	@AkaColumn(isNullable=false)
 	public Integer getSysUserId(){
 		return sysUserId;
 	}
 	public void setSessionId(String sessionId){
 		this.sessionId = sessionId;
 	}
+	
 	public String getSessionId(){
 		return sessionId;
 	}
 	public void setStatus(Integer status){
 		this.status = status;
 	}
+	
 	public Integer getStatus(){
 		return status;
 	}
 	public void setLoginIp(String loginIp){
 		this.loginIp = loginIp;
 	}
+	
 	public String getLoginIp(){
 		return loginIp;
 	}
 	public void setLoginTime(LocalDateTime loginTime){
 		this.loginTime = loginTime;
 	}
+	
 	public LocalDateTime getLoginTime(){
 		return loginTime;
 	}
@@ -50,6 +56,6 @@ public class SysUsersSession  implements java.io.Serializable {
 		return  ObjectUtils.toString(this);
 	}
 
-	private static final long serialVersionUID =-1301839764L;
+	private static final long serialVersionUID =1577496995L;
 
 }

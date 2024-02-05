@@ -7,12 +7,7 @@ SELECT t1.* FROM sys_role t1 WHERE 1=1
 
 ORDER BY  t1.sys_role_sno asc
     
-   
 
-
-insertData
-===
-SELECT @@identity AS insertRoleID
     
 getOneData 
 ===
@@ -56,7 +51,7 @@ SELECT
   count(1) as `value`
 FROM
   `sys_role`
-WHERE sys_role_sno IN (#{ids}) AND is_sys=1
+WHERE sys_role_sno IN (#{ids}) 
 
 
 

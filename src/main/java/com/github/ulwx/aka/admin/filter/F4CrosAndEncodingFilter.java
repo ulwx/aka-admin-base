@@ -46,12 +46,7 @@ public class F4CrosAndEncodingFilter implements Filter {
         chain.doFilter(request, response);
         
     }
-    public void init(FilterConfig filterConfig) throws ServletException {
-        String c = filterConfig.getInitParameter("encode");
-        if (c != null)
-        {
-            encode = c;
-        }
+    public void init() throws ServletException {
         
     }
 

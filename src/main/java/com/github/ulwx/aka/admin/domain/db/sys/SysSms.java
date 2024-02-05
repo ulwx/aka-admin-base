@@ -1,8 +1,9 @@
 package com.github.ulwx.aka.admin.domain.db.sys;
-
+import java.util.*;
+import java.sql.*;
+import java.time.*;
 import com.github.ulwx.aka.dbutils.tool.support.ObjectUtils;
-
-import java.time.LocalDateTime;
+import com.github.ulwx.aka.dbutils.database.annotation.AkaColumn;
 
 /*********************************************
 后台短信验证发送表
@@ -22,54 +23,63 @@ public class SysSms implements java.io.Serializable {
 	public void setId(Integer id){
 		this.id = id;
 	}
+	@AkaColumn(isAutoincrement=true,isNullable=false)
 	public Integer getId(){
 		return id;
 	}
 	public void setSmsType(Integer smsType){
 		this.smsType = smsType;
 	}
+	@AkaColumn(isNullable=false)
 	public Integer getSmsType(){
 		return smsType;
 	}
 	public void setMobile(String mobile){
 		this.mobile = mobile;
 	}
+	@AkaColumn(isNullable=false)
 	public String getMobile(){
 		return mobile;
 	}
 	public void setContent(String content){
 		this.content = content;
 	}
+	
 	public String getContent(){
 		return content;
 	}
 	public void setSmsCode(String smsCode){
 		this.smsCode = smsCode;
 	}
+	
 	public String getSmsCode(){
 		return smsCode;
 	}
 	public void setResponse(String response){
 		this.response = response;
 	}
+	
 	public String getResponse(){
 		return response;
 	}
 	public void setResponseId(String responseId){
 		this.responseId = responseId;
 	}
+	
 	public String getResponseId(){
 		return responseId;
 	}
 	public void setCreateTime(LocalDateTime createTime){
 		this.createTime = createTime;
 	}
+	
 	public LocalDateTime getCreateTime(){
 		return createTime;
 	}
 	public void setStatus(Integer status){
 		this.status = status;
 	}
+	
 	public Integer getStatus(){
 		return status;
 	}
@@ -78,6 +88,6 @@ public class SysSms implements java.io.Serializable {
 		return  ObjectUtils.toString(this);
 	}
 
-	private static final long serialVersionUID =-1917762638L;
+	private static final long serialVersionUID =-1266192099L;
 
 }

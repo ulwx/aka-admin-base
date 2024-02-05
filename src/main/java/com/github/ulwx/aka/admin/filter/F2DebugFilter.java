@@ -8,6 +8,7 @@ import com.github.ulwx.aka.webmvc.web.action.ActionSupport;
 import com.ulwx.tool.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,8 @@ public class F2DebugFilter implements Filter {
 	private String userName;
 	private boolean needDebug=false;
 	public static String debug_filter_put_a_user="debug.filter.put.a.user";
-
+	@Autowired
+	private BeanGet beanGet;
 	/**
 	 * @see Filter#destroy()
 	 */
@@ -42,7 +44,7 @@ public class F2DebugFilter implements Filter {
 		String contextPath = hreq.getContextPath();
 	
 		try {
-			Set<String> notFilterURLs=ProtocoURLsUtils.getProtocolPrefex(request.getServletContext());
+			Set<String> notFilterURLs=ProtocoURLsUtils.getProtocolPrefex(beanGet);
 			String ruri = hreq.getRequestURI();
 			if (notFilterURLs !=null && !notFilterURLs.isEmpty()) {
 				String[] strs = notFilterURLs.toArray(new String[0]);
@@ -82,9 +84,9 @@ public class F2DebugFilter implements Filter {
 	/**
 	 * @see Filter#init(FilterConfig)
 	 */
-	public void init(FilterConfig Config) throws ServletException {
+	public void init() throws ServletException {
 		// TODO Auto-generated method stub
-		CbAppConfigProperties properties = BeanGet.getBean(CbAppConfigProperties.class,Config.getServletContext());
+		CbAppConfigProperties properties = beanGet.bean(CbAppConfigProperties.class);
 		//log.debug("CbAppConfigProperties:"+ ObjectUtils.toStringUseFastJson(properties));
 		if(properties.getDebugFilter()!=null) {
 			userName = properties.getDebugFilter().getUsername();

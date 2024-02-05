@@ -1,13 +1,14 @@
 package com.github.ulwx.aka.admin.domain.db.sys;
-
+import java.util.*;
+import java.sql.*;
+import java.time.*;
 import com.github.ulwx.aka.dbutils.tool.support.ObjectUtils;
-
-import java.time.LocalDateTime;
+import com.github.ulwx.aka.dbutils.database.annotation.AkaColumn;
 
 /*********************************************
 角色url权限，匹配的url可以访问
 ***********************************************/
-public class SysRoleUrls  implements java.io.Serializable {
+public class SysRoleUrls implements java.io.Serializable {
 
 	private Integer id;/*流水号;len:10*/
 	private Integer roleId;/*角色id;len:10*/
@@ -17,24 +18,28 @@ public class SysRoleUrls  implements java.io.Serializable {
 	public void setId(Integer id){
 		this.id = id;
 	}
+	@AkaColumn(isAutoincrement=true,isNullable=false)
 	public Integer getId(){
 		return id;
 	}
 	public void setRoleId(Integer roleId){
 		this.roleId = roleId;
 	}
+	
 	public Integer getRoleId(){
 		return roleId;
 	}
 	public void setUrlMatch(String urlMatch){
 		this.urlMatch = urlMatch;
 	}
+	
 	public String getUrlMatch(){
 		return urlMatch;
 	}
 	public void setUpdatime(LocalDateTime updatime){
 		this.updatime = updatime;
 	}
+	
 	public LocalDateTime getUpdatime(){
 		return updatime;
 	}
@@ -43,6 +48,6 @@ public class SysRoleUrls  implements java.io.Serializable {
 		return  ObjectUtils.toString(this);
 	}
 
-	private static final long serialVersionUID =-528091650L;
+	private static final long serialVersionUID =597523537L;
 
 }

@@ -1,5 +1,6 @@
 package com.github.ulwx.aka.admin.filter;
 
+import com.github.ulwx.aka.admin.domain.SessionUserInfo;
 import com.github.ulwx.aka.admin.utils.CbAppConfigProperties;
 import com.github.ulwx.aka.webmvc.AkaWebMvcProperties;
 import com.github.ulwx.aka.webmvc.BeanGet;
@@ -12,21 +13,21 @@ import com.ulwx.tool.ObjectUtils;
 import com.ulwx.tool.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 
 //@WebFilter(urlPatterns = {"*.jsp", "*.action","/swagger-ui/*"})
 //@Order(12)
-public class F3AccessFilter implements Filter {
+public class F3AccessFilter implements Filter  {
 
     private static Logger log = LoggerFactory.getLogger(F3AccessFilter.class);
     protected FilterConfig filterConfig;
@@ -36,15 +37,18 @@ public class F3AccessFilter implements Filter {
     private String MessagePage;
     private String AjaxMessagePage;
     private String[] NotFilterURLs;
-    private List<String> accessPlugin;
+    private Collection<String> accessPlugin;
 
 
-    public void init(FilterConfig config) throws ServletException {
-        this.filterConfig = config;
-        CbAppConfigProperties adminProperties = BeanGet.getBean(CbAppConfigProperties.class, config.getServletContext());
-        AkaWebMvcProperties properties = BeanGet.getBean(AkaWebMvcProperties.class, config.getServletContext());
+    @Autowired
+    private BeanGet beanGet;
+    @Autowired
+    private Environment env;
+    public void init() throws ServletException {
+        CbAppConfigProperties adminProperties = beanGet.bean(CbAppConfigProperties.class);
+        AkaWebMvcProperties properties = beanGet.bean(AkaWebMvcProperties.class);
 
-        accessPlugin = adminProperties.getAccessFilter().getAccessPlugins();//
+        accessPlugin = adminProperties.getAccessFilter().getAccessPlugins().values();//
 
         LoginPage = properties.getGlobalViews().get(ActionSupport.LOGIN);//
         UserSeesionKey = WebMvcCbConstants.USER;
@@ -68,8 +72,8 @@ public class F3AccessFilter implements Filter {
         if (!redirect.isEmpty()) set.add(redirect);
         if (!download.isEmpty()) set.add(download);
         if (!download.isEmpty()) set.add(download);
-        set.addAll(adminProperties.getAccessFilter().getNotFilterUrls());
-        Set<String> others=ProtocoURLsUtils.getProtocolPrefex(config.getServletContext());
+        set.addAll(adminProperties.getAccessFilter().getNotFilterUrls().values());
+        Set<String> others=ProtocoURLsUtils.getProtocolPrefex(beanGet);
         set.addAll(others);
         NotFilterURLs = set.toArray(new String[0]);//
 
@@ -83,7 +87,7 @@ public class F3AccessFilter implements Filter {
 
         HttpServletRequest hreq = (HttpServletRequest) req;
         HttpServletResponse hres = (HttpServletResponse) res;
-        Object userInfo = (Object) hreq.getSession().getAttribute(UserSeesionKey);
+        SessionUserInfo userInfo = (SessionUserInfo) hreq.getSession().getAttribute(UserSeesionKey);
         String ruri = hreq.getRequestURI();
         log.debug("ruri=" + ruri);
         String contextPath = hreq.getContextPath();
@@ -91,17 +95,39 @@ public class F3AccessFilter implements Filter {
         if (ArrayUtils.isNotEmpty(NotFilterURLs)) {
             String[] strs = NotFilterURLs;
             if (ArrayUtils.isNotEmpty(strs)) {
+                boolean find=false;
                 for (int i = 0; i < strs.length; i++) {
                     if (strs[i].startsWith("/")) {
                         if (ruri.startsWith(contextPath + strs[i])) {
-                            chain.doFilter(req, res);
-                            return;
+                            find=true;
+
                         }
                     } else {
                         if (StringUtils.endsWith(ruri, strs[i], false)) {
+                            find=true;
+                        }
+                    }
+                    if(find){
+                        String[] plugins = accessPlugin.toArray(new String[0]);
+                        boolean ret=true;
+                        for (int f = 0; f < plugins.length; f++) {
+                            AccessPlugin plugin = null;
+                            try {
+                                plugin = (AccessPlugin) Class.forName(plugins[f].trim()).newInstance();
+                                ret= plugin.doBeforeDoNotFilterURL(hreq,hres,this);
+                                if(!ret){
+                                    break;
+                                }
+                            } catch (Exception e) {
+                                log.error(e + "", e);
+
+                            }
+                        }
+                        if(ret) {
                             chain.doFilter(req, res);
                             return;
                         }
+
                     }
                 }
             }
@@ -117,6 +143,9 @@ public class F3AccessFilter implements Filter {
                     try {
                         plugin = (AccessPlugin) Class.forName(plugins[i].trim()).newInstance();
                         ab = plugin.doVerify(hreq, hres, this);
+                        if(ab==null){
+                            continue;
+                        }
                     } catch (Exception e) {
                         log.error(e + "", e);
                         ab = new AccessBean();
@@ -171,7 +200,6 @@ public class F3AccessFilter implements Filter {
 
         } else { //session为空
             if (WebMvcUtils.isAjax(hreq)) {// 如果是json请求，跳转到json出错页面
-
                 log.debug("JSON request");
                 hres.setHeader("sessionstatus", "timeout");
                 AccessResult accessResult = new AccessResult();
@@ -249,9 +277,7 @@ public class F3AccessFilter implements Filter {
     }
 
 
-    public List<String> getAccessPlugin() {
-        return accessPlugin;
-    }
+
 
 
 }

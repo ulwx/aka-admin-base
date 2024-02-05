@@ -150,7 +150,7 @@ public class UserInfoService   extends AkaServiceSupport implements IUserInfoSer
 					UserRole userRole = new UserRole();
 					userRole.setId(sysRole.getSysRoleSno());
 					userRole.setName(sysRole.getRoleName());
-					userRole.setRoleTypeCode(sysRole.getRoleTypeCode());
+					//userRole.setRoleTypeCode(sysRole.getRoleTypeCode());
 					userRoles[i] = userRole;
 				}
 				sessionUser.setRoles(userRoles);
@@ -164,7 +164,7 @@ public class UserInfoService   extends AkaServiceSupport implements IUserInfoSer
 							UserRole userRole = new UserRole();
 							userRole.setId(sysRole.getSysRoleSno());
 							userRole.setName(sysRole.getRoleName());
-							userRole.setRoleTypeCode(sysRole.getRoleTypeCode());
+							//userRole.setRoleTypeCode(sysRole.getRoleTypeCode());
 							userRoles[i] = userRole;
 							break;
 						}

@@ -40,13 +40,11 @@ function loadCombotree(selector, value, url, multiple, title) {
 	})
 }
 
-function loadCombobox(selector, url, value, excludeFirst, options) {
+function loadCombobox(selector, url, cvalue, excludeFirst, options) {
 
 	var opt = $.extend({}, {
-
 		url : url,
-
-		panelHeight : 120,
+		panelHeight : 160,
 		valueField : 'id',
 		textField : 'text',
 		editable : true,
@@ -68,12 +66,12 @@ function loadCombobox(selector, url, value, excludeFirst, options) {
 
 		},
 		onLoadSuccess : function() {
-			if (!isNull(value)) {
+			if (!isNull(cvalue)) {
 				var newArray = [];
-				if (!isArray(value)) {// 是否是array
-					value = [ value ];
+				if (!isArray(cvalue)) {// 是否是array
+					cvalue = [ cvalue ];
 				} else {
-					if (isArrayEmpty(value)) {
+					if (isArrayEmpty(cvalue)) {
 						return;
 					}
 				}
@@ -82,18 +80,18 @@ function loadCombobox(selector, url, value, excludeFirst, options) {
 				if (data) {
 					for (var index = 0; index < data.length; index++) {
 						var val = data[index][opts.valueField];
-						if ($.type(value[0]) == "string") {
+						if ($.type(cvalue[0]) == "string") {
 							val = val + "";
-						} else if ($.type(value[0]) == "number") {
+						} else if ($.type(cvalue[0]) == "number") {
 							val = val - 0;
 						}
-						var findIndex = value.indexOf(val);
+						var findIndex = cvalue.indexOf(val);
 						if (findIndex >= 0) {
 							newArray.push(val);
-							value.splice(findIndex, 1)
+							cvalue.splice(findIndex, 1)
 
 						}
-						if (value.length == 0) {
+						if (cvalue.length == 0) {
 							break;
 						}
 
@@ -327,7 +325,32 @@ function operRec(datagridSelector, url, reloadGrid) {
 	});
 
 }
+function delRec(url,deleteId,reloadGrid){
+	$.ajax({
+		type: "POST",
+		dataType: "text",
+		url: url,
+		data: {"deleteId":deleteId},
+		success: function(data){
+			data = $.trim(data);
+			data=$.evalJSON(data);
+			if(data && data.status==1){
+				$.messager.alert("提示", "删除成功！！", "info", function() {
+					if (reloadGrid) {
+						reloadGrid();
+					}
+				});
+			}else{
+				$.messager.alert("提示", data.message);
+				return;
+			}
+		},
+		error: function(){
+			$.messager.alert("提示", "网络连接失败!");
+		}
+	});
 
+}
 function initDataGrid(selector, url, queryParams, columns, options) {
 
 	var opt = $.extend({}, {

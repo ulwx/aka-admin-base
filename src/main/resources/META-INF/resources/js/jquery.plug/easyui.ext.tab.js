@@ -150,7 +150,7 @@
 	// 绑定tab的双击事件、右键事件
 	easyui.ext.tab.bindTabEvent=function(tabid) {
 
-		$(".tabs-inner").live('contextmenu', function(e) {
+		$(".tabs-inner").on('contextmenu', function(e) {
 			// alert(5678);
 			$(tabid + '-mm').menu('show', {
 				left : e.pageX,

@@ -16,7 +16,6 @@ import com.github.ulwx.aka.webmvc.WebMvcCbConstants;
 import com.github.ulwx.aka.webmvc.web.action.ActionContext;
 import com.github.ulwx.aka.webmvc.web.action.ActionSupport;
 import com.ulwx.tool.RequestUtils;
-import com.ulwx.type.TInteger;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -105,8 +104,6 @@ public class SysRoleAction extends ActionSupport {
 			
 		}
 			
-		
-			
 		entity.setUpdateTime(LocalDateTime.now());
 		String updator = ((SessionUserInfo)this.getUserInfo()).getUser().getName();
 		entity.setUpdator(updator);
@@ -120,7 +117,7 @@ public class SysRoleAction extends ActionSupport {
 			rightSet.add(r);
 		}
 		try {
-			int ID = beanGet.bean(SysRoleDao.class).insertData(entity, srr,
+			long ID = beanGet.bean(SysRoleDao.class).insertData(entity, srr,
 					rightSet.toArray(new String[0]));
 			SessionUserInfo userInfo=(SessionUserInfo)this.getUserInfo();;
 			ActionLogUtils.log(this.getRequest(),userInfo,1, "添加角色表管理数据,ID为" + ID);
@@ -246,10 +243,6 @@ public class SysRoleAction extends ActionSupport {
 			if (deleteId != null && !deleteId.equals("")) {
 				String[] IDs = deleteId.split(",");
 				SysRole entity = new SysRole();
-				TInteger YdyRole=beanGet.bean(SysRoleDao.class).getYdyRoleCount(IDs);
-				if(YdyRole.getValue()>0) {
-					return this.JsonViewError("预定义对象不能删除！");
-				}
 				for (String ID : IDs) {
 					entity.setSysRoleSno(Integer.valueOf(ID));
 					beanGet.bean(SysRoleDao.class).deleteData(entity, MD.of("sysRoleSno"));

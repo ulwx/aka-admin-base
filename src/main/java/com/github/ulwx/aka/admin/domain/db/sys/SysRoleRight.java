@@ -1,8 +1,9 @@
 package com.github.ulwx.aka.admin.domain.db.sys;
-
+import java.util.*;
+import java.sql.*;
+import java.time.*;
 import com.github.ulwx.aka.dbutils.tool.support.ObjectUtils;
-
-import java.time.LocalDateTime;
+import com.github.ulwx.aka.dbutils.database.annotation.AkaColumn;
 
 /*********************************************
 角色权限表
@@ -18,30 +19,35 @@ public class SysRoleRight implements java.io.Serializable {
 	public void setSysRoleRightSno(Integer sysRoleRightSno){
 		this.sysRoleRightSno = sysRoleRightSno;
 	}
+	@AkaColumn(isAutoincrement=true,isNullable=false)
 	public Integer getSysRoleRightSno(){
 		return sysRoleRightSno;
 	}
 	public void setSysRoleId(Integer sysRoleId){
 		this.sysRoleId = sysRoleId;
 	}
+	@AkaColumn(isNullable=false)
 	public Integer getSysRoleId(){
 		return sysRoleId;
 	}
 	public void setSysRightCode(String sysRightCode){
 		this.sysRightCode = sysRightCode;
 	}
+	@AkaColumn(isNullable=false)
 	public String getSysRightCode(){
 		return sysRightCode;
 	}
 	public void setUpdateTime(LocalDateTime updateTime){
 		this.updateTime = updateTime;
 	}
+	@AkaColumn(isNullable=false)
 	public LocalDateTime getUpdateTime(){
 		return updateTime;
 	}
 	public void setUpdator(String updator){
 		this.updator = updator;
 	}
+	@AkaColumn(isNullable=false)
 	public String getUpdator(){
 		return updator;
 	}
@@ -50,6 +56,6 @@ public class SysRoleRight implements java.io.Serializable {
 		return  ObjectUtils.toString(this);
 	}
 
-	private static final long serialVersionUID =-1315903212L;
+	private static final long serialVersionUID =-733465093L;
 
 }

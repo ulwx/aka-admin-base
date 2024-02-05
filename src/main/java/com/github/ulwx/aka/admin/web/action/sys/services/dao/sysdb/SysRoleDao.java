@@ -12,6 +12,7 @@ import com.github.ulwx.aka.dbutils.tool.MD;
 import com.github.ulwx.aka.dbutils.tool.PageBean;
 import com.github.ulwx.aka.webmvc.AkaDaoSupport;
 import com.ulwx.type.TInteger;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,13 +43,12 @@ public class SysRoleDao extends AkaDaoSupport {
 	 * @return
 	 * @throws Exception
 	 */
-	public  int insertData(SysRole entity, SysRoleRight srr, String[] sysRightArray) throws Exception {
+	@Transactional
+	public  long insertData(SysRole entity, SysRoleRight srr, String[] sysRightArray) throws Exception {
 
-		int sysRoleID = 0;
-		DataBaseSet set = getTemplate().queryForResultSet(CbDao.md(SysRoleDao.class, "insertData"), null);
-		while (set.next())
-			sysRoleID = set.getInt("insertRoleID");
-		srr.setSysRoleId(sysRoleID);
+		Long sysRoleID = 0l;
+		sysRoleID=getTemplate().insertReturnKeyBy(entity);
+		srr.setSysRoleId(sysRoleID.intValue());
 		for (String right : sysRightArray) {
 			srr.setSysRightCode(right);
 			getTemplate().insertBy(srr);
