@@ -82,6 +82,16 @@ public class F3AccessFilter implements Filter  {
         }
     }
 
+    public void preHandler(final  HttpServletRequest hreq, final HttpServletResponse hres)throws Exception{
+        String[] plugins = accessPlugin.toArray(new String[0]);
+        boolean ret=true;
+        for (int f = 0; f < plugins.length; f++) {
+            AccessPlugin plugin = null;
+            plugin = (AccessPlugin) Class.forName(plugins[f].trim()).newInstance();
+            plugin.preHandle(hreq,hres,this);
+
+        }
+    }
     public void doFilter(final ServletRequest req, final ServletResponse res, FilterChain chain)
             throws IOException, ServletException {
 
@@ -90,8 +100,13 @@ public class F3AccessFilter implements Filter  {
         SessionUserInfo userInfo = (SessionUserInfo) hreq.getSession().getAttribute(UserSeesionKey);
         String ruri = hreq.getRequestURI();
         log.debug("ruri=" + ruri);
+        try {
+            preHandler(hreq, hres);
+        }catch (Exception e){
+            log.error(""+e,e);
+            throw new RuntimeException(e);
+        }
         String contextPath = hreq.getContextPath();
-
         if (ArrayUtils.isNotEmpty(NotFilterURLs)) {
             String[] strs = NotFilterURLs;
             if (ArrayUtils.isNotEmpty(strs)) {

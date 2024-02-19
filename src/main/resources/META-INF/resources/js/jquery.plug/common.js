@@ -19,7 +19,6 @@ String.prototype.startWith=function(s){
 	     return true;
 	  else
 	     return false;
-	  return true;
 };
 
 function isInteger(obj) {
@@ -366,6 +365,28 @@ function syncPost(url,postData){
     		  
     	}
     });
+	return ret;
+};
+function syncPost(url,postData,contentType ){
+	var ret = '';
+	$.ajax({
+		contentType: contentType,
+		dataType: 'text',
+		type: 'POST',
+		async: false,
+		data: postData,
+		cache: false,
+		url: url,
+		success: function(data){
+			//ret = $.evalJSON($.trim(data));
+			ret=data;
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			$("body").hideLoading();
+			$.messager.alert("提示", jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown);
+
+		}
+	});
 	return ret;
 };
 /**
@@ -948,7 +969,7 @@ function isEmpty(exp){
 				return true;
 			}
 		}else if($.type(exp)=='array'){
-			if(array==null || array.length==0){
+			if(exp==null || exp.length==0){
 				return true;
 			}
 		}

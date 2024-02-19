@@ -85,11 +85,27 @@ function loadCombobox(selector, url, cvalue, excludeFirst, options) {
 						} else if ($.type(cvalue[0]) == "number") {
 							val = val - 0;
 						}
-						var findIndex = cvalue.indexOf(val);
-						if (findIndex >= 0) {
-							newArray.push(val);
-							cvalue.splice(findIndex, 1)
+						var findIndex =-1;
+						for(var f=0; f<cvalue.length; f++){
+							var ss=cvalue[f];
+							if ($.type(ss) == "string") {
+								if(ss.toLowerCase()==val.toLowerCase()){
+									newArray.push(val);
+									findIndex=f;
+									break;
 
+								}
+							}else if ($.type(ss) == "number") {
+								val = val - 0;
+								if(ss==val){
+									newArray.push(val);
+									findIndex=f;
+									break;
+								}
+							}
+						}
+						if(findIndex>=0){
+							cvalue.splice(f, 1)
 						}
 						if (cvalue.length == 0) {
 							break;

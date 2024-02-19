@@ -387,8 +387,9 @@ table  td{
 					    <tr style="height:50px">
 					    <td>
 					     <input class="easyui-passwordbox" id="password" 
-					     name="password" style="width:100%;height:38px;"
-					      data-options="prompt:'密码',iconCls:'icon-lock',showEye:false,iconWidth:30,iconAlign:'left'" />
+					        name="password" style="width:100%;height:38px;"
+					          data-options="prompt:'密码',iconCls:'icon-lock',
+					          showEye:false,iconWidth:30,iconAlign:'left',lastDelay:0,checkInterval:0" />
 					    </td>
 					    </tr>
 					 	 <tr style="height:50px">

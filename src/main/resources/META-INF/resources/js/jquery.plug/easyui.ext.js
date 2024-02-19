@@ -291,7 +291,11 @@ $(function() {
 	 * 2.对linkbutton增加timeout属性，指定多长时间解禁按钮，默认1000秒
 	 *
 	 */
+	if($.fn.combobox){
+		$.extend($.fn.linkbutton.methods, {
 
+		});
+	}
 	if ($.fn.linkbutton) {
 		$.fn.linkbutton.defaults.height = my_default_height;
 		function setDisabled(target, disabled) {
