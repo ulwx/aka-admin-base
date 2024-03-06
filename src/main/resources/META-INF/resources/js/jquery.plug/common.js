@@ -286,13 +286,18 @@ function formatRemoteCurrency(num) {
 
 
 
-function syncGet(url){
+function syncGet(url,myheaders){
+	if(myheaders){
+	}else{
+		myheaders={};
+	}
 	var ret = '';
 	$.ajax({
     	dataType: 'text',
     	type: 'GET',
     	async: false,
     	cache: false,
+		headers: myheaders,
     	url: url,
     	success: function(data){
     		ret=data;
@@ -306,7 +311,11 @@ function syncGet(url){
 	return ret;
 }
 
-function syncPostJSON(url,postData){
+function syncPostJSON(url,postData,myheaders){
+	if(myheaders){
+	}else{
+		myheaders={};
+	}
 	var ret = null;
 	$.ajax({
     	dataType: 'text',
@@ -314,6 +323,7 @@ function syncPostJSON(url,postData){
     	async: false,
     	data: postData,
     	cache: false,
+		headers: myheaders,
     	url: url,
     	success: function(data){
     		ret = $.evalJSON($.trim(data));
@@ -326,13 +336,18 @@ function syncPostJSON(url,postData){
     });
 	return ret;
 };
-function syncGetJSON(url){
+function syncGetJSON(url,myheaders){
+	if(myheaders){
+	}else{
+		myheaders={};
+	}
 	var ret = null;
 	$.ajax({
     	dataType: 'text',
     	type: 'GET',
     	async: false,
     	cache: false,
+		headers: myheaders,
     	url: url,
     	success: function(data){
     		ret = $.evalJSON($.trim(data));
@@ -346,7 +361,11 @@ function syncGetJSON(url){
 	return ret;
 };
 
-function syncPost(url,postData){
+function syncPost(url,postData,myheaders){
+	if(myheaders){
+	}else{
+		myheaders={};
+	}
 	var ret = '';
 	$.ajax({
     	dataType: 'text',
@@ -354,6 +373,7 @@ function syncPost(url,postData){
     	async: false,
     	data: postData,
     	cache: false,
+		headers: myheaders,
     	url: url,
     	success: function(data){
     		//ret = $.evalJSON($.trim(data));
@@ -367,13 +387,18 @@ function syncPost(url,postData){
     });
 	return ret;
 };
-function syncPost(url,postData,contentType ){
+function syncPost(url,postData,contentType,myheaders){
+	if(myheaders){
+	}else{
+		myheaders={};
+	}
 	var ret = '';
 	$.ajax({
 		contentType: contentType,
 		dataType: 'text',
 		type: 'POST',
 		async: false,
+		headers: myheaders,
 		data: postData,
 		cache: false,
 		url: url,
@@ -395,12 +420,17 @@ function syncPost(url,postData,contentType ){
  * @param fun ：格式为 function(data){...}
  * @returns {String}
  */
-function asynGet(url,fun){
+function asynGet(url,fun,myheaders){
+	if(myheaders){
+	}else{
+		myheaders={};
+	}
 	$.ajax({
     	dataType: 'text',
     	type: 'GET',
     	async: true,
     	cache: false,
+		headers: myheaders,
     	url: url,
     	success: fun,
     	error: function(jqXHR, textStatus, errorThrown){
@@ -416,12 +446,17 @@ function asynGet(url,fun){
  * @param fun ：格式为 function(data){...}
  * @returns {String}
  */
-function asynPost(url,fun){
+function asynPost(url,fun,myheaders){
+	if(myheaders){
+	}else{
+		myheaders={};
+	}
 	$.ajax({
     	dataType: 'text',
     	type: 'POST',
     	async: true,
     	cache: false,
+		headers: myheaders,
     	url: url,
     	success: fun,
     	error: function(jqXHR, textStatus, errorThrown){
@@ -439,13 +474,18 @@ function asynPost(url,fun){
  * @param fun ：格式为 function(data){...}
  * @returns {String}
  */
-function asynPostParam(URL,params,fun){
+function asynPostParam(URL,params,fun,myheaders){
+	if(myheaders){
+	}else{
+		myheaders={};
+	}
 	$.ajax({
     	dataType: 'text',
     	type: 'POST',
     	async: true,
     	cache: false,
     	url: URL,
+		headers: myheaders,
     	data:params,
     	success: fun,
     	error: function(jqXHR, textStatus, errorThrown){
