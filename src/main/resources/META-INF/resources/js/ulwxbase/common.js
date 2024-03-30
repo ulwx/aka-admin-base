@@ -154,7 +154,7 @@ function selectRec(datagridSelector, url, reloadGrid, title, data, width,
 
 }
 
-function editRec(datagridSelector, url, reloadGrid, title, data, width, height) {
+function editRec(datagridSelector, url, reloadGrid, title, data, width, height,options) {
 	var records = $(datagridSelector).datagrid('getChecked');
 	// console.log(records);
 	if (!records.length) {
@@ -166,7 +166,7 @@ function editRec(datagridSelector, url, reloadGrid, title, data, width, height) 
 		return false;
 	}
 
-	easyui.ext.open({
+	var opt = $.extend({},{
 		width : width && width > 0 ? width : 680,
 		height : height && height > 0 ? height : 550,
 		title : title && title != '' ? title : '修改记录',
@@ -183,7 +183,9 @@ function editRec(datagridSelector, url, reloadGrid, title, data, width, height) 
 			var win = dlg.window;
 			win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
 		}
-	});
+	}, (options || {}));
+
+	easyui.ext.open(opt);
 
 }
 
@@ -262,8 +264,8 @@ function openBorrowerFileDlg(groupId, userId, urlPath, callback) {
 }
 
 function editRec2(datagridSelector, url, reloadGrid, title, data, row, width,
-		height) {
-	easyui.ext.open({
+		height,options) {
+	var opt = $.extend({},{
 		width : width && width > 0 ? width : 680,
 		height : height && height > 0 ? height : 500,
 		title : title && title != '' ? title : '修改记录',
@@ -280,7 +282,9 @@ function editRec2(datagridSelector, url, reloadGrid, title, data, row, width,
 			var win = dlg.window;
 			win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
 		}
-	});
+	}, (options || {}));
+
+	easyui.ext.open(opt);
 
 }
 

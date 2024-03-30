@@ -382,8 +382,8 @@ a:active {
  }
  
  .commonForm{
- 	margin: 0;
- 	padding: 20px 70px 20px 50px;
+ 	margin: auto;
+ 	padding: 20px 20px 20px 20px;
  	width:520px;
  }
 
