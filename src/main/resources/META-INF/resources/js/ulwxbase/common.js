@@ -40,7 +40,7 @@ function loadCombotree(selector, value, url, multiple, title) {
 	})
 }
 
-function loadCombobox(selector, url, cvalue, excludeFirst, options) {
+function loadCombobox(selector, url, cvalue, excludeFirst, options,insertFirst) {
 
 	var opt = $.extend({}, {
 		url : url,
@@ -57,6 +57,9 @@ function loadCombobox(selector, url, cvalue, excludeFirst, options) {
 				}
 				if (excludeFirst) {
 					data.data.splice(0, 1);
+				}
+				if(insertFirst){
+					data.data.splice(0,0,{id:"",text:"==请选择=="})
 				}
 				return data.data;
 			} else {
@@ -123,7 +126,92 @@ function loadCombobox(selector, url, cvalue, excludeFirst, options) {
 	$(selector).combobox(opt);
 
 }
+function loadTagbox(selector, url, cvalue, excludeFirst, options,insertFirst) {
 
+	var opt = $.extend({}, {
+		url : url,
+		panelHeight : 160,
+		valueField : 'id',
+		textField : 'text',
+		editable : true,
+		limitToList : true,
+		loadFilter : function(data) {
+
+			if (data.status == 1) {// 判断是否成功
+				if ($.type(data.data) == 'string') {
+					data.data = $.parseJSON(data.data);
+				}
+				if (excludeFirst) {
+					data.data.splice(0, 1);
+				}
+				if(insertFirst){
+					data.data.splice(0,0,{id:"",text:"==请选择=="})
+				}
+				return data.data;
+			} else {
+				$.messager.alert("提示", data.message, "error");
+				return [];
+			}
+
+		},
+		onLoadSuccess : function() {
+			if (!isNull(cvalue)) {
+				var newArray = [];
+				if (!isArray(cvalue)) {// 是否是array
+					cvalue = [ cvalue ];
+				} else {
+					if (isArrayEmpty(cvalue)) {
+						return;
+					}
+				}
+				var data = $(selector).tagbox("getData");
+				var opts = $(selector).tagbox("options");
+				if (data) {
+					for (var index = 0; index < data.length; index++) {
+						var val = data[index][opts.valueField];
+						if ($.type(cvalue[0]) == "string") {
+							val = val + "";
+						} else if ($.type(cvalue[0]) == "number") {
+							val = val - 0;
+						}
+						var findIndex =-1;
+						for(var f=0; f<cvalue.length; f++){
+							var ss=cvalue[f];
+							if ($.type(ss) == "string") {
+								if(ss.toLowerCase()==val.toLowerCase()){
+									newArray.push(val);
+									findIndex=f;
+									break;
+
+								}
+							}else if ($.type(ss) == "number") {
+								val = val - 0;
+								if(ss==val){
+									newArray.push(val);
+									findIndex=f;
+									break;
+								}
+							}
+						}
+						if(findIndex>=0){
+							cvalue.splice(f, 1)
+						}
+						if (cvalue.length == 0) {
+							break;
+						}
+
+					}
+				}
+				$(selector).tagbox("setValues", newArray);
+			}
+
+		}
+
+	}, (options || {}));
+
+	$(selector).tagbox(opt);
+
+}
 function selectRec(datagridSelector, url, reloadGrid, title, data, width,
 		height) {
 	var records = $(datagridSelector).datagrid('getChecked');

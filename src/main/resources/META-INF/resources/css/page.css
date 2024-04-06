@@ -353,7 +353,7 @@ a:active {
 
 
 .oper-tool-box {
-	margin: 5px 30px 5px 40px;
+	margin: 5px 5px 5px 5px;
 }
 
 .oper-tool-box .easyui-linkbutton {
@@ -384,7 +384,7 @@ a:active {
  .commonForm{
  	margin: auto;
  	padding: 20px 20px 20px 20px;
- 	width:520px;
+ 	width:650px;
  }
 
  .commonForm-items{

@@ -372,8 +372,10 @@ $(function() {
 	if ($.fn.combo) {
 		$.fn.combobox.defaults.panelHeight = 120;
 		$.fn.combobox.defaults.limitToList = true;
+		$.fn.combobox.defaults.height=26;
 	}
 	;
+
 
 
 
