@@ -3,6 +3,7 @@
  */
 
 function isEasyuiInput(selector) {
+	var _easyui_input_class_="";
 	if ($(selector).is(":input")) {
 		if ($(selector).is(_easyui_input_class_)) {
 			return true;

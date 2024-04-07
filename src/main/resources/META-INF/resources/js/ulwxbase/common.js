@@ -242,40 +242,7 @@ function selectRec(datagridSelector, url, reloadGrid, title, data, width,
 
 }
 
-function editRec(datagridSelector, url, reloadGrid, title, data, width, height,options) {
-	var records = $(datagridSelector).datagrid('getChecked');
-	// console.log(records);
-	if (!records.length) {
-		$.messager.alert("提示", "请勾选内容", "info");
-		return false;
-	}
-	if (records.length > 1) {
-		$.messager.alert("提示", "修改只能修改行数据", "info");
-		return false;
-	}
 
-	var opt = $.extend({},{
-		width : width && width > 0 ? width : 680,
-		height : height && height > 0 ? height : 550,
-		title : title && title != '' ? title : '修改记录',
-		self : false,
-		autoHeight : false,
-		content : 'url:' + url,
-		resizable : true,
-		modal : true,
-		shadow : true,
-		onLoad : function(dlg) {
-			dlg.reloadGrid = reloadGrid;//
-			dlg.updateRec = records[0];// 修改的时候
-			dlg.data = data;
-			var win = dlg.window;
-			win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
-		}
-	}, (options || {}));
-
-	easyui.ext.open(opt);
-
-}
 
 /**
  * @param type :
@@ -350,7 +317,40 @@ function openBorrowerFileDlg(groupId, userId, urlPath, callback) {
 	};
 	addRec(url, null, '文件信息', data, 800, 800);
 }
+function editRec(datagridSelector, url, reloadGrid, title, data, width, height,options) {
+	var records = $(datagridSelector).datagrid('getChecked');
+	// console.log(records);
+	if (!records.length) {
+		$.messager.alert("提示", "请勾选内容", "info");
+		return false;
+	}
+	if (records.length > 1) {
+		$.messager.alert("提示", "修改只能修改行数据", "info");
+		return false;
+	}
 
+	var opt = $.extend({},{
+		width : width && width > 0 ? width : 680,
+		height : height && height > 0 ? height : 550,
+		title : title && title != '' ? title : '修改记录',
+		self : false,
+		autoHeight : false,
+		content : 'url:' + url,
+		resizable : true,
+		modal : true,
+		shadow : true,
+		onLoad : function(dlg) {
+			dlg.reloadGrid = reloadGrid;//
+			dlg.updateRec = records[0];// 修改的时候
+			dlg.data = data;
+			var win = dlg.window;
+			win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
+		}
+	}, (options || {}));
+
+	easyui.ext.open(opt);
+
+}
 function editRec2(datagridSelector, url, reloadGrid, title, data, row, width,
 		height,options) {
 	var opt = $.extend({},{

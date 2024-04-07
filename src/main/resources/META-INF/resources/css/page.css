@@ -386,7 +386,9 @@ a:active {
  	padding: 20px 20px 20px 20px;
  	width:650px;
  }
-
+	.validatebox-readonly{
+		background-color: #abb2b83b;
+	}
  .commonForm-items{
  	margin-bottom: 10px;
  	position: relative;
