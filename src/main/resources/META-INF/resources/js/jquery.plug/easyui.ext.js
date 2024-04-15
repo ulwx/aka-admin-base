@@ -205,7 +205,7 @@ $(function() {
 (function($) {
 	if ($.validatebox) {
 		$.extend($.fn.validatebox.defaults.rules, {
-			validateOnCreate : true
+			validateOnCreate : false
 		});
 	}
 
@@ -382,8 +382,8 @@ $(function() {
 		// 	tipPosition:'bottom',
 		// 	validateOnCreate:false
 		// });
-		$.fn.validatebox.defaults.tipPosition="bottom";
-		$.fn.validatebox.defaults.validateOnCreate=false;
+		// $.fn.validatebox.defaults.tipPosition="bottom";
+		// $.fn.validatebox.defaults.validateOnCreate=false;
 	}
 
 

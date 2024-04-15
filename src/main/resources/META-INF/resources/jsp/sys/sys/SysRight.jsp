@@ -102,7 +102,7 @@
 	
 	function addFn(){
 		clear();
-
+		clearEasyUiInvalidTip("#form2");
 		$('#win').window('open');
 		$('#win').window('center');
 	}
@@ -155,6 +155,7 @@
  						
  						$('#form2').form('load',editObj);
  				  		$("#hiddenCode").val(editObj.sysRightCode);
+						clearEasyUiInvalidTip("#form2");
  				  		$('#win').window('open');
  						$('#win').window('center');
  					

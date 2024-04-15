@@ -304,7 +304,13 @@ function syncGet(url,myheaders){
     	},
     	error: function(jqXHR, textStatus, errorThrown){
     		$("body").hideLoading();
-    		$.messager.alert("提示", jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown);
+			ret=$.toJSON({
+				status:0,
+				message: "提示"+jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown
+			});
+			console.log(ret)
+			ret="";
+    		//alert("提示", jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown);
   		  
     	}
     });
@@ -330,7 +336,12 @@ function syncPostJSON(url,postData,myheaders){
     	},
     	error: function(jqXHR, textStatus, errorThrown){
     		$("body").hideLoading();
-    		$.messager.alert("提示", jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown);
+			ret={
+				status:0,
+				message: "提示"+jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown
+			}
+;
+    		//alert("提示", jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown);
     		  
     	}
     });
@@ -354,7 +365,12 @@ function syncGetJSON(url,myheaders){
     	},
     	error: function(jqXHR, textStatus, errorThrown){
     		$("body").hideLoading();
-    		$.messager.alert("提示", jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown);
+			ret={
+				status:0,
+				message: "提示"+jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown
+			}
+
+    		//alert("提示", jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown);
   		  
     	}
     });
@@ -381,7 +397,13 @@ function syncPost(url,postData,myheaders){
     	},
     	error: function(jqXHR, textStatus, errorThrown){
     		$("body").hideLoading();
-    		$.messager.alert("提示", jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown);
+			ret=$.toJSON({
+				status:0,
+				message: "提示"+jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown
+			});
+			console.log(ret)
+			ret="";
+    		//$.messager.alert("提示", jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown);
     		  
     	}
     });
@@ -408,7 +430,13 @@ function syncPost(url,postData,contentType,myheaders){
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 			$("body").hideLoading();
-			$.messager.alert("提示", jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown);
+			ret=$.toJSON({
+				status:0,
+				message: "提示"+jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown
+			});
+			console.log(ret)
+			ret="";
+			//$.messager.alert("提示", jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown);
 
 		}
 	});
@@ -461,7 +489,6 @@ function asynPost(url,fun,myheaders){
     	success: fun,
     	error: function(jqXHR, textStatus, errorThrown){
     		$("body").hideLoading();
-
     		$.messager.alert("提示", jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown);
     	}
     });
