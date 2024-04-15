@@ -29,6 +29,8 @@
 			$('#type').val(dlg.data.type);
 			$('#ftype').val(dlg.data.ftype);
 			$('#id').val(dlg.data.id);
+			$('#dir').val(dlg.data.dir); //userid
+			$('#userid').val(dlg.data.userid);
 			$('#callbackUrl').val($.pageRoot+"/jsp/common/fileup/callback.jsp");
 		}
 		<%
@@ -73,7 +75,6 @@
 
 	}
 
-
 	/**弹窗框弹出的时候会初始化调用init方法，dlg为弹出框的引用*/
 	var dlg=null;
 	var edit=false;
@@ -111,17 +112,19 @@
 	<form class="commonForm" id="saveUserForm" enctype="multipart/form-data" method="post" >
 		<div class="commonForm-items">
 			<input data-options="label:'文件:',buttonText:'选择',multiple:true" 
-				name="files" id="files" class="easyui-filebox" style="width:400px" /> 
+				name="files" id="files" class="easyui-filebox" style="width:400px" />
 			<input	type="hidden" name="type" id="type" /> 
 			<input type="hidden" name="ftype" id="ftype" />
 			<input type="hidden" name="id" id="id" />
+			<input type="hidden" name="dir" id="dir" />
+			<input type="hidden" name="userid" id="userid" />
 			<input type="hidden" name="timestamp" id="timestamp" />
 			<input type="hidden" name="requestid" id="requestid" />
 			<input type="hidden" name="callbackUrl" id="callbackUrl" />
 		</div>
 		<div class="btns">
 			<a style="margin-right: 15px;" class="easyui-linkbutton"
-				onclick="saveFormData()">保存</a> &nbsp; <a
+				onclick="saveFormData()">上传</a> &nbsp; <a
 				class="easyui-linkbutton normalBtn" onclick="closeWindow()">取消</a>
 		</div>
 	</form>

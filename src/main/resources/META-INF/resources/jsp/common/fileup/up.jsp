@@ -29,6 +29,8 @@
 			$('#type').val(dlg.data.type);
 			$('#ftype').val(dlg.data.ftype);
 			$('#id').val(dlg.data.id);
+			$('#dir').val(dlg.data.dir); //userid
+			$('#userid').val(dlg.data.userid);
 			$('#callbackUrl').val($.pageRoot+"/jsp/common/fileup/callback.jsp");
 		}
 	    clearEasyUiInvalidTip("#saveUserForm");
@@ -114,13 +116,16 @@
 			<input	type="hidden" name="type" id="type" /> 
 			<input type="hidden" name="ftype" id="ftype" />
 			<input type="hidden" name="id" id="id" />
+			<input type="hidden" name="dir" id="dir" />
+			<input type="hidden" name="userid" id="userid" />
 			<input type="hidden" name="timestamp" id="timestamp" />
+
 			<input type="hidden" name="requestid" id="requestid" />
 			<input type="hidden" name="callbackUrl" id="callbackUrl" />
 		</div>
 		<div class="btns">
 			<a style="margin-right: 15px;" class="easyui-linkbutton"
-				onclick="saveFormData()">保存</a> &nbsp; <a
+				onclick="saveFormData()">上传</a> &nbsp; <a
 				class="easyui-linkbutton normalBtn" onclick="closeWindow()">取消</a>
 		</div>
 	</form>

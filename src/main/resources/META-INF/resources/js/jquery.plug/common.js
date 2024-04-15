@@ -890,33 +890,34 @@ console.log(zhang.getEmployeeIDName()); // "Employee name: ZhangSan, Employee ID
  * 生成uuid的函数
  */
 function myuuid(len, radix) {
-	var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
-	var uuid = [], i;
-	radix = radix || chars.length;
- 
-	if (len) {
-	  // Compact form
-	  for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
-	} else {
-	  // rfc4122, version 4 form
-	  var r;
- 
-	  // rfc4122 requires these characters
-	  uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
-	  uuid[14] = '4';
- 
-	  // Fill in random data.  At i==19 set the high bits of clock sequence as
-	  // per rfc4122, sec. 4.1.5
-	  for (i = 0; i < 36; i++) {
-		if (!uuid[i]) {
-		  r = 0 | Math.random()*16;
-		  uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+	if (typeof crypto === 'object') {
+		if (typeof crypto.randomUUID === 'function') {
+			return crypto.randomUUID();
 		}
-	  }
+		if (typeof crypto.getRandomValues === 'function' && typeof Uint8Array === 'function') {
+			const callback = (c) => {
+				const num = Number(c);
+				return (num ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (num / 4)))).toString(16);
+			};
+			return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, callback);
+		}
 	}
-	
-	return 'u'+uuid.join('');
+	let timestamp = new Date().getTime();
+	let perforNow = (typeof performance !== 'undefined' && performance.now && performance.now() * 1000) || 0;
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+		let random = Math.random() * 16;
+		if (timestamp > 0) {
+			random = (timestamp + random) % 16 | 0;
+			timestamp = Math.floor(timestamp / 16);
+		} else {
+			random = (perforNow + random) % 16 | 0;
+			perforNow = Math.floor(perforNow / 16);
+		}
+		return (c === 'x' ? random : (random & 0x3) | 0x8).toString(16);
+	});
   }
+
+
 
 /** 
 * 获取浏览器版本 

@@ -242,8 +242,6 @@ function selectRec(datagridSelector, url, reloadGrid, title, data, width,
 
 }
 
-
-
 /**
  * @param type :
  *            1：项目相关文件 2：用户相关文件
@@ -258,23 +256,27 @@ function selectRec(datagridSelector, url, reloadGrid, title, data, width,
  *            errorMsg：如果status为0时，错误提示信息
  * @returns
  */
-function openUpFileDlg(type, ftype, id, callback) {
+function openUpFileDlg(type,dir, ftype, id,userid,callback) {
 	var url = $.ContexPath + "/jsp/common/fileup/up.jsp";
 	var data = {
 		'type' : type,
+		'dir' : dir,
 		'ftype' : ftype,
 		'id' : id,
+		'userid':userid,
 		'callback' : callback
 	};
 	addRec(url, null, '上传文件', data, 540, 210);
 }
 
-function openUpMultiFileDlg(type, ftype, id, callback) {
+function openUpMultiFileDlg(type,dir, ftype, id,userid, callback) {
 	var url = $.ContexPath + "/jsp/common/fileup/upMany.jsp";
 	var data = {
 		'type' : type,
+		'dir' : dir,
 		'ftype' : ftype,
 		'id' : id,
+		'userid':userid,
 		'callback' : callback
 	};
 	addRec(url, null, '上传文件', data, 540, 210);
@@ -295,28 +297,7 @@ function openUpActivityDlg(callback) {
 	addRec(url, null, '上传文件', data, 540, 200);
 }
 
-/**
- * 借款人图片
- * 
- * @param groupId
- *            文件组ID
- * @param userId
- *            用户ID
- * @param urlPath
- *            url
- * @param callback
- *            :data为返回的对象，对象里的属性如下： relaFilePath: 文件服务器相对路径 fileTypeId:文件类型ID
- * @returns
- */
-function openBorrowerFileDlg(groupId, userId, urlPath, callback) {
-	var url = urlPath + "/BorrowerFile.jsp";
-	var data = {
-		'groupId' : groupId,
-		'userId' : userId,
-		'callback' : callback
-	};
-	addRec(url, null, '文件信息', data, 800, 800);
-}
+
 function editRec(datagridSelector, url, reloadGrid, title, data, width, height,options) {
 	var records = $(datagridSelector).datagrid('getChecked');
 	// console.log(records);
@@ -375,7 +356,21 @@ function editRec2(datagridSelector, url, reloadGrid, title, data, row, width,
 	easyui.ext.open(opt);
 
 }
-
+function showHtmlDialog(html,width,height) {
+	$('<div>' +html+ '</div>').dialog({
+		title: '<%=MM.M("feelist.ts")%>',
+		width: width&&width>0?width:600,
+		height: height&&height>0?height:600,
+		closed: false,
+		cache: false,
+		modal: true,
+		onBeforeOpen: function () {
+		},
+		onClose: function () {
+			$(this).dialog('destroy'); // 关闭时销毁对话框
+		}
+	});
+}
 // 跳转到新增用户页面
 function addRec(url, reloadGrid, title, data, width, height, options) {
 	var opt = $.extend({}, {
@@ -473,6 +468,7 @@ function initDataGrid(selector, url, queryParams, columns, options) {
 		fitColumns : true,
 		pagination : true,// 表示在datagrid设置分页
 		rownumbers : true,
+		scrollOnSelect:false,
 		singleSelect : false,
 		toolbar : "#top",
 		fit : true,

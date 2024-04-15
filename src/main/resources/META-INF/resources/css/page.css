@@ -384,13 +384,15 @@ a:active {
  .commonForm{
  	margin: auto;
  	padding: 20px 20px 20px 20px;
- 	width:600px;
+ 	width:500px;
  }
 	.validatebox-readonly{
 		background-color: #abb2b83b;
 	}
+
  .commonForm-items{
  	margin-bottom: 10px;
+	 /*margin-left: -10px;*/
  	position: relative;
  }
  .commonForm-items .form-item__label{

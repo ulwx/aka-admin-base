@@ -1,27 +1,4 @@
 (function($){
-	
-	$.extend($.fn.datagrid.methods, {
-	    editCell : function(jq, param) {
-	        return jq.each(function() {
-	            var opts = $(this).datagrid('options');
-	            var fields = $(this).datagrid('getColumnFields', true).concat(
-	                    $(this).datagrid('getColumnFields'));
-	            for ( var i = 0; i < fields.length; i++) {
-	                var col = $(this).datagrid('getColumnOption', fields[i]);
-	                col.editor1 = col.editor;
-	                if (fields[i] != param.field) {
-	                    col.editor = null;
-	                }
-	            }
-	            $(this).datagrid('beginEdit', param.index);
-	            for ( var i = 0; i < fields.length; i++) {
-	                var col = $(this).datagrid('getColumnOption', fields[i]);
-	                col.editor = col.editor1;
-	            }
-	        });
-	    }
-	});
-	
 	$.extend($.fn.datagrid.defaults, {
 		clickToEdit: true,
 		dblclickToEdit: false,
@@ -40,9 +17,9 @@
 			'40': function(e){
 				return navHandler.call(this, e, 'down');
 			},
-			/*'13': function(e){
+			'13': function(e){
 				return enterHandler.call(this, e);
-			},*/
+			},
 			'27': function(e){
 				return escHandler.call(this, e);
 			},
@@ -71,7 +48,7 @@
 							field: param.field,
 							value: c
 						});
-						return false;					
+						return false;
 					}
 				}
 			}
@@ -85,52 +62,9 @@
 				}
 			}
 		},
-		onSelectCell: function(index, field){
-			var THIS=$(this);
-			var input = THIS.datagrid('input', {index:index, field:field});
-			if(input){
-				$("td[field='"+field+"'] input[type='text']").focus(function(){
-					$(this).select();
-				}).keydown(function(e){
-					if (e.metaKey || e.ctrlKey){
-						return;
-					}
-					switch(e.keyCode){
-						case 13:    ;
-						case 39:
-								var nfield=nextField(THIS,field);
-								THIS.datagrid("editCell",{index:index, field:nfield})
-								;break;
-						case 37:
-							var nfield=preField(THIS,field);
-							THIS.datagrid("editCell",{index:index, field:nfield})
-							;break;
-					}
-				});
-			}
-		},
+		onSelectCell: function(index, field){},
 		onUnselectCell: function(index, field){}
 	});
-	
-	function nextField(target,field){
-		var feilds=target.mydatagrid("getColumnFields");
-		for(var i=0;i<feilds.length;i++){
-			if(i<feilds.length-1&&feilds[i]==field){
-				return feilds[i+1];
-			}
-		}
-		return null;
-	}
-	
-	function preField(target,field){
-		var feilds=target.mydatagrid("getColumnFields");
-		for(var i=0;i<feilds.length;i++){
-			if(i>0&&feilds[i]==field){
-				return feilds[i-1];
-			}
-		}
-		return null;
-	}
 
 	function navHandler(e, dir){
 		var dg = $(this);
@@ -148,6 +82,9 @@
 		if (!cell){return;}
 		var input = dg.datagrid('input', cell);
 		if (input){
+			if (input[0].tagName.toLowerCase() == 'textarea'){
+				return;
+			}
 			endCellEdit(this, true);
 		} else {
 			dg.datagrid('editCell', cell);
@@ -172,7 +109,7 @@
 				value: ''
 			});
 			return false;
-		}		
+		}
 	}
 
 	function getCurrCell(target){
@@ -289,9 +226,9 @@
 				var body2 = dg.data('datagrid').dc.body2;
 				var left = td.position().left;
 				if (left < 0){
-					body2._scrollLeft(body2._scrollLeft() + left*(opts.isRtl?-1:1));
+					//body2._scrollLeft(body2._scrollLeft() + left*(opts.isRtl?-1:1));
 				} else if (left+td._outerWidth()>body2.width()){
-					body2._scrollLeft(body2._scrollLeft() + (left+td._outerWidth()-body2.width())*(opts.isRtl?-1:1));
+					//body2._scrollLeft(body2._scrollLeft() + (left+td._outerWidth()-body2.width())*(opts.isRtl?-1:1));
 				}
 			}
 		}
@@ -353,10 +290,10 @@
 				dg.datagrid('gotoCell', param);
 				setTimeout(function(){
 					input.unbind('.cellediting').bind('keydown.cellediting', function(e){
-						/*if (e.keyCode == 13){
-							opts.navHandler['13'].call(target, e);
-							return false;
-						}*/
+						if (e.keyCode == 13){
+							return opts.navHandler['13'].call(target, e);
+							// return false;
+						}
 					});
 					input.focus();
 				}, 0);
@@ -449,7 +386,7 @@
 		opts.onBeforeSelect = opts.OldOnBeforeSelect || opts.onBeforeSelect;
 		panel.unbind('.cellediting').find('td.datagrid-row-selected').removeClass('datagrid-row-selected');
 		var dc = state.dc;
-		dc.body1.add(dc.body2).unbind('cellediting');
+		dc.body1.add(dc.body2).unbind('.cellediting');
 	}
 
 	function enableCellEditing(target){

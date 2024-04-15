@@ -292,6 +292,7 @@ $(function() {
 	 * 2.对linkbutton增加timeout属性，指定多长时间解禁按钮，默认1000秒
 	 *
 	 */
+
 	if($.fn.combobox){
 		$.extend($.fn.linkbutton.methods, {
 
@@ -376,6 +377,14 @@ $(function() {
 		$.fn.combobox.defaults.height=26;
 	}
 	;
+	if($.fn.validatebox){
+		// $.extend( $.fn.validatebox.defaults, {
+		// 	tipPosition:'bottom',
+		// 	validateOnCreate:false
+		// });
+		$.fn.validatebox.defaults.tipPosition="bottom";
+		$.fn.validatebox.defaults.validateOnCreate=false;
+	}
 
 
 

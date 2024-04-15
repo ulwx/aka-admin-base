@@ -116,7 +116,7 @@
 		</div>
 		<div class="btns">
 			<a style="margin-right: 15px;" class="easyui-linkbutton"
-				onclick="saveFormData()">保存</a> <a
+				onclick="saveFormData()">上传</a> <a
 				class="easyui-linkbutton normalBtn" onclick="closeWindow()">取消</a>
 		</div>
 	</form>

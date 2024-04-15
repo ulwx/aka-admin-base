@@ -517,19 +517,21 @@
 					}
 				 },
 				 loadFilter:function(data){
-					if(data && data.rows && data.rows.length){
-						//alert($.toJSON(data));
-						$.each(data.rows,function(index,e){
-							e.uuid=myuuid(10,10);
-						});
-						
-					}
+					 var newData=null;
 					if(opts.loadFilter){
-						var ret=opts.loadFilter.call(this,data);
-						return ret;
+						newData=opts.loadFilter.call(this,data);
+
 					}else{
-						return data;
+						newData=data;
 					}
+					 if(newData && newData.rows && newData.rows.length){
+						 //alert($.toJSON(data));
+						 $.each(newData.rows,function(index,e){
+							 e.uuid=myuuid(10,10);
+						 });
+
+					 }
+					 return newData;
 					
 				}
 
@@ -671,7 +673,6 @@
 		/**扩展方法：updateCell(rowIndex,field,val) ,可以在不用刷新的情况下更新某个单元格
 		*/
 		updateCell:function(jq,rowIndex,field,val){
-
 			return jq.each(function(){
 				var panel=$(this).datagrid("getPanel");
 				$(panel).find('.datagrid-body tr[datagrid-row-index="'+rowIndex+'"] td[field="'+field+'"] div.datagrid-cell').html(val);
@@ -711,7 +712,6 @@
 			type: inserted,deleted,updated，如果不赋值，则在所有类型（增删改）改变的行里查找rowIndex，并提交。
 		*/
 		acceptChange:function(jq,uuid,type){
-
 			return jq.each(function(){
 				var ins=$.data(this,"datagrid").insertedRows;
 				var  dels=$.data(this,"datagrid").deletedRows;
