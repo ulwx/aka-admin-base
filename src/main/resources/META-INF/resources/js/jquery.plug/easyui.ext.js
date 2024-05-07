@@ -37,14 +37,15 @@ function bindTimeOutEvent(linkbutton) {
 	}
 }
 
-$(function() {
+(function($) {
 	// 全局的ajax访问，处理ajax清求时sesion超时
 	$.ajaxSetup({
 		cache : false,
 		global : true,
 		crossDomain : true,
 		contentType : "application/x-www-form-urlencoded;charset=utf-8",
-		timeout : 1000 * 60 * 15
+		traditional: true,
+		timeout : 1000 * 60 * 40
 	});
 
 	/**
@@ -200,7 +201,7 @@ $(function() {
 		return true;
 	}
 
-});
+})(jQuery);
 
 (function($) {
 	if ($.validatebox) {

@@ -275,8 +275,9 @@
 			msg += selections[i].sysRightCode;
 		}
 		$.messager.confirm("提示", "确定删除吗?", function(b) {
-			if (b)
+			if (b) {
 				deleteData(msg);
+			}
 		});
 	}
 </script>

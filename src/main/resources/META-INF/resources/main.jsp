@@ -217,6 +217,14 @@
                 },
                 onAdd: function (title, index) {
 
+                },
+                onContextMenu: function(e, title, index) {
+                    e.preventDefault(); // 阻止默认右键菜单事件
+                    $('#mm').menu('show', {
+                        left: e.pageX,
+                        top: e.pageY
+                    }).data('currtab', title); // 将当前选中的选项卡标题存储在菜单对象中
+
                 }
             });
             //start by tangjk 菜单选定样式
@@ -288,6 +296,9 @@
                 }
             });
 
+           // bindTabEvent();
+            bindTabMenuEvent();
+
 
         });//$(document).ready
         /**document 已经渲染完，一下是function*/
@@ -323,7 +334,6 @@
             } else {
                 href = $.pageRoot + "/" + href;
             }
-            //alert(href);
             var tt = $('#tabs');
             if (closable == null || closable == undefined) {
                 closable = true;
@@ -362,16 +372,12 @@
                 $(tab).showLoading({
                     "vPos": $(tab).height() * 0.28,
                     "hPos": $(tab).width() * 0.4
-
                 });
 
-
             }
-
         }
 
         function addTab(title, href, refresh, icon, closable, opt) {
-
             if (refresh == null || refresh == 'undefined') {
                 refresh = 1;
             }
@@ -398,7 +404,6 @@
             if (hash != curHash) {
                 //alert(hash+";"+curHash);
                 //location.hash=hash;
-
             }
             /////////
             loadTab(title, href, refresh, icon, closable, opt);
@@ -468,26 +473,6 @@
             return null;
         }
 
-        $(function () {
-            bindTabEvent();
-            bindTabMenuEvent();
-        });
-
-        //绑定tab的双击事件、右键事件
-        function bindTabEvent() {
-
-            $(".tabs-inner").on('contextmenu', function (e) {
-                //alert(5678);
-                $('#mm').menu('show', {
-                    left: e.pageX,
-                    top: e.pageY
-                });
-                var subtitle = $(this).children("span").text();
-                $('#mm').data("currtab", subtitle);
-                return false;
-            });
-        }
-
         //绑定tab右键菜单事件
         function bindTabMenuEvent() {
             //关闭当前
@@ -526,32 +511,28 @@
             });
             //关闭当前右侧的TAB
             $('#mm-tabcloseright').click(function () {
-                var nextall = $('.tabs-selected').nextAll();
-                if (nextall.length == 0) {
-                    alert('已经是最后一个了');
-                    return false;
+                var curTabTitle = $('#mm').data("currtab");// 获取当前选中的选项卡标题
+                var target = $('#tabs').tabs('getTab', curTabTitle); // 获取选项卡对象
+                var index = $('#tabs').tabs('getTabIndex', target); // 获取选项卡索引
+
+                var totalTabs = $('#tabs').tabs('tabs');
+                var n=totalTabs.length-1-index;
+                for(var i = 0; i < n; i++){
+                    $('#tabs').tabs('close', index + 1); // 逐个关闭右侧的选项卡
                 }
-                nextall.each(function (i, n) {
-                    if ($('a.tabs-close', $(n)).length > 0) {
-                        var t = $('a:eq(0) span', $(n)).text();
-                        $('#tabs').tabs('close', t);
-                    }
-                });
+
                 return false;
             });
             //关闭当前左侧的TAB
             $('#mm-tabcloseleft').click(function () {
-                var prevall = $('.tabs-selected').prevAll();
-                if (prevall.length == 1) {
-                    alert('已经是第一个了');
-                    return false;
+                var curTabTitle = $('#mm').data("currtab");// 获取当前选中的选项卡标题
+                var target = $('#tabs').tabs('getTab', curTabTitle); // 获取选项卡对象
+                var index = $('#tabs').tabs('getTabIndex', target); // 获取选项卡索引
+                var n=index-0;
+                for(var i = 1; i < n; i++){
+                    $('#tabs').tabs('close', 1 ); //
                 }
-                prevall.each(function (i, n) {
-                    if ($('a.tabs-close', $(n)).length > 0) {
-                        var t = $('a:eq(0) span', $(n)).text();
-                        $('#tabs').tabs('close', t);
-                    }
-                });
+
                 return false;
             });
             //定位菜单项
@@ -565,7 +546,6 @@
                         var chRightCode = three[2];
                         if (currtab_title == ctitle) {
                             $('#leftmenu').accordion("select", ptitle);
-
                             var allLins = $("#" + chRightCode);
                             $(lastClickUrl).removeClass("clicked");
                             allLins.addClass("clicked");
@@ -578,8 +558,6 @@
 
             });
         }
-
-
         //############添加修改密码函数 -- linrb
         function initModifyWin() {
             $('#win').window({
@@ -717,8 +695,7 @@
 </div>
 
 <div border="false" region="center">
-    <div id="tabs" class="easyui-tabs" border="false" plain="true"
-         fit="true">
+    <div id="tabs" class="easyui-tabs" border="false" plain="true" fit="true">
     </div>
 </div>
 
@@ -734,14 +711,12 @@
 </div>
 <div region="south" border="true"
      style="height: 23px; background: #E2EEFE; font-size: 11px; line-height: 23px; text-align: center; overflow: hidden">
-    简易贷@2018
 </div>
 
 
 <!--修改密码页面  - linrb -->
 <div id="win" class="easyui-window" title="修改密码" data-options="closed:true">
     <form class="commonForm" id="form2">
-
         <div class="commonForm-items">
             <input class="easyui-passwordbox" data-options="label:'旧密码：',required:true"
                    name="OriginalPass" id="OriginalPass" style="width:100%"
@@ -749,19 +724,15 @@
             <div class="form-tips">请输入6到15位的数字字母密码</div>
         </div>
         <div class="error-tips"></div>
-
         <div class="commonForm-items">
-
             <input class="easyui-passwordbox" data-options="label:'新密码：',required:true"
                    name="NewPass" id="NewPass" style="width:100%"/>
-
         </div>
         <div class="commonForm-items">
             <input class="easyui-passwordbox" data-options="label:'确认密码：',required:true"
                    name="VerifyPass" id="VerifyPass" style="width:100%"/>
 
         </div>
-
         <div class="btns">
             <a style="margin-right: 15px;" class="easyui-linkbutton"
                onclick="modifyPass();">保存</a> <a class="easyui-linkbutton normalBtn"

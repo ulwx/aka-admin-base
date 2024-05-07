@@ -254,7 +254,7 @@
  				);
  		return easyui.ext.open(defaults);
  	};
- 	
+
  	
  	
  })(jQuery);

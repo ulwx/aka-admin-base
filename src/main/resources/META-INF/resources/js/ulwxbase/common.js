@@ -44,7 +44,7 @@ function loadCombobox(selector, url, cvalue, excludeFirst, options,insertFirst) 
 
 	var opt = $.extend({}, {
 		url : url,
-		panelHeight : 160,
+		panelHeight:350,
 		valueField : 'id',
 		textField : 'text',
 		editable : true,
@@ -130,7 +130,7 @@ function loadTagbox(selector, url, cvalue, excludeFirst, options,insertFirst) {
 
 	var opt = $.extend({}, {
 		url : url,
-		panelHeight : 160,
+		panelHeight : 260,
 		valueField : 'id',
 		textField : 'text',
 		editable : true,
@@ -326,10 +326,18 @@ function editRec(datagridSelector, url, reloadGrid, title, data, width, height,o
 			dlg.data = data;
 			var win = dlg.window;
 			win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
+			if (win["onBeforeClose"]) {
+				var options = dlg.instance.dialog("options");
+				options.onBeforeClose = function () {
+					return win["onBeforeClose"]();
+				};
+				dlg.instance.dialog(options);
+			}
+
 		}
 	}, (options || {}));
 
-	easyui.ext.open(opt);
+	return easyui.ext.open(opt);
 
 }
 function editRec2(datagridSelector, url, reloadGrid, title, data, row, width,
@@ -350,6 +358,13 @@ function editRec2(datagridSelector, url, reloadGrid, title, data, row, width,
 			dlg.data = data;
 			var win = dlg.window;
 			win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
+			if (win["onBeforeClose"]) {
+				var options = dlg.instance.dialog("options");
+				options.onBeforeClose = function () {
+					return win["onBeforeClose"]();
+				};
+				dlg.instance.dialog(options);
+			}
 		}
 	}, (options || {}));
 
@@ -388,6 +403,13 @@ function addRec(url, reloadGrid, title, data, width, height, options) {
 			dlg.data = data;
 			var win = dlg.window;
 			win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
+			if (win["onBeforeClose"]) {
+				var options = dlg.instance.dialog("options");
+				options.onBeforeClose = function () {
+					return win["onBeforeClose"]();
+				};
+				dlg.instance.dialog(options);
+			}
 		}
 	}, (options || {}));
 	easyui.ext.open(opt);

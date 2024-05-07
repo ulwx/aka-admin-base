@@ -54,7 +54,7 @@
   		if(ids){
   			ids=ids.split(",");
   		}
-  		loadCombobox("#sysRoleTypeCodes",url,ids,null,{multiple:false});
+  		loadCombobox("#sysRoleTypeCodes",url,ids,null,{multiple:true});
   	}
 	function alter(){
 		loadform(dlg.updateRec);

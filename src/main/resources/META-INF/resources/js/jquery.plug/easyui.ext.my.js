@@ -1466,5 +1466,8 @@
          });
      };
 
+	 $.ajaxSetup({
+		 timeout: 13600
+	 });
 
 	})(jQuery);

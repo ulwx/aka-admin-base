@@ -42,7 +42,6 @@ public class UserInfoService   extends AkaServiceSupport implements IUserInfoSer
 		String[] roleTypesStr=roleTypes.split(",");
 		Integer[] roleTypeIds=ArrayUtils.StringArrayToIntegerArray(roleTypesStr);
 		beanGet.bean(SysUserRoletypeDao.class).insert( userId, roleTypeIds, adminUserInfo.getUpdator());
-
 	}
 
 	public void delUser(AdminUserInfo[]  adminUserInfos) throws Exception {
