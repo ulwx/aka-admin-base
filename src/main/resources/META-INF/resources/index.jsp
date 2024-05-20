@@ -185,10 +185,20 @@ table  td{
     }
 	$(document).ready(function() {
 		$("body").css("visibility" ,"visible");
-		
-		$("#username").textbox("setValue","");
-		$("#password").passwordbox("setValue","");
-		
+		// var userInfo={
+		// 	userName:"",
+		// 	password:""
+		// }
+		var userName
+		var userInfoCookies=  Cookies.get('user-info');
+		if(!isEmpty(userInfoCookies)){
+			var userInfo = $.evalJSON(userInfoCookies);
+			$("#username").textbox("setValue",userInfo.userName);
+			$("#password").passwordbox("setValue",userInfo.password);
+		}else{
+			$("#username").textbox("setValue","");
+			$("#password").passwordbox("setValue","");
+		}
 		resetImageCode('verifyImg');//初始化验证码
 	});
 	
@@ -233,7 +243,9 @@ table  td{
 		$("#btn").linkbutton("disable");
 		var encrypt = new JSEncrypt();
 	    encrypt.setPublicKey(getRsaPublicKey());
+		var orginPass=pass;
 	    pass=encrypt.encrypt(pass);
+
 		$.ajax({ 
 			url:'<%=request.getContextPath()%>/sys/sys_Login_loginJSON.action',
 			type:'post',
@@ -248,6 +260,12 @@ table  td{
 			   	//console.log(data);
 			   	$("#btn").linkbutton("enable");
 				if(data.status==1){
+					var userInfo={
+						userName:username,
+						password:orginPass
+					}
+					Cookies.set('user-info', $.toJSON(userInfo), { path: '/' });
+
 				   $("#username").textbox("setValue","");
 				   $("#password").passwordbox("setValue","");
 				   $("#valcode").textbox("setValue","");
