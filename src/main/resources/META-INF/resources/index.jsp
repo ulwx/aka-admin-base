@@ -264,7 +264,7 @@ table  td{
 						userName:username,
 						password:orginPass
 					}
-					Cookies.set('user-info', $.toJSON(userInfo), { path: '/' });
+					Cookies.set('user-info', $.toJSON(userInfo), { path: '/',expires: 365  });
 
 				   $("#username").textbox("setValue","");
 				   $("#password").passwordbox("setValue","");
