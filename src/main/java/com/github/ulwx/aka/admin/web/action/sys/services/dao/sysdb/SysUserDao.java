@@ -61,9 +61,19 @@ public class SysUserDao extends AkaDaoSupport {
 		Map<String ,Object> arg=new HashMap<>();
 		arg.put("userName", userName);
 		arg.put("userPhone", userPhone);
+		arg.put("roles",null);
 		return getTemplate().queryList(AdminUserInfo.class,
 				MD.md(SysUserDao.class, "getUserList"),
 				arg, page, perPage, pb, "");
+	}
+
+	public  List<AdminUserInfo> list(Integer[] roles)throws Exception{
+		Map<String ,Object> arg=new HashMap<>();
+		arg.put("userName", "");
+		arg.put("userPhone", "");
+		arg.put("roles",roles);
+		return getTemplate().queryList(AdminUserInfo.class,
+				MD.md(SysUserDao.class, "getUserList"),arg);
 	}
 	/**
 	 * 通过手机号获取用户信息

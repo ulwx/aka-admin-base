@@ -35,6 +35,9 @@ AND (a.`name` like #{%userName%} or a.account like #{%userName%} )
 @if($$:userPhone){
 AND a.`phone` like #{userPhone%}
 @}
+@if($$:roles){
+AND c.sys_roletype_code in(#{roles})
+@}
 
 GROUP BY a.sys_user_sno 
 ORDER BY a.sys_user_sno DESC 
