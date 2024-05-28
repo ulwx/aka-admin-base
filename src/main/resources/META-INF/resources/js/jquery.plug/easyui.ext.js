@@ -247,9 +247,7 @@ function bindTimeOutEvent(linkbutton) {
 				return confirm2({
 					'title' : title,
 					'msg' : msg,
-					'fn' : fn,
-					'ok' : '是',
-					'cancel' : '否'
+					'fn' : fn
 				});
 			}
 		}
@@ -334,7 +332,6 @@ function bindTimeOutEvent(linkbutton) {
 				}
 			}
 		}
-
 		$.extend($.fn.linkbutton.methods, {
 			enable : function(jq) {
 				return jq.each(function() {

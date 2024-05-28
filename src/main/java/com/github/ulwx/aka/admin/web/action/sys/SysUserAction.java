@@ -295,12 +295,12 @@ public class SysUserAction extends ActionSupport {
 		try {
 			if (!pass.equals(CbConst.getPassword(originalPass))) {
 				ctx.put("json", "原始密码不正确!!");
-				return "json";
+				return this.JsonViewError("原始密码不正确!!");
 			}
 		} catch (Exception e) {
 			logger.error("" + e);
 			ctx.put("json", "error");
-			return "json";
+			return this.JsonViewError("错误!!"+e);
 		}
 
 		String newPass = StringUtils.trim(ru.getString("NewPass"));
@@ -314,11 +314,12 @@ public class SysUserAction extends ActionSupport {
 			} catch (Exception e) {
 				logger.error("" + e);
 				ctx.put("json", "error");
+				return this.JsonViewError("错误!!"+e);
 			}
-			return JSON;
+			return this.JsonViewSuc("更新密码成功！");
 		} else {
 			ctx.put("json", "两次输入的新密码不一致!!");
-			return JSON;
+			return this.JsonViewError("两次输入的新密码不一致!!");
 		}
 
 	}
