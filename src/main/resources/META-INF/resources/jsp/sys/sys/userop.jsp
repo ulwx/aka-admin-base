@@ -161,10 +161,10 @@
 				<div class="form-tips">请输入手机号码</div>
 		</div>
 		<div class="commonForm-items">
-			<input data-options="required:true,label:'姓名:',validType:['chinese','maxLength[6]']"  style="width:100%"
+			<input data-options="required:true,label:'姓名:'"  style="width:100%"
 				class="easyui-textbox" name="name" id="name" />
 			<input type="hidden" name="sysUserSno" />
-			<div class="form-tips">请输入中文,最大长度6个字符</div>
+			<div class="form-tips"></div>
 		</div>
 		<div class="commonForm-items">
 			<input data-options="label:'昵称:',validType:'maxLength[10]'" style="width:100%"
@@ -181,7 +181,7 @@
 
 		<div class="commonForm-items">
 			<input 
-				data-options="label:'密码:' ,required:true,showEye:false,validType:'password'" style="width:100%"
+				data-options="label:'密码:' ,required:true,showEye:true" style="width:100%"
 				class="easyui-passwordbox" id="password" name="password" />
 				<div class="form-tips">8-16位，不包含空格，不能为纯数字或纯字母</div>
 		</div>
