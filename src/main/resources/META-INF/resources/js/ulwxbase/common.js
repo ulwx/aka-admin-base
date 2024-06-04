@@ -128,7 +128,7 @@ function loadCombobox(selector, url, cvalue, excludeFirst, options,insertFirst) 
 		textField : 'text',
 		editable : true,
 		limitToList : true,
-		reversed:true,
+		delay: 50,
 		filter:ComboboxFilter,
 		loadFilter : function(data) {
 
@@ -216,6 +216,7 @@ function loadTagbox(selector, url, cvalue, excludeFirst, options,insertFirst) {
 		textField : 'text',
 		editable : true,
 		reversed:true,
+		delay: 50,
 		filter:ComboboxFilter,
 		limitToList : true,
 		loadFilter : function(data) {
