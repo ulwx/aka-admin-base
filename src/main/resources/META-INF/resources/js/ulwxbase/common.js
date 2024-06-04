@@ -61,7 +61,10 @@ var ComboboxLoadFilter=function(excludeFirst,insertFirst){
 		}
 	}
 }
-
+var ComboboxFilter=function(q, row){
+	var opts = $(this).combobox('options');
+	return row[opts.textField].indexOf(q) >=0;
+}
 var ComboboxOnLoadSuccess=function(cvalue) {
 	return function () {
 		if (!isNull(cvalue)) {
@@ -125,6 +128,8 @@ function loadCombobox(selector, url, cvalue, excludeFirst, options,insertFirst) 
 		textField : 'text',
 		editable : true,
 		limitToList : true,
+		reversed:true,
+		filter:ComboboxFilter,
 		loadFilter : function(data) {
 
 			if (data.status == 1) {// 判断是否成功
@@ -210,6 +215,8 @@ function loadTagbox(selector, url, cvalue, excludeFirst, options,insertFirst) {
 		valueField : 'id',
 		textField : 'text',
 		editable : true,
+		reversed:true,
+		filter:ComboboxFilter,
 		limitToList : true,
 		loadFilter : function(data) {
 
