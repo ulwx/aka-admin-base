@@ -128,7 +128,7 @@ function loadCombobox(selector, url, cvalue, excludeFirst, options,insertFirst) 
 		textField : 'text',
 		editable : true,
 		limitToList : true,
-		delay: 50,
+		delay: 100,
 		filter:ComboboxFilter,
 		loadFilter : function(data) {
 
@@ -144,6 +144,9 @@ function loadCombobox(selector, url, cvalue, excludeFirst, options,insertFirst) 
 				}
 				return data.data;
 			} else {
+				if(isArray(data)){
+					return data;
+				}
 				$.messager.alert("提示", data.message, "error");
 				return [];
 			}
