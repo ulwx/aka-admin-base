@@ -176,19 +176,8 @@ table  td{
 	if (window.parent != window.self) {
 		window.parent.location = window.self.location;
 	}
-	window.onload = function()
-    {
-       document.getElementById("username").focus();
-       	$("#username").textbox("setValue","");
-		$("#password").passwordbox("setValue","");
-		
-    }
 	$(document).ready(function() {
 		$("body").css("visibility" ,"visible");
-		// var userInfo={
-		// 	userName:"",
-		// 	password:""
-		// }
 		var userName
 		var userInfoCookies=  Cookies.get('user-info');
 		if(!isEmpty(userInfoCookies)){
