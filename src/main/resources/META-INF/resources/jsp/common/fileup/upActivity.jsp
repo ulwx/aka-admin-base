@@ -114,6 +114,11 @@
 			<input type="hidden" name="callbackUrl" id="callbackUrl" />
 	
 		</div>
+		<div class="commonForm-items">
+			<input data-options="label:'备注:',multiline:true"
+				   name="memo" id="memo" class="easyui-textbox" style="width:400px;height: 70px" />
+
+		</div>
 		<div class="btns">
 			<a style="margin-right: 15px;" class="easyui-linkbutton"
 				onclick="saveFormData()">上传</a> <a
