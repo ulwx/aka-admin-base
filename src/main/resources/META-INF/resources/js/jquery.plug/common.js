@@ -218,8 +218,8 @@ function parseSearchString(searchStr){
 function openWindow(url, name, iWidth, iHeight) {
 
 	var iTop = (window.screen.availHeight - 30 - iHeight) / 2; //获得窗口的垂直位置;
-	var iLeft = (window.screen.availWidth - 10 - iWidth) / 2; //获得窗口的水平位置;
-	//alert("ddd")
+	var iLeft = (window.screen.availWidth - 10 - iWidth) / 2;  //获得窗口的水平位置;
+
 	var win = window
 			.open(
 					url,
