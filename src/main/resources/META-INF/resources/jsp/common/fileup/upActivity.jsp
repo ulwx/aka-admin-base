@@ -116,7 +116,7 @@
 		</div>
 		<div class="commonForm-items">
 			<input data-options="label:'备注:',multiline:true"
-				   name="memo" id="memo" class="easyui-textbox" style="width:400px;height: 70px" />
+				   name="memo" id="memo" class="easyui-textbox" style="width:400px;height: 50px" />
 
 		</div>
 		<div class="btns">
