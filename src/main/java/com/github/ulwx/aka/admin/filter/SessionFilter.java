@@ -50,9 +50,12 @@ public class SessionFilter implements AccessPlugin {
 
                 TInteger count = BeanGet.getBean(SysUsersSessionService.class, hreq).countUsersSession(userInfo.getUser().getId().toString(), sessionId, ipaddress);
                 if (count.getValue() == 0) {
+//                    aceBean.setErrorCode(0);
+//                    aceBean.setMessage("您已经在其它地方登录，请重新登录！");
+//                    aceBean.setStatus(0);
                     aceBean.setErrorCode(0);
-                    aceBean.setMessage("您已经在其它地方登录，请重新登录！");
-                    aceBean.setStatus(0);
+                    aceBean.setMessage("");
+                    aceBean.setStatus(1);
                 } else {
                     aceBean.setErrorCode(0);
                     aceBean.setMessage("");
