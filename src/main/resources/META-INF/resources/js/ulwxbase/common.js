@@ -413,6 +413,7 @@ function editRec(datagridSelector, url, reloadGrid, title, data, width, height,o
 			dlg.data = data;
 			var win = dlg.window;
 			try {
+				var options = dlg.instance.dialog("options");
 				options.onClose = function () {
 					if(reloadGrid) {
 						reloadGrid();
@@ -420,7 +421,6 @@ function editRec(datagridSelector, url, reloadGrid, title, data, width, height,o
 				};
 				win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
 				if (win["onBeforeClose"]) {
-					var options = dlg.instance.dialog("options");
 					options.onBeforeClose = function () {
 							return win["onBeforeClose"]();
 					};
@@ -455,6 +455,7 @@ function editRec2(datagridSelector, url, reloadGrid, title, data, row, width,
 			dlg.data = data;
 			var win = dlg.window;
 			try {
+				var options = dlg.instance.dialog("options");
 				options.onClose = function () {
 					if(reloadGrid) {
 						reloadGrid();
@@ -462,7 +463,6 @@ function editRec2(datagridSelector, url, reloadGrid, title, data, row, width,
 				};
 				win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
 				if (win["onBeforeClose"]) {
-					var options = dlg.instance.dialog("options");
 					options.onBeforeClose = function () {
 						return win["onBeforeClose"]();
 					};
@@ -511,6 +511,7 @@ function addRec(url, reloadGrid, title, data, width, height, options) {
 			dlg.data = data;
 			var win = dlg.window;
 			try {
+				var options = dlg.instance.dialog("options");
 				options.onClose = function () {
 					if(reloadGrid) {
 						reloadGrid();
@@ -518,7 +519,6 @@ function addRec(url, reloadGrid, title, data, width, height, options) {
 				};
 				win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
 				if (win["onBeforeClose"]) {
-					var options = dlg.instance.dialog("options");
 					options.onBeforeClose = function () {
 						return win["onBeforeClose"]();
 					};
