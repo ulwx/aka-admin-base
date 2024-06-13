@@ -63,7 +63,8 @@ var ComboboxLoadFilter=function(excludeFirst,insertFirst){
 }
 var ComboboxFilter=function(q, row){
 	var opts = $(this).combobox('options');
-	return row[opts.textField].indexOf(q) >=0;
+
+	return row[opts.textField].indexOf($.trim(q)) >=0;
 }
 var ComboboxOnLoadSuccess=function(cvalue) {
 	return function () {
@@ -218,9 +219,8 @@ function loadTagbox(selector, url, cvalue, excludeFirst, options,insertFirst) {
 		valueField : 'id',
 		textField : 'text',
 		editable : true,
-		reversed:true,
-		delay: 50,
-		filter:ComboboxFilter,
+		// delay: 100,
+		// filter:ComboboxFilter,
 		limitToList : true,
 		loadFilter : function(data) {
 
