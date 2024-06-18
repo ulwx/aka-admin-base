@@ -63,8 +63,7 @@ var ComboboxLoadFilter=function(excludeFirst,insertFirst){
 }
 var ComboboxFilter=function(q, row){
 	var opts = $(this).combobox('options');
-
-	return row[opts.textField].indexOf($.trim(q)) >=0;
+	return (row[opts.textField]+"").toLowerCase().indexOf(($.trim(q)+"").toLowerCase()) >=0;
 }
 var ComboboxOnLoadSuccess=function(cvalue) {
 	return function () {
