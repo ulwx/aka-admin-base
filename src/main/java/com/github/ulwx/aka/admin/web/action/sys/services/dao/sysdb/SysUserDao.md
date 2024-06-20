@@ -31,7 +31,9 @@ WHERE 1=1
 AND (a.`name` like #{%userName%} or a.account like #{%userName%} )
 
 @}
-
+@if($$:enable){
+AND a.`enable` =#{enable}
+@}
 @if($$:userPhone){
 AND a.`phone` like #{userPhone%}
 @}

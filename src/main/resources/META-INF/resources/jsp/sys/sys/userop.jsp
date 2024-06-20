@@ -173,7 +173,7 @@
 		</div>
 		<div class="commonForm-items">
 			<select id="sex" class="easyui-combobox" name="sex" id="sex" style="width:100%"
-				data-options="label:'性别:' ,required:true" >
+				data-options="label:'性别:' " >
 				<option value="男" selected="selected">男</option>
 				<option value="女">女</option>
 			</select>

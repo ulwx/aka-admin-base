@@ -24,6 +24,14 @@ function getDataGridColums(){
         {field: 'account', title: '帐号',  align: 'center',width:100,sortable:true},
         {field: 'sysRoleNames', title: '角色',  align: 'center',width:100},
         {field: 'sysRoleTypeNames', title: '角色类型',  align: 'center',width:100},
+		{field: 'enable', title: '有效',  align: 'center',width:100, formatter: function(value,row,index){
+				if(value==1){
+					return "是";
+				}else{
+					return "否";
+				}
+
+			}},
         {field: 'isAdmin', title: '是否是管理员', align: 'center',width:100, 
         	formatter: function(value,row,index){
         		if(isAdmin(row.sysRoleTypeCodes)){
@@ -117,10 +125,17 @@ function getDataGridColums(){
 				<div class="search-box">
 				<form class="searchForm" onsubmit="return false;">
 					<div class="search-params">
-						<input  type="text" class="easyui-textbox" name="userName" data-options="prompt:'姓名'">
+						<input  type="text" class="easyui-textbox" name="userName" data-options="prompt:'姓名/账号'">
 					</div>
 					<div class="search-params">
 						<input  type="text" class="easyui-textbox" name="userPhone" data-options="prompt:'手机号'" >
+					</div>
+					<div class="search-params">
+						<select id="enable" class="easyui-combobox" name="enable"  style="width:100%"
+								data-options="label:'是否有效:' ,required:true" >
+							<option value="1" >有效</option>
+							<option value="0">无效</option>
+						</select>
 					</div>
 					<a class="search easyui-linkbutton" onclick="lookup()">查询</a>
 				</form>

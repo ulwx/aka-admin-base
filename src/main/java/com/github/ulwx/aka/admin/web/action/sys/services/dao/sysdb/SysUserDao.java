@@ -7,6 +7,7 @@ import com.github.ulwx.aka.dbutils.spring.multids.AkaDS;
 import com.github.ulwx.aka.dbutils.tool.MD;
 import com.github.ulwx.aka.dbutils.tool.PageBean;
 import com.github.ulwx.aka.webmvc.AkaDaoSupport;
+import com.ulwx.tool.StringUtils;
 import com.ulwx.type.TInteger;
 
 import java.util.HashMap;
@@ -31,9 +32,9 @@ public class SysUserDao extends AkaDaoSupport {
 	}
 	
 	public  void delUser(SysUser user) throws Exception{
+		user.setEnable(0);
+		getTemplate().updateBy(user, MD.of("sysUserSno"));
 
-		getTemplate().delBy(user, MD.of("sysUserSno"));
-		
 	}
 	
 	
@@ -56,11 +57,14 @@ public class SysUserDao extends AkaDaoSupport {
 		return getTemplate().queryOneBy( user, MD.of("account","enable"));
 	}
 	
-	public  List<AdminUserInfo> getUserList(String userName, String userPhone, int page,
+	public  List<AdminUserInfo> getUserList(String userName, String userPhone,String enable, int page,
 											int perPage, PageBean pb)throws Exception{
 		Map<String ,Object> arg=new HashMap<>();
 		arg.put("userName", userName);
 		arg.put("userPhone", userPhone);
+		if(!StringUtils.isEmpty(enable)){
+			arg.put("enable", Integer.valueOf(enable));
+		}
 		arg.put("roles",null);
 		return getTemplate().queryList(AdminUserInfo.class,
 				MD.md(SysUserDao.class, "getUserList"),

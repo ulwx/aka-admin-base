@@ -48,9 +48,6 @@ public class UserInfoService   extends AkaServiceSupport implements IUserInfoSer
 		for(AdminUserInfo adminUserInfo:adminUserInfos) {
 			SysUser sysUser=ObjectUtils.fromBeanToBean(SysUser.class, adminUserInfo);
 			beanGet.bean(SysUserDao.class).delUser( sysUser);
-			Integer userId=adminUserInfo.getSysUserSno();
-			beanGet.bean(SysUserRoleDao.class).del( userId);
-			beanGet.bean(SysUserRoletypeDao.class).del( userId);
 		}
 
 
@@ -247,10 +244,13 @@ public class UserInfoService   extends AkaServiceSupport implements IUserInfoSer
 		return sessionUser;
 	}
 
-	public List<AdminUserInfo> getUserList(String userName, String userPhone, int pageNum, int perPage, PageBean pb)
+	public List<AdminUserInfo> getUserList(String userName,
+										   String userPhone,
+										   String enable,
+										   int pageNum, int perPage, PageBean pb)
 			throws Exception {
 
-		return beanGet.bean(SysUserDao.class).getUserList(userName, userPhone, pageNum, perPage, pb);
+		return beanGet.bean(SysUserDao.class).getUserList(userName, userPhone,enable, pageNum, perPage, pb);
 
 	}
 	/**

@@ -262,6 +262,7 @@ public class SysUserAction extends ActionSupport {
 		RequestUtils ru = this.getRequestUtils();
 		String userName = ru.getTrimString("userName");
 		String userPhone = ru.getTrimString("userPhone");
+		String enable = ru.getTrimString("enable");
 		// 页面的分页参数
 		Integer pageNum = ru.getInt("page");
 		Integer perPage = ru.getInt("rows");
@@ -270,7 +271,7 @@ public class SysUserAction extends ActionSupport {
 
 		List<AdminUserInfo> adminUserInfos = null;
 		try {
-			adminUserInfos = beanGet.bean(UserInfoService.class).getUserList(userName, userPhone, pageNum, perPage, pb);
+			adminUserInfos = beanGet.bean(UserInfoService.class).getUserList(userName, userPhone, enable,pageNum, perPage, pb);
 
 			// 得到schoolid
 
