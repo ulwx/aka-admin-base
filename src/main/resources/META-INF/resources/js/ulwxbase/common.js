@@ -147,7 +147,6 @@ function loadCombobox(selector, url, cvalue, excludeFirst, options,insertFirst) 
 				if(isArray(data)){
 					return data;
 				}
-				$.messager.alert("提示", data.message, "error");
 				return [];
 			}
 
@@ -222,7 +221,6 @@ function loadTagbox(selector, url, cvalue, excludeFirst, options,insertFirst) {
 		// filter:ComboboxFilter,
 		limitToList : true,
 		loadFilter : function(data) {
-
 			if (data.status == 1) {// 判断是否成功
 				if ($.type(data.data) == 'string') {
 					data.data = $.parseJSON(data.data);
@@ -235,7 +233,9 @@ function loadTagbox(selector, url, cvalue, excludeFirst, options,insertFirst) {
 				}
 				return data.data;
 			} else {
-				$.messager.alert("提示", data.message, "error");
+				if(isArray(data)){
+					return data;
+				}
 				return [];
 			}
 
