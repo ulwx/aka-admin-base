@@ -183,13 +183,13 @@ public class SysUserAction extends ActionSupport {
 		if(StringUtils.isEmpty(adminUserInfo.getName())) {
 			return this.JsonViewError("姓名必填！");
 		}else {
-			if(!ValidationUtils.isChinese(adminUserInfo.getName())) {
-				return this.JsonViewError("姓名只能为中文！");
-			}else {
-				if(adminUserInfo.getName().length()>6) {
-					return this.JsonViewError("姓名最大6个字节");
-				}
-			}
+//			if(!ValidationUtils.isChinese(adminUserInfo.getName())) {
+//				return this.JsonViewError("姓名只能为中文！");
+//			}else {
+//				if(adminUserInfo.getName().length()>6) {
+//					return this.JsonViewError("姓名最大6个字节");
+//				}
+//			}
 		}
 		
 		if(StringUtils.isEmpty(adminUserInfo.getPassword())) {
