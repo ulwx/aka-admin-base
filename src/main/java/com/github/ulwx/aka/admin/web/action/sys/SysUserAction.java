@@ -98,19 +98,19 @@ public class SysUserAction extends ActionSupport {
 			if(StringUtils.isEmpty(adminUserInfo.getName())) {
 				return this.JsonViewError("姓名必填！");
 			}else {
-				if(!ValidationUtils.isChinese(adminUserInfo.getName())) {
-					return this.JsonViewError("姓名只能为中文！");
-				}else {
-					if(adminUserInfo.getName().length()>6) {
-						return this.JsonViewError("姓名最大6个字节");
-					}
-				}
+//				if(!ValidationUtils.isChinese(adminUserInfo.getName())) {
+//					return this.JsonViewError("姓名只能为中文！");
+//				}else {
+//					if(adminUserInfo.getName().length()>6) {
+//						return this.JsonViewError("姓名最大6个字节");
+//					}
+//				}
 			}
-			if(!StringUtils.isEmpty(adminUserInfo.getNikeName())) {
-				if(adminUserInfo.getNikeName().length()>10) {
-					return this.JsonViewError("昵称应小于10个字符！");
-				}
-			}
+//			if(!StringUtils.isEmpty(adminUserInfo.getNikeName())) {
+//				if(adminUserInfo.getNikeName().length()>10) {
+//					return this.JsonViewError("昵称应小于10个字符！");
+//				}
+//			}
 			
 			if(StringUtils.isEmpty(adminUserInfo.getSysRoleIds())) {
 				return this.JsonViewError("菜单角色必填！");
@@ -174,11 +174,11 @@ public class SysUserAction extends ActionSupport {
 			}
 		}
 		
-		if(!StringUtils.isEmpty(adminUserInfo.getNikeName())) {
-			if(adminUserInfo.getNikeName().length()>10) {
-				return this.JsonViewError("昵称应小于10个字符！");
-			}
-		}
+//		if(!StringUtils.isEmpty(adminUserInfo.getNikeName())) {
+//			if(adminUserInfo.getNikeName().length()>10) {
+//				return this.JsonViewError("昵称应小于10个字符！");
+//			}
+//		}
 		
 		if(StringUtils.isEmpty(adminUserInfo.getName())) {
 			return this.JsonViewError("姓名必填！");
