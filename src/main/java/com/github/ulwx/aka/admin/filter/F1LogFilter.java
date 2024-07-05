@@ -1,6 +1,6 @@
 package com.github.ulwx.aka.admin.filter;
 
-import com.ulwx.tool.RandomUtils;
+import com.ulwx.tool.SnowflakeIdWorker;
 import org.slf4j.MDC;
 
 import javax.servlet.*;
@@ -29,7 +29,7 @@ public class F1LogFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {
 
-    	MDC.put("logid", RandomUtils.getRandomNumberString(6));
+    	MDC.put("logid", SnowflakeIdWorker.instance.nextId()+"");
     	try{
         chain.doFilter(request, response);
     	}finally{

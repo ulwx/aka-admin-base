@@ -415,7 +415,9 @@ function editRec(datagridSelector, url, reloadGrid, title, data, width, height,o
 				var options = dlg.instance.dialog("options");
 				options.onClose = function () {
 					if(reloadGrid) {
-						reloadGrid();
+						if(options.refreshOnClose) {
+							reloadGrid();
+						}
 					}
 				};
 				win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
@@ -457,7 +459,9 @@ function editRec2(datagridSelector, url, reloadGrid, title, data, row, width,
 				var options = dlg.instance.dialog("options");
 				options.onClose = function () {
 					if(reloadGrid) {
-						reloadGrid();
+						if(options.refreshOnClose) {
+							reloadGrid();
+						}
 					}
 				};
 				win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
@@ -513,7 +517,9 @@ function addRec(url, reloadGrid, title, data, width, height, options) {
 				var options = dlg.instance.dialog("options");
 				options.onClose = function () {
 					if(reloadGrid) {
-						reloadGrid();
+						if(options.refreshOnClose) {
+							reloadGrid();
+						}
 					}
 				};
 				win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
