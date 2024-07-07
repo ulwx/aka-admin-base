@@ -482,9 +482,19 @@ function editRec2(datagridSelector, url, reloadGrid, title, data, row, width,
 	easyui.ext.open(opt);
 
 }
+function escapeHTML(str) {
+	const map = {
+		'&': '&amp;',
+		'<': '&lt;',
+		'>': '&gt;',
+		'"': '&quot;',
+		"'": '&#39;'
+	};
+	return str.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
 function showHtmlDialog(html,width,height) {
-	$('<div>' +html+ '</div>').dialog({
-		title: '<%=MM.M("feelist.ts")%>',
+	$('<div>' +escapeHTML(html)+ '</div>').dialog({
+		title: '提示',
 		width: width&&width>0?width:600,
 		height: height&&height>0?height:600,
 		closed: false,
