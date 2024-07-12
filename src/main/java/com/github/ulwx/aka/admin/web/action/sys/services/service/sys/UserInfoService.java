@@ -219,7 +219,7 @@ public class UserInfoService   extends AkaServiceSupport implements IUserInfoSer
 				userServiceRight.setPageId(sysUserServicePageRight.getPageId());
 				userServiceRight.setPageMatchURL(sysUserServicePageRight.getMatchUrlSuffix());
 				userServiceRight.setPageName(sysUserServicePageRight.getPageName());
-				userServiceRight.setServiceRightCode(sysUserServicePageRight.getServiceRightCode());
+				userServiceRight.setServiceRightCode(sysUserServicePageRight.getServiceRightCode()+"");
 				userServiceRight.setServiceRightName(sysUserServicePageRight.getServiceRightName());
 				userServiceRights.add(userServiceRight);
 			}

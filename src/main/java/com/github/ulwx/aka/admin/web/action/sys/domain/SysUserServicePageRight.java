@@ -4,7 +4,7 @@ public class SysUserServicePageRight {
     private  Integer pageId;
     private String pageName;
     private String matchUrlSuffix;
-    private String serviceRightCode;
+    private Integer serviceRightCode;
     private String serviceRightName;
 
     public Integer getPageId() {
@@ -31,11 +31,11 @@ public class SysUserServicePageRight {
         this.matchUrlSuffix = matchUrlSuffix;
     }
 
-    public String getServiceRightCode() {
+    public Integer getServiceRightCode() {
         return serviceRightCode;
     }
 
-    public void setServiceRightCode(String serviceRightCode) {
+    public void setServiceRightCode(Integer serviceRightCode) {
         this.serviceRightCode = serviceRightCode;
     }
 
