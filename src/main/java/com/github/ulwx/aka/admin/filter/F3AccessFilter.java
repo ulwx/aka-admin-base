@@ -104,7 +104,34 @@ public class F3AccessFilter implements Filter  {
             preHandler(hreq, hres);
         }catch (Exception e){
             log.error(""+e,e);
-            throw new RuntimeException(e);
+            if (WebMvcUtils.isAjax(hreq)) {// 如果是json请求，跳转到json出错页面
+                log.debug("JSON request");
+                hres.setHeader("sessionstatus", "timeout");
+                AccessResult accessResult = new AccessResult();
+                accessResult.setCode(0);
+                accessResult.setContent("您已经超时，请重新登陆！");
+                accessResult.setMessage("您已经超时，请重新登陆！");
+                accessResult.setLogin(hreq.getContextPath() + "" + LoginPage);
+                accessResult.setStatus(Status.ERR);
+                String result = ObjectUtils.toJsonString(accessResult);
+                ActionContext.getContext().getRequestUtils(hreq).setString("callback",JSONP(hreq));
+                CbResult cbResult = CbResult.of(Status.ERR,0, accessResult.getMessage(),accessResult);
+                hreq.setAttribute(WebMvcCbConstants.ResultKey, cbResult);
+                //hreq.setAttribute("json", jsonResult);
+                RequestDispatcher rd = hreq.getRequestDispatcher(AjaxMessagePage);
+                rd.forward(hreq, hres);
+                return;
+            }
+            String login = hreq.getContextPath() + "" + LoginPage;
+            String message = e.getMessage()+"";
+            MsgResult msgResult=new MsgResult();
+            msgResult.setMsg(message);
+            msgResult.setReturnURL(login);
+            CbResult cbResult =msgResult.getResult(Status.ERR, 0, message);
+            hreq.setAttribute(WebMvcCbConstants.ResultKey, cbResult);
+            RequestDispatcher rd = hreq.getRequestDispatcher(MessagePage);
+            rd.forward(hreq, hres);
+            return;
         }
         String contextPath = hreq.getContextPath();
         if (ArrayUtils.isNotEmpty(NotFilterURLs)) {
@@ -148,7 +175,7 @@ public class F3AccessFilter implements Filter  {
             }
 
         }
-
+        userInfo = (SessionUserInfo) hreq.getSession().getAttribute(UserSeesionKey);
         if (userInfo != null) {
             if (CollectionUtils.isNotEmpty(accessPlugin)) {
                 String[] plugins = accessPlugin.toArray(new String[0]);
