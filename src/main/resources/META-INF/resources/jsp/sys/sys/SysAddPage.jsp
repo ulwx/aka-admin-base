@@ -40,20 +40,32 @@
 	var edit=false;
 	function init(d){
 		dlg=d;
-		initfirst();
-		loadDicStatus();
-		if(dlg.updateRec){//修改
-			edit=true;
-			alter();
-		}else{//新增
-			edit=false;
-				
-		} 
-		$("body").css("visibility", "visible");  
-		
+		$("body").css("visibility", "visible");
 	}
 
-	
+	$(document).ready(function() {
+		$("body").css("visibility", "visible");
+		myInit();
+		clearEasyUiInvalidTip("#saveUserForm");
+
+	});
+
+	function myInit(){
+		if(dlg!=null) {
+			initfirst();
+			loadDicStatus();
+			if(dlg.updateRec){//修改
+				edit=true;
+				alter(dlg.updateRec);
+			}else{//新增
+				edit=false;
+				add();
+			}
+			return;
+		}
+		setTimeout(myInit,100);
+	}
+
 	function loadDicStatus(){
 		var url='<%=request.getContextPath()%>/sys/sys_SysPages_getloadDicStatusJSON.action';
 		loadCombobox("#statusName",url,null,null,{multiple:false,onSelect:function(record){
@@ -115,12 +127,14 @@
 		   						dlg.reloadGrid();//重新刷新后端表格
 								dlg.close();
    							});
-   				} else {
+					$("body").hideLoading();
+				} else {
    					$.messager.alert("提示",
    							"操作失败！[" + ret.message + "]", "error",
    							function() {
    							});
-   				}
+					$("body").hideLoading();
+				}
    			}
     	});
 	};

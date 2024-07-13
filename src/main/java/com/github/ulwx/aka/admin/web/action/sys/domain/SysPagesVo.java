@@ -7,6 +7,8 @@ public class SysPagesVo extends SysPages {
 
 	private String statusName;
 
+
+
 	public String getStatusName() {
 		return statusName;
 	}

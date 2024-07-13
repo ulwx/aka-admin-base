@@ -44,23 +44,33 @@
 	var edit=false;
 	function init(d){
 		dlg=d;
-		initfirst();
-
-		loadUserName();
-		loadPageName();
-		loadRightName();
-
-		if(dlg.updateRec){//修改
-			edit=true;
-			loadRoleList('');
-			alter();
-		}else{//新增
-			edit=false;
-			add();
-		}
-
 		$("body").css("visibility", "visible");
+	}
 
+	$(document).ready(function() {
+		$("body").css("visibility", "visible");
+		myInit();
+		clearEasyUiInvalidTip("#saveUserForm");
+
+	});
+
+	function myInit(){
+		if(dlg!=null) {
+			initfirst();
+			loadUserName();
+			loadPageName();
+			loadRightName();
+			if(dlg.updateRec){//修改
+				edit=true;
+				loadRoleList('');
+				alter();
+			}else{//新增
+				edit=false;
+				add();
+			}
+			return;
+		}
+		setTimeout(myInit,100);
 	}
 
 	function loadPageName(){
@@ -97,13 +107,12 @@
 
 	function loadUserName(){
 		var url='<%=request.getContextPath()%>/sys/sys_SysPages_getSysloadJSON.action';
-		loadCombobox("#name",url,null,null,{multiple:true,onSelect:function(record){
+		loadCombobox("#name",url,[],false,{multiple:true,onSelect:function(record){
 
-		}
+		},panelHeight:250
 		});
 	}
 
-	
     function saveFormData() {
     	clearEasyUiInvalidTip("#saveUserForm");
     	$("body").showLoading();
@@ -129,12 +138,13 @@
 			},
 			success:function(data){
     			$("body").hideLoading();
-    			data=$.evalJSON(data);
+    			//data=$.evalJSON(data);
     			if (data.status == 1) {
 					$.messager.alert("提示", data.message, "info",
 							function() {
 								dlg.reloadGrid();//重新刷新后端表格
 								dlg.close();
+
 							});
 				} else {
 					$.messager.alert("提示",

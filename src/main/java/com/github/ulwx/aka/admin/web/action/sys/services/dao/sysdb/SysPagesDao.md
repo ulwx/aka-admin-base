@@ -15,6 +15,9 @@ getPageAdminList
 ===
 SELECT ru.id id,
 	s.name name,
+    s.account as account,
+	r.service_right_code as serviceRight,
+	r.service_right_name as serviceRightName,
 	p.page_name pageName,
 	ru.updatime updateTime
 FROM `sys_pages_service_right_user` ru
@@ -23,14 +26,14 @@ INNER JOIN `sys_pages_service_right` r ON r.id = ru.page_service_right_id
 INNER JOIN `sys_pages` p ON p.id = r.page_id
 where 1=1
 @ if($$:name){
-	and s.name = #{name}
+	and (s.name = #{name} or s.account = #{name})
 @}
 order by ru.id asc
 
 
 getSysload
 ===
-select sys_user_sno ,name
+select sys_user_sno ,name,account
 from sys_user
 where enable = 1
 

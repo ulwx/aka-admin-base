@@ -7,8 +7,36 @@ public class SysPagesAdminVo {
 
 	private int id;
 	private String name;
+	private String account;
 	private String pageName;
+	private Integer serviceRight;
+	private String serviceRightName;
 	private LocalDateTime updateTime;
+
+	public String getServiceRightName() {
+		return serviceRightName;
+	}
+
+	public void setServiceRightName(String serviceRightName) {
+		this.serviceRightName = serviceRightName;
+	}
+
+	public Integer getServiceRight() {
+		return serviceRight;
+	}
+
+	public void setServiceRight(Integer serviceRight) {
+		this.serviceRight = serviceRight;
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
 	public int getId() {
 		return id;
 	}

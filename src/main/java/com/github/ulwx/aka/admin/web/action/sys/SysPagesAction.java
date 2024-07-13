@@ -10,7 +10,8 @@ import com.github.ulwx.aka.dbutils.tool.PageBean;
 import com.github.ulwx.aka.webmvc.web.action.ActionSupport;
 import com.ulwx.tool.ObjectUtils;
 import com.ulwx.tool.RequestUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 public class SysPagesAction extends ActionSupport {
 	private static final long serialVersionUID = -1672970955045193907L;
 	// 跳转页面指向，即从当前页面跳转到指定的页面
-	private static Logger logger = Logger.getLogger(SysPagesAction.class);
+	private static Logger logger = LoggerFactory.getLogger(SysPagesAction.class);
 	//获取页面列表
 	public String getPageList() {
 		RequestUtils ru = this.getRequestUtils();
@@ -112,7 +113,7 @@ public class SysPagesAction extends ActionSupport {
 			for (SysUser user : users) {
 				CbEasyUICombobox item = new CbEasyUICombobox();
 				item.setId(user.getSysUserSno() + "");
-				item.setText(user.getName());
+				item.setText(user.getAccount()+"["+user.getName()+"]");
 				retList.add(item);
 			}
 			return this.JsonViewSuc(retList);

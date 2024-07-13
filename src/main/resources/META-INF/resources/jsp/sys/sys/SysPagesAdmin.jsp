@@ -20,10 +20,12 @@
         function getDataGridColums() {
             var columns = [[
                 {field: 'id', title: '编号', align: 'center', width: 60, sortable: true},
-                {field: 'name', title: '用户姓名', align: 'center', width: 150, sortable: true},
-                {field: 'pageName', title: '页面名称', align: 'center', width: 300, sortable: true},
+                {field: 'name', title: '用户姓名', align: 'center', width: 100, sortable: true},
+                {field: 'account', title: '用户账号', align: 'center', width: 100, sortable: true},
+                {field: 'pageName', title: '页面名称', align: 'center', width: 200, sortable: true},
+                {field: 'serviceRight', title: '权限点', align: 'center', width: 100, sortable: true},
                 {field: 'updateTime', title: '修改时间', align: 'center', width: 150, sortable: true},
-                {field: 'options', title: '操作', align: 'center', width: 150, sortable: true,
+                {field: 'options', title: '操作', align: 'center', width: 100, sortable: true,
                 	formatter:function(value,row,index){
                 		return "<a href='#' style='color:#056dae' onclick='del("+index+")'>删除</a>"
                 	}	
@@ -100,7 +102,7 @@
 
 		function addFn(){
 			var url = "<%=request.getContextPath()%>/jsp/sys/sys/SysAddAdmin.jsp";
-			addRec(url, reloadGrid, '页面设置', {}, 650, 700);
+			addRec(url, reloadGrid, '页面设置', {}, 750, 500);
 			};
 		
 
