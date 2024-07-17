@@ -16,9 +16,10 @@
 	href="<%=request.getContextPath()%>/js/jquery.easyui/themes/color.css"/>
 
 <link rel="stylesheet" type="text/css"    
-	href="<%=request.getContextPath()%>/css/page.css?v=202203088" />
+	href="<%=request.getContextPath()%>/css/page.css?v=202203089" />
 	
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/rewrite.css?v=202203088"/>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/rewrite.css?v=202203089"/>
+
 <script type="text/javascript">
 
   var _global_token="<%=StringUtils.trim(session.getAttribute("token"))%>";

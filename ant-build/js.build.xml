@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="js.build" default="compress" basedir="../">
     <description>js.build for ANT</description>
-    <property name="src" location="src/main/webapp" />
+    <property name="src" location="src/main/resources/META-INF/resources" />
     <property name="build" location="ant-build/build" />
     <property name="target" location="ant-build/target" />
     <property name="lib" location="lib"/>
@@ -24,25 +24,34 @@
 	         <path path="${src}/js/jquery.easyui/jquery.easyui.min.js" />
 	  		 <path path="${src}/js/jquery.easyui/locale/easyui-lang-zh_CN.js" />
     	 </concat>
+
     	<concat destfile="${build}/jquery-plugin-pack.js" encoding="${charset}" outputencoding="${charset}">
-       	 		<path path="${src}/js/jquery.plug/template-web.js" />
-	    	 	<path path="${src}/js/jquery.plug/jquery.json.js" />
-		  		<path path="${src}/js/jquery.plug/js.cookie.js" />
-	    	 	<path path="${src}/js/jquery.plug/jquery.populate.js" />
-	    	 	<path path="${src}/js/jquery.load/js/jquery.showLoading2.js" />
-	    	 	<path path="${src}/js/jquery.plug/jquery.namespace.js" />
-    			<path path="${src}/js/jquery.plug/easyui.ext.js" />
-    			<path path="${src}/js/jquery.easyui.ext/jquery.easyui.form.ext.js" />
-	    		<path path="${src}/js/jquery.plug/common.js" />
-	    		<path path="${src}/js/greenshoot/common.js" />
+
+			<path path="${src}/js/jquery.plug/template-web.js" />
+		    <path path="${src}/js/jquery.plug/jquery.json.js" />
+			<path path="${src}/js/jquery.plug/js.cookie.js" />
+			<path path="${src}/js/jquery.load/js/jquery.showLoading2.js" />
+			<path path="${src}/js/jquery.plug/jquery.namespace.js" />
+			<path path="${src}/js/jquery.plug/md5.js" />
+			<path path="${src}/js/jquery.plug/common.js" />
+			<path path="${src}/js/jquery.plug/easyui.ext.js" />
+			<path path="${src}/js/jquery.plug/easyui.ext.my.js" />
+			<path path="${src}/js/jquery.plug/easyui.ext.win.js" />
+			<path path="${src}/js/jquery.plug/ext.date.js" />
+			<path path="${src}/js/ulwxbase/common.js" />
        	 </concat>
     	
     </target>
+
 	<target name="concat-css" depends="init">
         <concat destfile="${build}/page-rewrite.css" encoding="${charset}" outputencoding="${charset}" 
         	fixlastline="true">
-		 <path path="${src}/css/page.css" />
- 		 <path path="${src}/css/rewrite.css" />
+			<path path="${src}/js/jquery.load/css/showLoading2.css" />
+			<path path="${src}/js/jquery.easyui/themes/metro-gray/easyui.css" />
+			<path path="${src}/js/jquery.easyui/themes/icon.css" />
+			<path path="${src}/js/jquery.easyui/themes/color.css" />
+		 	<path path="${src}/css/page.css" />
+ 		 	<path path="${src}/css/rewrite.css" />
         </concat>
 	</target>
 	
