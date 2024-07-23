@@ -85,9 +85,10 @@ public class F3AccessFilter implements Filter  {
     public void preHandler(final  HttpServletRequest hreq, final HttpServletResponse hres)throws Exception{
         String[] plugins = accessPlugin.toArray(new String[0]);
         boolean ret=true;
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         for (int f = 0; f < plugins.length; f++) {
             AccessPlugin plugin = null;
-            plugin = (AccessPlugin) Class.forName(plugins[f].trim()).newInstance();
+            plugin = (AccessPlugin) Class.forName(plugins[f].trim(),true,classLoader).newInstance();
             plugin.preHandle(hreq,hres,this);
 
         }
@@ -170,10 +171,11 @@ public class F3AccessFilter implements Filter  {
                     if(find){
                         String[] plugins = accessPlugin.toArray(new String[0]);
                         boolean ret=true;
+                        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
                         for (int f = 0; f < plugins.length; f++) {
                             AccessPlugin plugin = null;
                             try {
-                                plugin = (AccessPlugin) Class.forName(plugins[f].trim()).newInstance();
+                                plugin = (AccessPlugin) Class.forName(plugins[f].trim(),true,classLoader).newInstance();
                                 ret= plugin.doBeforeDoNotFilterURL(hreq,hres,this);
                                 if(!ret){
                                     break;
@@ -197,11 +199,12 @@ public class F3AccessFilter implements Filter  {
         if (userInfo != null) {
             if (CollectionUtils.isNotEmpty(accessPlugin)) {
                 String[] plugins = accessPlugin.toArray(new String[0]);
+                ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
                 for (int i = 0; i < plugins.length; i++) {
                     AccessPlugin plugin = null;
                     AccessBean ab = null;
                     try {
-                        plugin = (AccessPlugin) Class.forName(plugins[i].trim()).newInstance();
+                        plugin = (AccessPlugin) Class.forName(plugins[i].trim(),true,classLoader).newInstance();
                         ab = plugin.doVerify(hreq, hres, this);
                         if(ab==null){
                             continue;
