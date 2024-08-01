@@ -4,6 +4,7 @@ import com.github.ulwx.aka.admin.filter.F1LogFilter;
 import com.github.ulwx.aka.admin.filter.F2DebugFilter;
 import com.github.ulwx.aka.admin.filter.F3AccessFilter;
 import com.github.ulwx.aka.admin.filter.F4CrosAndEncodingFilter;
+import com.github.ulwx.aka.webmvc.BeanGet;
 import org.springframework.boot.web.servlet.DelegatingFilterProxyRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +19,7 @@ public class AkaAdminBaseConfiguration {
 
 
     @Bean(initMethod = "init")
-    public F1LogFilter f1LogFilter(){
+    public F1LogFilter f1LogFilter(BeanGet beanGet){
         return new F1LogFilter();
     }
     @Bean
@@ -31,8 +32,8 @@ public class AkaAdminBaseConfiguration {
     }
 
     @Bean(initMethod = "init")
-    public F2DebugFilter f2DebugFilter(){
-        return new F2DebugFilter();
+    public F2DebugFilter f2DebugFilter(BeanGet beanGet){
+        return new F2DebugFilter(beanGet);
     }
     @Bean
     public DelegatingFilterProxyRegistrationBean f2DebugFilterBean(){
@@ -45,8 +46,8 @@ public class AkaAdminBaseConfiguration {
 
 
     @Bean(initMethod = "init")
-    public F3AccessFilter fAccessFilter(){
-        return new F3AccessFilter();
+    public F3AccessFilter fAccessFilter(BeanGet beanGet){
+        return new F3AccessFilter(beanGet);
     }
 
     @Bean

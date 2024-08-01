@@ -8,7 +8,6 @@ import com.github.ulwx.aka.webmvc.web.action.ActionSupport;
 import com.ulwx.tool.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -24,11 +23,14 @@ public class F2DebugFilter implements Filter {
 	private String userName;
 	private boolean needDebug=false;
 	public static String debug_filter_put_a_user="debug.filter.put.a.user";
-	@Autowired
+
 	private BeanGet beanGet;
 	/**
 	 * @see Filter#destroy()
 	 */
+	public F2DebugFilter(BeanGet beanGet){
+		this.beanGet=beanGet;
+	}
 	public void destroy() {
 		// TODO Auto-generated method stub
 	}

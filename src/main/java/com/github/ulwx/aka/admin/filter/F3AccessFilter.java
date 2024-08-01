@@ -40,8 +40,12 @@ public class F3AccessFilter implements Filter  {
     private Collection<String> accessPlugin;
 
 
-    @Autowired
+
     private BeanGet beanGet;
+
+    public F3AccessFilter(BeanGet beanGet){
+        this.beanGet=beanGet;
+    }
     @Autowired
     private Environment env;
     public void init() throws ServletException {
