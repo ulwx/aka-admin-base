@@ -59,8 +59,7 @@
 	src="<%=request.getContextPath()%>/js/jquery.plug/ext.date.js"></script> 
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/ulwxbase/common.js"></script>
-<!--  $.pageRoot -->
-<script   type="text/javascript">
+<script type="text/javascript">
 	$.pageRoot = window.location.protocol + "//" + window.location.host + ""+'<%=request.getContextPath()%>';
 	$.ContexPath='<%=request.getContextPath()%>';
 	$.HTTPPRE=window.location.protocol + "//" + window.location.host;
