@@ -73,6 +73,7 @@ function isArray(obj){
 	 }
 	 return false;
 }
+
 function formatDateTime(date) {
 	var year = date.getFullYear();
 	var month = ('0' + (date.getMonth() + 1)).slice(-2);
