@@ -336,9 +336,12 @@ function selectRec(datagridSelector, url, reloadGrid, title, data, width,
  * @param id :
  *            如果type=1，则为项目id；如果type=2，则为用户id
  * @Param callback(data,status,errorMsg)
- *            data:为返回的对象，对象里的属性如下： relaFilePath: 文件服务器相对路径 httpPath:
- *            文件服务器http绝对地址 ossPath: 阿里云oss相对路径, ossHttpPath:
- *            阿里云oss相对路径的http绝对地址 status: 1:成功 0：失败； 只有成功时data才有意义
+ *            data:为返回的对象，对象里的属性如下：
+ *           	 relaFilePath: 文件服务器相对路径
+ *            	 httpPath: 文件服务器http绝对地址
+ *           	 ossPath: 阿里云oss相对路径
+ *            	 ossHttpPath:阿里云oss相对路径的http绝对地址
+ *            status: 1:成功 0：失败； 只有成功时data才有意义
  *            errorMsg：如果status为0时，错误提示信息
  * @returns
  */
