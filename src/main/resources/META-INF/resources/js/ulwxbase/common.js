@@ -428,8 +428,9 @@ function editRec(datagridSelector, url, reloadGrid, title, data, width, height,o
 					options.onBeforeClose = function () {
 							return win["onBeforeClose"]();
 					};
-					dlg.instance.dialog(options);
+
 				}
+				dlg.instance.dialog(options);
 			} catch (error) {
 				// 捕获到的异常被传递给错误处理程序
 				console.error(error);
@@ -472,8 +473,9 @@ function editRec2(datagridSelector, url, reloadGrid, title, data, row, width,
 					options.onBeforeClose = function () {
 						return win["onBeforeClose"]();
 					};
-					dlg.instance.dialog(options);
+
 				}
+				dlg.instance.dialog(options);
 			} catch (error) {
 				// 捕获到的异常被传递给错误处理程序
 				console.error(error);
@@ -527,7 +529,7 @@ function addRec(url, reloadGrid, title, data, width, height, options) {
 			dlg.data = data;
 			var win = dlg.window;
 			try {
-				var options = dlg.instance.dialog("options");
+				var options =dlg.instance.dialog("options");
 				options.onClose = function () {
 					if(reloadGrid) {
 						if(options.refreshOnClose) {
@@ -540,8 +542,9 @@ function addRec(url, reloadGrid, title, data, width, height, options) {
 					options.onBeforeClose = function () {
 						return win["onBeforeClose"]();
 					};
-					dlg.instance.dialog(options);
+
 				}
+				dlg.instance.dialog(options);
 			} catch (error) {
 				// 捕获到的异常被传递给错误处理程序
 				console.error(error);
