@@ -1031,9 +1031,14 @@ function isEmpty(exp){
 				return true;
 			}
 		}
+
 		
 		return false;
 	}
+}
+
+function isEmptyObj(obj){
+	return Object.prototype.isPrototypeOf(obj) && Object.keys(obj).length === 0
 }
 
 /**
