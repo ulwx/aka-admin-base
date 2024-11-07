@@ -325,7 +325,26 @@ function syncGet(url,myheaders){
     });
 	return ret;
 }
-
+function htmlEncode(value){
+	return $('<div/>').text(value).html();
+}
+//Html解码获取Html实体
+function htmlDecode(value){
+	return $('<div/>').html(value).text();
+}
+function escapeString(str) {
+	return str
+		.replace(/\\/g, '\\\\')   // 反斜杠
+		.replace(/'/g, "\\'")     // 单引号
+		.replace(/"/g, '\\"')     // 双引号
+		.replace(/\n/g, '\\n')    // 换行符
+		.replace(/\r/g, '\\r')    // 回车符
+		.replace(/\t/g, '\\t')    // 制表符
+		.replace(/\b/g, '\\b')    // 退格符
+		.replace(/\f/g, '\\f')    // 换页符
+		.replace(/\v/g, '\\v')    // 垂直制表符
+		.replace(/\0/g, '\\0');   // null 字符
+}
 function syncPostJSON(url,postData,myheaders){
 	if(myheaders){
 	}else{
