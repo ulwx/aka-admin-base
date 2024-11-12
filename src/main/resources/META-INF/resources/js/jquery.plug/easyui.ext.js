@@ -365,7 +365,7 @@ function bindTimeOutEvent(linkbutton) {
 		$.fn.datagrid.defaults.loadMsg = '正在处理，请稍待。。。';
 		/* 修改分页信息 by liujp */
 		$.fn.datagrid.defaults.pageSize = 20;
-		$.fn.datagrid.defaults.pageList = [ 20, 50, 100 ];
+		$.fn.datagrid.defaults.pageList = [ 20, 50, 100,1000 ];
 		$.fn.datagrid.defaults.border = false;
 	}
 	;
