@@ -1467,7 +1467,7 @@
      };
 
 	 $.ajaxSetup({
-		 timeout: 13600
+		 timeout: 1200000  // 设置超时为1200秒（20分钟）
 	 });
 
 	})(jQuery);
