@@ -16,15 +16,22 @@
 </style>
 
 <script>
-	
-	$(document).ready(function () {			
-		$("body").css("visibility", "visible");  
-		
-	
-	})
+
+	function myInit(){
+		if(dlg!=null) {
+			initfirst();
+			return;
+		}
+		setTimeout(myInit,20);
+	}
+	$(document).ready(function() {
+		$("body").css("visibility", "visible");
+		myInit();
+		clearEasyUiInvalidTip("#saveUserForm");
+	});
+
 
 	function initform(){
-	
 		if(dlg.data){
 			$('#type').val(dlg.data.type);
 			$('#ftype').val(dlg.data.ftype);
@@ -64,7 +71,10 @@
 				}
 			}
 		});
-		
+		$("#files").next("span").find("input").first().on("click",function (){
+			$("#filebox_file_id_1").click();
+		})
+
 	    clearEasyUiInvalidTip("#saveUserForm");
 	}
 	function initfirst(){
@@ -111,7 +121,7 @@
 
 	<form class="commonForm" id="saveUserForm" enctype="multipart/form-data" method="post" >
 		<div class="commonForm-items">
-			<input data-options="label:'文件:',buttonText:'选择',multiple:true" 
+			<input data-options="label:'文件:',buttonText:'选择',multiple:true"
 				name="files" id="files" class="easyui-filebox" style="width:400px" />
 			<input	type="hidden" name="type" id="type" /> 
 			<input type="hidden" name="ftype" id="ftype" />
