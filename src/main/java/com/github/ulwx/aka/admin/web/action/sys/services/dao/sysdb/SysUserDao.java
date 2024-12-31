@@ -76,6 +76,7 @@ public class SysUserDao extends AkaDaoSupport {
 		arg.put("userName", "");
 		arg.put("userPhone", "");
 		arg.put("roles",roles);
+		arg.put("enable",1);
 		return getTemplate().queryList(AdminUserInfo.class,
 				MD.md(SysUserDao.class, "getUserList"),arg);
 	}
