@@ -36,7 +36,12 @@
             border: 1px solid #DCDCDC;
             background-color: #f5f4f4
         }
-
+        .my-custom-icon {
+            background-image: url('images/ulwxbase.sys/earth1.png');
+            width: 20px;
+            height: 20px;
+            background-size: cover;
+        }
         .tabs {
             border-color: #dcdcdc
         }
@@ -161,6 +166,16 @@
 
         $(document).ready(function () {
             check();
+            // 监听菜单项的点击事件
+            $('#lmm').menu({
+                onClick: function (item) {
+                    // 获取点击的菜单项的 data-value 属性
+                    var language = $(item.target).data('value');
+                    Cookies.set('LANGUAGE', language, { path: '/',expires: 365  });
+                    window.location.reload();
+
+                }
+            });
             $('.accordion-header .icon-plus').each(function () {
 
                 var mnanme = $.trim($(this).prev().text());
@@ -629,6 +644,7 @@
                  style="position: absolute; top: 5px"/>
         </a>
         <span class="myspan">
+                  <a href="#" class="easyui-menubutton" data-options="menu:'#lmm',iconCls:'my-custom-icon'"></a>
 				<span style="color: white">当前登录用户:<%=info.getUser().getAccount() %>&nbsp;&nbsp;用户ID:<%=info.getUser().getId() %></span>&nbsp;
 				<a href="javascript:void(0)" id="toDoElBill" style="color: red"></a> &nbsp;
 				<span style="color: white">|</span>&nbsp; 
@@ -639,6 +655,11 @@
 				<img src="images/ulwxbase.sys/index_eixt_icon.png" width="13" height="13" border="0"/>
 				<a href="javascript:void(0);" onclick="logout();" style="color: white"> 退出</a>
 			</span>
+    </div>
+    <div id="lmm" style="width:100px;">
+        <div data-value="zh_CN">中文</div>
+        <div data-value="en_US">English</div>
+<%--        <div data-value="jp_JP">日本語</div>--%>
     </div>
 </div>
 <div region="west" split="true" title=" "
