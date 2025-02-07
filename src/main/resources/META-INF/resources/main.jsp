@@ -3,6 +3,7 @@
 <%@ page import="com.github.ulwx.aka.admin.domain.SessionUserInfo" %>
 <%@ page import="com.github.ulwx.aka.admin.domain.UserRight" %>
 <%@ page import="com.github.ulwx.aka.webmvc.WebMvcCbConstants" %>
+<%@ page import="com.github.ulwx.aka.admin.utils.MM" %>
 <%@ page contentType="text/html; charset=utf-8" language="java"
          errorPage="" %>
 
@@ -686,6 +687,7 @@
                         UserRight chRight = list.get(n);
                         String chRightCode = chRight.getCode();
                         String chRightName = chRight.getRightName().trim();
+                        chRightName= MM.M("MENU."+chRightName);
                         String chFirstLevelTwo = chRightCode.substring(0, 2);
                         String chSecondLevelThree = chRightCode.substring(2, 5);
 
