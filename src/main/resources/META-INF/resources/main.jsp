@@ -666,7 +666,7 @@
 <div region="west" split="true" title=" "
      data-options="headerCls:'myHeaderMenuCls',border:true"
      style="width: 210px; background: #F5F5F5;">
-    <div id="leftmenu" class="easyui-accordion"
+    <div id="leftmenu" class="easyui-accordion" fit="true"
          data-options="border:false">
         <%
             List<UserRight> list = (List<UserRight>) session.getAttribute("rights");
@@ -676,6 +676,7 @@
                 UserRight right = list.get(i);
                 String rightCode = right.getCode();
                 String rightName = right.getRightName().trim();
+                rightName= MM.M("MENU."+rightName);
                 String firstLevelTwo = rightCode.substring(0, 2);
                 String secondLevelThree = rightCode.substring(2, 5);
                 if (secondLevelThree.equals("000")) {
@@ -696,7 +697,7 @@
                             break;
                         }
         %>
-        <a id="<%=chRightCode%>" name="addTab_<%=count%>"
+        <a id="<%=chRightCode%>" name="addTab_<%=count%>" style="width: 350px"
            href="javascript:addTab('<%=chRightName.trim()%>','<%=chUrl%>',1);void 0;">
             <img src="images/ulwxbase.sys/menu_icon.png" width="7px" height="7px"
                  border="0" align="bottom"/>&nbsp;<%=chRightName.trim()%>
