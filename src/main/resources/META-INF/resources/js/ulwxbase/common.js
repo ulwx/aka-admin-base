@@ -486,7 +486,7 @@ function editRec(datagridSelector, url, reloadGrid, title, data, width, height,o
 		return false;
 	}
 	if (records.length > 1) {
-		$.messager.alert("提示", "修改只能修改行数据", "info");
+		$.messager.alert("提示", "只能选择一行数据", "info");
 		return false;
 	}
 
