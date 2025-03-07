@@ -681,6 +681,21 @@ function operRec(datagridSelector, url, reloadGrid) {
 	});
 
 }
+function showHtmlDialog(html) {
+	$('<div>' +html+ '</div>').dialog({
+		title: '提示',
+		width: 600,
+		height: 400,
+		closed: false,
+		cache: false,
+		modal: true,
+		onBeforeOpen: function () {
+		},
+		onClose: function () {
+			$(this).dialog('destroy'); // 关闭时销毁对话框
+		}
+	});
+}
 function delRec(url,deleteId,reloadGrid){
 	$.ajax({
 		type: "POST",
