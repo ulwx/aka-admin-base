@@ -405,38 +405,7 @@ function syncGetJSON(url,myheaders){
 	return ret;
 };
 
-function syncPost(url,postData,myheaders){
-	if(myheaders){
-	}else{
-		myheaders={};
-	}
-	var ret = '';
-	$.ajax({
-    	dataType: 'text',
-    	type: 'POST',
-    	async: false,
-    	data: postData,
-    	cache: false,
-		headers: myheaders,
-    	url: url,
-    	success: function(data){
-    		//ret = $.evalJSON($.trim(data));
-    		ret=data;
-    	},
-    	error: function(jqXHR, textStatus, errorThrown){
-    		$("body").hideLoading();
-			ret=$.toJSON({
-				status:0,
-				message: "提示"+jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown
-			});
-			console.log(ret)
-			ret="";
-    		//$.messager.alert("提示", jqXHR.readyState+","+jqXHR.status+","+jqXHR.statusText +","+jqXHR.responseText+","+textStatus+","+errorThrown);
-    		  
-    	}
-    });
-	return ret;
-};
+//
 function syncPost(url,postData,contentType,myheaders){
 	if(myheaders){
 	}else{
