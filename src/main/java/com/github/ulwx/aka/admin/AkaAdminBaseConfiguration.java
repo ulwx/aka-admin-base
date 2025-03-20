@@ -54,7 +54,7 @@ public class AkaAdminBaseConfiguration {
     public DelegatingFilterProxyRegistrationBean fAccessFilterBean(){
         DelegatingFilterProxyRegistrationBean registrationBean=
                 new DelegatingFilterProxyRegistrationBean("fAccessFilter");
-        registrationBean.addUrlPatterns("*.jsp", "*.action","/swagger-ui/*"); //设置拦截pattern
+        registrationBean.addUrlPatterns("*.jsp", "*.action","/swagger-ui/*","/v3/api-docs/*", "/doc.html"); //设置拦截pattern
         registrationBean.setOrder(12);//设置顺序
 
         return registrationBean;
