@@ -406,7 +406,7 @@ function syncGetJSON(url,myheaders){
 };
 
 //
-function syncPost(url,postData,contentType,myheaders){
+function syncPost(url,postData,myheaders,contentType){
 	if(myheaders){
 	}else{
 		myheaders={};
@@ -440,7 +440,7 @@ function syncPost(url,postData,contentType,myheaders){
 	return ret;
 };
 /**
- * 
+ *
  * @param url
  * @param fun ：格式为 function(data){...}
  * @returns {String}
@@ -466,7 +466,7 @@ function asynGet(url,fun,myheaders){
 }
 
 /**
- * 
+ *
  * @param url
  * @param fun ：格式为 function(data){...}
  * @returns {String}
