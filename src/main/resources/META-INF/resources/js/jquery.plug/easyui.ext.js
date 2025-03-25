@@ -212,10 +212,10 @@ function bindTimeOutEvent(linkbutton) {
 
 	if ($.messager) {
 		$.extend($.messager.defaults, {
-			width : 450,
-			height : 'auto',
-			minHeight : 300,
-			modal : true,
+			title: title || '提示',
+			width: 450,
+			minWidth: 300,
+			modal: false,
 			resizable: true
 
 		});
