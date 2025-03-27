@@ -212,9 +212,9 @@ function bindTimeOutEvent(linkbutton) {
 
 	if ($.messager) {
 		$.extend($.messager.defaults, {
-			title: title || '提示',
 			width: 450,
 			minWidth: 300,
+			minHeight: 300,
 			modal: false,
 			resizable: true
 
