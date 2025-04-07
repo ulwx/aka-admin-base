@@ -90,12 +90,12 @@
  			var topWin= w['top'];
 			if (topWin.jQuery && topWin.jQuery.fn ) {
 				// 确认是真正的 jQuery 而不仅仅是名为 jQuery 的变量
-				return topWin;
-			}else{
-				_doc = w.document;
-				return w;
+				if (topWin.jQuery.fn.dialog){
+					return topWin;
+				}
 			}
-
+			_doc = w.document;
+			return w;
 		})(window);
  		
  		
@@ -224,8 +224,8 @@
  		
  
  		if(options.isFrame && iframe){
- 			
- 			win = _top.$('<div  style="overflow:hidden">', {id: winId}).append(iframe).dialog(options);
+
+ 			win = _top.jQuery('<div  style="overflow:hidden">', {id: winId}).append(iframe).dialog(options);
  			iframe.attr('src', url);
  			iframe.bind('load', frameOnLoad);
  			
@@ -235,7 +235,7 @@
  			
  			
  		}else{
- 			win = _top.$('<div >', {id: winId}).dialog(options);
+ 			win = _top.jQuery('<div >', {id: winId}).dialog(options);
  		}
  		return win;
  	}
