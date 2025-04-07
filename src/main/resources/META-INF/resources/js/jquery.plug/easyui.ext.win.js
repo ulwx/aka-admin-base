@@ -87,8 +87,16 @@
  				return w;
  			}
  			
- 			return w['top'];
- 		})(window);
+ 			var topWin= w['top'];
+			if (topWin.jQuery && topWin.jQuery.fn ) {
+				// 确认是真正的 jQuery 而不仅仅是名为 jQuery 的变量
+				return topWin;
+			}else{
+				_doc = w.document;
+				return w;
+			}
+
+		})(window);
  		
  		
  		//如填写ID属性，则窗体唯一
