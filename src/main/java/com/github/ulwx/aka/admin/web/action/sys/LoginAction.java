@@ -97,7 +97,7 @@ public class LoginAction extends ActionSupport {
             // 获取系统用户信息
             UserInfoService userInfoService = beanGet.bean(UserInfoService.class);
             int flag = 0;
-            userInfo = userInfoService.getUserInfo(account);
+            userInfo = userInfoService.getUserInfo(account,null);
             SysUsersLock objLock = null;
             if (userInfo != null && userInfo.getUser() != null) {
                 // 判断是否为测试
@@ -606,7 +606,7 @@ public class LoginAction extends ActionSupport {
                     SysUser sysUser = userInfoService.getUserById(sysUserId);
                     if (sysUser != null) {
                         List<UserRight> rights = new ArrayList<UserRight>();
-                        SessionUserInfo userInfo = userInfoService.getUserInfo(sysUser.getAccount());
+                        SessionUserInfo userInfo = userInfoService.getUserInfo(sysUser.getAccount(),null);
                         if (userInfo != null) {
                             rights = userInfo.getRights();
                             this.setUserInfo(userInfo);

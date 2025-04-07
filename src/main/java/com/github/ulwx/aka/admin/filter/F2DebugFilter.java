@@ -64,7 +64,7 @@ public class F2DebugFilter implements Filter {
 			if( ActionSupport.getUserInfo(hreq)==null){
 				if(needDebug) {
 					log.debug("debug.filter");
-					SessionUserInfo userInfo  = AkaServiceUtils.getUserInfoService().getUserInfo(userAccount);
+					SessionUserInfo userInfo  = AkaServiceUtils.getUserInfoService().getUserInfo(userAccount,null);
 					if(userInfo!=null){
 						ActionSupport.setUserInfo(hreq,userInfo);
 						session.setAttribute("rights", userInfo.getRights());

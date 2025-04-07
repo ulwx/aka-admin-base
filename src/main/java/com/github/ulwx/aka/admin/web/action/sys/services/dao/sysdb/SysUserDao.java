@@ -56,7 +56,17 @@ public class SysUserDao extends AkaDaoSupport {
 		user.setEnable(1);
 		return getTemplate().queryOneBy( user, MD.of("account","enable"));
 	}
-	
+	public  SysUser getAccountUser(String account,String userName)throws Exception{
+		SysUser user=new SysUser();
+		if(StringUtils.hasText(account)) {
+			user.setAccount(account);
+		}
+		if(StringUtils.hasText(userName)) {
+			user.setName(userName);
+		}
+		user.setEnable(1);
+		return getTemplate().queryOneBy( user);
+	}
 	public  List<AdminUserInfo> getUserList(String userName, String userPhone,String enable, int page,
 											int perPage, PageBean pb)throws Exception{
 		Map<String ,Object> arg=new HashMap<>();

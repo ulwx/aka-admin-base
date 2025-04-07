@@ -73,10 +73,10 @@ public class UserInfoService   extends AkaServiceSupport implements IUserInfoSer
 
 	}
 	@Override
-	public SessionUserInfo getUserInfo(String account) throws Exception {
+	public SessionUserInfo getUserInfo(String account,String userName) throws Exception {
 		SessionUserInfo sessionUser = new SessionUserInfo();
 		try {
-			SysUser suser = beanGet.bean(SysUserDao.class).getAccountUser(account);
+			SysUser suser = beanGet.bean(SysUserDao.class).getAccountUser(account,userName);
 			if(suser==null) {
 				return null;
 			}
