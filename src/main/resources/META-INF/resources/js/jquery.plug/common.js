@@ -990,7 +990,23 @@ function isNull(exp){
 	}
 }
 
-
+function htmlEncode(value){
+	return $('<div/>').text(value).html();
+}
+//Html解码获取Html实体
+function htmlDecode(value){
+	return $('<div/>').html(value).text();
+}
+function unescapeQuotes(str) {
+	return str.replace(/@@1/g, '\\')  // 还原反斜杠
+		.replace(/@@2/g, '"')   // 还原双引号
+		.replace(/@@3/g, "'");  // 还原单引号
+}
+function escapeQuotes(str) {
+	return str.replace(/\\/g, '@@1')  // 转义反斜杠
+		.replace(/"/g, '@@2')    // 转义双引号
+		.replace(/'/g, "@@3");   // 转义单引号
+}
 
 function isArrayEmpty(array){
 	if(isNull(array) ){
