@@ -351,7 +351,6 @@ a:active {
 	border-radius: 4px;
 }
 
-
 .oper-tool-box {
 	margin: 5px 5px 5px 5px;
 }
@@ -360,15 +359,15 @@ a:active {
 	float: right;
 	margin-right: 10px;
 }
-
+.oper-tool-box .easyui-menubutton {
+	float: right;
+	margin-right: 10px;
+}
 .oper-tool-box:after {
 	display: block;
 	content: '';
 	clear: both;
 }
-
-
-
 
  .error-message{
      margin: 0;

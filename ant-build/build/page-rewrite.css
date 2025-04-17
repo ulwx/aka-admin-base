@@ -4305,7 +4305,10 @@ a:active {
 	float: right;
 	margin-right: 10px;
 }
-
+.oper-tool-box .menubutton {
+  float: right;
+  margin-right: 10px;
+}
 .oper-tool-box:after {
 	display: block;
 	content: '';
