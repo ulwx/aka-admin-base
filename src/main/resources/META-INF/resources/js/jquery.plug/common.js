@@ -520,7 +520,42 @@ function asynPostParam(URL,params,fun,myheaders){
 }
 
 
+/**
+ * 比较当前日期时间与指定日期时间
+ * @param {string} targetDateTime - 目标时间字符串 (格式: YYYY-MM-DD HH:MM:SS)
+ * @param {Object} [options] - 可选配置
+ * @param {boolean} [options.utc=false] - 是否按UTC解析目标时间 (默认本地时间)
+ * @param {boolean} [options.compareToNow=true] - 是否与当前时间比较 (false时需传参compareWith)
+ * @param {string} [options.compareWith] - 当compareToNow=false时，指定要比较的时间字符串
+ * @returns {-1 | 0 | 1} - -1: compareWith比targetDateTime时间更早, 0: 相等, 1: 更晚
+ * @throws 当日期无效或参数缺失时抛出错误
+ */
+function compareDateTime(targetDateTime, {
+	utc = false,
+	compareToNow = true,
+	compareWith
+} = {}) {
+	// 参数校验
+	if (!compareToNow && !compareWith) {
+		throw new Error('当compareToNow=false时，必须提供compareWith参数');
+	}
 
+	// 解析目标时间 (兼容空格/T分隔符)
+	const parseTime = (str) => {
+		const date = new Date(str.replace(' ', 'T') + (utc ? 'Z' : ''));
+		if (isNaN(date.getTime())) throw new Error(`无效的日期时间: "${str}"`);
+		return date;
+	};
+
+	// 获取要比较的时间 (当前时间或指定时间)
+	const timeToCompare = compareToNow
+		? (utc ? new Date().getTime() : Date.now())
+		: parseTime(compareWith).getTime();
+
+	// 比较时间戳
+	const targetTimestamp = parseTime(targetDateTime).getTime();
+	return Math.sign(timeToCompare - targetTimestamp);
+}
  /**获得日期部分*/
 function DateGetPart(dateStr){
 	var value=$.trim(dateStr);
