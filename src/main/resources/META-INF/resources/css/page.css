@@ -256,69 +256,69 @@ a:active {
 		position: absolute;
 		left: 8.33333333333%;
 	}
-	
+
 	.NetGrid .col_left2 {
 		float: none !important;
 		position: absolute;
 		left: 16.6666666667%;
 	}
 
-	
+
 	.NetGrid .col_left3 {
 		float: none !important;
 		position: absolute;
 		left: 25.0%;;
 	}
 
-	
+
 	.NetGrid .col_left4 {
 		float: none !important;
 		position: absolute;
 		left: 33.3333333333%;
 	}
-	
+
 	.NetGrid .col_left5 {
 		float: none !important;
 		position: absolute;
 		left: 41.6666666667%;
 	}
-	
+
 	.NetGrid .col_left6 {
 		float: none !important;
 		position: absolute;
 		left: 50.0%;;
 	}
-	
+
 	.NetGrid .col_left7 {
 		float: none !important;
 		position: absolute;
 		left: 58.3333333333%;
 	}
-	
+
 	.NetGrid .col_left8 {
 		float: none !important;
 		position: absolute;
 		left: 66.6666666667%;
 	}
-	
+
 	.NetGrid .col_left9 {
 		float: none !important;
 		position: absolute;
 		left: 75.0%;
 	}
-	
+
 	.NetGrid .col_left10 {
 		float: none !important;
 		position: absolute;
 		left: 83.3333333333%;
 	}
-	
+
 	.NetGrid .col_left11 {
 		float: none !important;
 		position: absolute;
 		left: 91.6666666667%;
 	}
-	
+
 	.NetGrid .col_left12 {
 		float: none !important;
 		position: absolute;
@@ -379,7 +379,7 @@ a:active {
 	line-height: 20px;
 	font-size: 13px;
  }
- 
+
  .commonForm{
  	margin: auto;
  	padding: 20px 20px 20px 20px;
@@ -405,7 +405,7 @@ a:active {
  .commonForm-items .form-tips{
 	display:inline-block;
 	color:#bbb;
-	margin-left: 90px     
+	margin-left: 90px
 }
 
 .commonForm-items  .error-tips{
@@ -414,7 +414,7 @@ a:active {
 	bottom:-18px;
 	color:#e4393c;
 	font-size:13px;
-	
+
 }
  .commonForm-items>input{
  	width:300px;
@@ -426,7 +426,7 @@ xmp {
 	white-space: pre-wrap;
 	word-wrap: break-word;
 }
- 
+
 
 
 

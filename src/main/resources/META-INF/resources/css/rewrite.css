@@ -16,7 +16,7 @@
 }
 /*.textbox{*/
 /*    height: 26px;*/
-/*}*/
+}
 .textbox .textbox-text {
   font-size: 13px;
 }
@@ -133,7 +133,7 @@
 }
 
 .datagrid-btable td,td div{
-	
+
 	 white-space: nowrap;
 }
 
@@ -144,7 +144,7 @@
 }
 
 .messager-body .messager-icon{
-	
+
 	width:32px;
 	margin:0px;
 }
@@ -222,7 +222,7 @@
 }
 .l-btn:hover{
 	 opacity:0.9;
-	 filter:alpha(opacity=90); 
+	 filter:alpha(opacity=90);
 }
 .datagrid-row-selected {
     background: #c1ddf1 none repeat scroll 0 0;
@@ -235,7 +235,7 @@
 .panel-header{
 	background-color:#F5F4F4;
 	border:0px
-	
+
 }
 .panel-title{
 	color:#4F6FA0;
@@ -250,7 +250,7 @@
  }
  .layout-panel-north .panel-body {
     background-color:#FAFAFA!important;
-   
+
   }
   .window {
    background-color: #5e85bb;
@@ -288,10 +288,10 @@
 
 
  /****************************************/
- 
- 
+
+
  /****更改字体颜色为black******/
- 
+
 .panel-body {
   color: black;
 

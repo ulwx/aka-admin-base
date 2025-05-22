@@ -16,9 +16,9 @@
 	href="<%=request.getContextPath()%>/js/jquery.easyui/themes/color.css"/>
 
 <link rel="stylesheet" type="text/css"    
-	href="<%=request.getContextPath()%>/css/page.css?v=202203089" />
+	href="<%=request.getContextPath()%>/css/page.css?v=20263089" />
 	
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/rewrite.css?v=202503089"/>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/rewrite.css?v=202603069"/>
 
 <script type="text/javascript">
 
