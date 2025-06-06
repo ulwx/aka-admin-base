@@ -575,7 +575,7 @@ function editRec2(datagridSelector, url, reloadGrid, title, data, row, width,
 		}
 	}, (options || {}));
 
-	easyui.ext.open(opt);
+	return easyui.ext.open(opt);
 
 }
 function escapeHTML(str) {
@@ -615,6 +615,7 @@ function addRec(url, reloadGrid, title, data, width, height, options) {
 		resizable : true,
 		modal : true,
 		shadow : true,
+
 		onLoad : function(dlg) {
 			dlg.reloadGrid = reloadGrid;
 			dlg.data = data;
@@ -643,7 +644,7 @@ function addRec(url, reloadGrid, title, data, width, height, options) {
 
 		}
 	}, (options || {}));
-	easyui.ext.open(opt);
+	return easyui.ext.open(opt);
 }
 
 function operRec(datagridSelector, url, reloadGrid) {
