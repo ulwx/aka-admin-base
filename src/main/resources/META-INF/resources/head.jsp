@@ -43,7 +43,7 @@
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/jquery.load/js/jquery.showLoading2.js"></script>
 <script type="text/javascript"
-		src="<%=request.getContextPath()%>/js/jquery.load/js/jquery.blockUI.js"></script>
+		src="<%=request.getContextPath()%>/js/jquery.plug/jquery.blockUI.js"></script>
 
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/jquery.plug/jquery.namespace.js"></script>
