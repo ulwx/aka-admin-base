@@ -2,6 +2,7 @@ package com.github.ulwx.aka.admin.domain;
 
 
 import com.github.ulwx.aka.webmvc.SessionUser;
+import com.github.ulwx.aka.webmvc.user.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class SessionUserInfo implements SessionUser {
 	//是否是超级管理员
 	private boolean isSuperAdmin=false;
 
+	@Override
 	public User getUser() {
 		return user;
 	}
@@ -40,66 +42,81 @@ public class SessionUserInfo implements SessionUser {
 		return this.getUser().getPhone();
 	}
 
+	@Override
 	public void setUser(User user) {
 		this.user = user;
 	}
 
+	@Override
 	public UserRole[] getRoles() {
 		return roles;
 	}
 
+	@Override
 	public void setRoles(UserRole[] roles) {
 		this.roles = roles;
 	}
 
+	@Override
 	public Map<Integer, RoleType> getRoleTypesMap() {
 		return roleTypesMap;
 	}
 
+	@Override
 	public void setRoleTypesMap(Map<Integer, RoleType> roleTypesMap) {
 		this.roleTypesMap = roleTypesMap;
 	}
 
 
 
+	@Override
 	public Map<Integer, RoleTypeClass> getRoleTypeClassMap() {
 		return roleTypeClassMap;
 	}
 
+	@Override
 	public void setRoleTypeClassMap(Map<Integer, RoleTypeClass> roleTypeClassMap) {
 		this.roleTypeClassMap = roleTypeClassMap;
 	}
 
 
 
+	@Override
 	public List<UserRight> getRights() {
 		return rights;
 	}
 
+	@Override
 	public void setRights(List<UserRight> rights) {
 		this.rights = rights;
 	}
 
+	@Override
 	public List<UserServiceRight> getServiceRightList() {
 		return serviceRightList;
 	}
 
+	@Override
 	public void setServiceRightList(List<UserServiceRight> serviceRightList) {
 		this.serviceRightList = serviceRightList;
 	}
 
+	@Override
 	public Object getExtInfo() {
 		return extInfo;
 	}
 
+	@Override
 	public void setExtInfo(Object extInfo) {
 		this.extInfo = extInfo;
 	}
 
+	@Override
 	public boolean isSuperAdmin() {
 		return isSuperAdmin;
 	}
 
+	@Override
 	public void setSuperAdmin(boolean superAdmin) {
 		isSuperAdmin = superAdmin;
 	}

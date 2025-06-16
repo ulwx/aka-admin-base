@@ -1,10 +1,10 @@
 package com.github.ulwx.aka.admin.filter;
 
 import com.github.ulwx.aka.admin.domain.SessionUserInfo;
-import com.github.ulwx.aka.admin.domain.UserRight;
 import com.github.ulwx.aka.admin.web.action.sys.services.dao.sysdb.SysRightDao;
 import com.github.ulwx.aka.webmvc.BeanGet;
 import com.github.ulwx.aka.webmvc.WebMvcCbConstants;
+import com.github.ulwx.aka.webmvc.user.UserRight;
 import org.apache.log4j.Logger;
 
 import javax.servlet.Filter;

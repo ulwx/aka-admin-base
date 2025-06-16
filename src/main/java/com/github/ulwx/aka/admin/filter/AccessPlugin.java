@@ -1,5 +1,7 @@
 package com.github.ulwx.aka.admin.filter;
 
+import com.github.ulwx.aka.webmvc.BeanGet;
+
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 public interface AccessPlugin {
 
 
+	default public void setBeanGet(BeanGet beanGet){
+
+	};
+	default public BeanGet getBeanGet(){
+		return null;
+	};
 	/**
 	 * 前置处理
 	 * @param hreq

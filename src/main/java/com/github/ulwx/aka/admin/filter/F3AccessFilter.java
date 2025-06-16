@@ -24,9 +24,6 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-
-//@WebFilter(urlPatterns = {"*.jsp", "*.action","/swagger-ui/*"})
-//@Order(12)
 public class F3AccessFilter implements Filter  {
 
     private static Logger log = LoggerFactory.getLogger(F3AccessFilter.class);
@@ -48,6 +45,7 @@ public class F3AccessFilter implements Filter  {
     }
     @Autowired
     private Environment env;
+
     public void init() throws ServletException {
         CbAppConfigProperties adminProperties = beanGet.bean(CbAppConfigProperties.class);
         AkaWebMvcProperties properties = beanGet.bean(AkaWebMvcProperties.class);
@@ -180,6 +178,7 @@ public class F3AccessFilter implements Filter  {
                             AccessPlugin plugin = null;
                             try {
                                 plugin = (AccessPlugin) Class.forName(plugins[f].trim(),true,classLoader).newInstance();
+                                plugin.setBeanGet(this.beanGet);
                                 ret= plugin.doBeforeDoNotFilterURL(hreq,hres,this);
                                 if(!ret){
                                     break;

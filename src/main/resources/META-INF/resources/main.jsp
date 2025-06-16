@@ -1,9 +1,7 @@
-<%@page import="java.util.List" %>
-<%@ page import="com.github.ulwx.aka.admin.domain.db.sys.SysRight" %>
-<%@ page import="com.github.ulwx.aka.admin.domain.SessionUserInfo" %>
-<%@ page import="com.github.ulwx.aka.admin.domain.UserRight" %>
-<%@ page import="com.github.ulwx.aka.webmvc.WebMvcCbConstants" %>
+<%@page import="com.github.ulwx.aka.admin.domain.SessionUserInfo" %>
 <%@ page import="com.github.ulwx.aka.admin.utils.MM" %>
+<%@ page import="com.github.ulwx.aka.webmvc.user.UserRight" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=utf-8" language="java"
          errorPage="" %>
 

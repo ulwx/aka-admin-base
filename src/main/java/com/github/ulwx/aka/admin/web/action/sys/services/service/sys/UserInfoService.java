@@ -1,6 +1,6 @@
 package com.github.ulwx.aka.admin.web.action.sys.services.service.sys;
 
-import com.github.ulwx.aka.admin.domain.*;
+import com.github.ulwx.aka.admin.domain.SessionUserInfo;
 import com.github.ulwx.aka.admin.domain.db.sys.*;
 import com.github.ulwx.aka.admin.services.IUserInfoService;
 import com.github.ulwx.aka.admin.utils.CbAppConfigProperties;
@@ -10,6 +10,7 @@ import com.github.ulwx.aka.admin.web.action.sys.services.dao.sysdb.*;
 import com.github.ulwx.aka.admin.web.action.utils.LoginUserInfPlugin;
 import com.github.ulwx.aka.dbutils.tool.PageBean;
 import com.github.ulwx.aka.webmvc.AkaServiceSupport;
+import com.github.ulwx.aka.webmvc.user.*;
 import com.ulwx.tool.ArrayUtils;
 import com.ulwx.tool.ObjectUtils;
 import com.ulwx.tool.StringUtils;
@@ -28,7 +29,7 @@ import java.util.*;
  */
 public class UserInfoService   extends AkaServiceSupport implements IUserInfoService {
 	static Logger log = LoggerFactory.getLogger(UserInfoService.class);
-
+	@Override
 	public void addUser(AdminUserInfo adminUserInfo) throws Exception {
 		SysUser sysUser=ObjectUtils.fromBeanToBean(SysUser.class, adminUserInfo);
 		Integer userId=beanGet.bean(SysUserDao.class).addUser( sysUser);
@@ -43,7 +44,7 @@ public class UserInfoService   extends AkaServiceSupport implements IUserInfoSer
 		Integer[] roleTypeIds=ArrayUtils.StringArrayToIntegerArray(roleTypesStr);
 		beanGet.bean(SysUserRoletypeDao.class).insert( userId, roleTypeIds, adminUserInfo.getUpdator());
 	}
-
+	@Override
 	public void delUser(AdminUserInfo[]  adminUserInfos) throws Exception {
 		for(AdminUserInfo adminUserInfo:adminUserInfos) {
 			SysUser sysUser=ObjectUtils.fromBeanToBean(SysUser.class, adminUserInfo);
@@ -52,6 +53,7 @@ public class UserInfoService   extends AkaServiceSupport implements IUserInfoSer
 
 
 	}
+	@Override
 	public void editUser(AdminUserInfo adminUserInfo) throws Exception {
 		SysUser sysUser=ObjectUtils.fromBeanToBean(SysUser.class, adminUserInfo);
 		beanGet.bean(SysUserDao.class).editUser( sysUser);
@@ -243,7 +245,7 @@ public class UserInfoService   extends AkaServiceSupport implements IUserInfoSer
 		}
 		return sessionUser;
 	}
-
+	@Override
 	public List<AdminUserInfo> getUserList(String userName,
 										   String userPhone,
 										   String enable,
