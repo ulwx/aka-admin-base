@@ -64,26 +64,23 @@
      		self: false, //用于框架页面，如果值为true则不跨框架，否则跨框架弹出在框架最顶层页面
      		data: null, //iframe方式下用来父页面向弹出窗体中子页面传递数据
      		content: '',
-     		onLoad: null,
-     		onClose: function(){
-     			win.dialog('destroy');
-     		}
+     		onLoad: null
+
  		};
  		
  		var options = $.extend({}, defaults, opts);
- 		
+
  		//取顶层页面
- 		var _doc, _top = (function(w){
+ 		var  _top = (function(w){
+			var _doc=null;
  			try{
  				_doc = w['top'].document;
  				_doc.getElementsByTagName;
  			}catch(e){
- 				_doc = w.document; 
  				return w;
  			}
  			
- 			if(options.self || _doc.getElementsByTagName('frameset').length >0){
- 				_doc = w.document; 
+ 			if(options.self ){
  				return w;
  			}
  			
@@ -94,23 +91,9 @@
 					return topWin;
 				}
 			}
-			_doc = w.document;
 			return w;
 		})(window);
- 		
- 		
- 		//如填写ID属性，则窗体唯一
- 		var winId=null;
- 		if(options.id){
- 			winId = options.id;
- 			delete options.id;
- 			
- 			//检查创建窗口是否已经存在，存在则不在创建
- 			if($('#'+winId).size()>0){
- 				return;
- 			}
- 		}
- 		
+
  		//检查content内容是静态文本，还是url地址
  		var iframe=null;
  		var isUrl = /^url:/.test(options.content);
@@ -120,7 +103,6 @@
  			if(options.isFrame){
  				if(options.autoHeight){
  					iframe = $('<iframe ></iframe>')
- 	 				
 			            .attr('height', '100%')
 			            .attr('width', '100%')
 			            .attr('marginheight', '0')
@@ -134,8 +116,7 @@
 			            .attr('marginwidth', '0')
 			            .attr('frameborder','0');
  				}
- 				
- 				
+
  				var _this = this;
  				var frameOnLoad = function(){
  					//_this.content = iframe.get(0).contentWindow;
@@ -148,35 +129,55 @@
 	 					if(options.autoHeight){
 	 					  //$(iframe.get(0)).contents().find("body").css("overflow","hidden");
 	 					}
-	 					//var titleHeight=win.dialog("header").height()+40;
-						var titleHeight=win.dialog("header").height();
+	 					var titleHeight=win.dialog("header").height()+40;
 	 					var ch= Math.max(ch1, ch2)+titleHeight;
-	 					  
 	 					if(win){
-
 							win.dialog("resize",{  
 								height: ch
 							});
-							
-							win.dialog("center"); 
-							
-							//$(iframe.get(0)).contents().find("body").css("overflow","auto");
-							//$(iframe.get(0)).contents().find("html").css("overflow","auto");
+							win.dialog("center");
 	 					}else{
-	 					 // alert(111);
 	 					}
  					};
+					 if(options.maximized){
+						 if(win){
+							// var maxHt=_top.jQuery(_top).height();
+							 win.dialog("resize",{
+								 height: _top.jQuery(_top).height(),
+								 width: _top.jQuery(_top).width()
+							 });
+							 win.dialog("center");
+						 }else{
+						 }
+					 }
  					options.onLoad && options.onLoad.call(_this, {
  						data: options.data,
  						window:iframe.get(0).contentWindow,
  						instance:win,
- 					
  						autoSize:autoSizeFunc,
  						close: function(){
  							win.dialog('close');
  						}
  					});
- 					
+
+					options =win.dialog("options");
+					if(!options.onClose){
+						options.onClose=function (){
+							var $dialog=win.dialog('dialog');
+							win.dialog('destroy');
+							$dialog.remove();
+						};
+						win.dialog(options);
+					}else{
+						var _onClose=options.onClose;
+						options.onClose=function (){
+							_onClose.apply(this)
+							var $dialog=win.dialog('dialog');
+							win.dialog('destroy');
+							$dialog.remove();
+						}
+						win.dialog(options);
+					}
  					if(options.autoHeight){
  						autoSizeFunc();
  					}
@@ -190,8 +191,15 @@
  		}
  		
  		//加工toolbar和buttons中定义的handler方法，使其可以接收给定参数，用于iframe方式下的父子页面传值和窗口关闭
+
  		var warpHandler = function(handler){
- 			var args = {data: options.data,close: function(){win.dialog('close');}};
+				var args = {
+					 data: options.data,
+					 close: function(){
+					 	win.dialog('close');
+
+				 	 }
+			 };
  			
  			/***通过父亲和子窗口里定义的handler，并且通过options.data来传值
  			/**父亲定义的handler***/
@@ -221,11 +229,10 @@
  				options.buttons[i].handler = warpHandler(options.buttons[i].handler);
  			}
  		}
- 		
- 
+		winId= Math.floor(Math.random() * 9000000000) + 1000000000;
  		if(options.isFrame && iframe){
 
- 			win = _top.jQuery('<div  style="overflow:hidden">', {id: winId}).append(iframe).dialog(options);
+ 			win = _top.jQuery('<div  style="overflow:hidden"></div>', {id: winId}).append(iframe).dialog(options);
  			iframe.attr('src', url);
  			iframe.bind('load', frameOnLoad);
  			
@@ -235,13 +242,14 @@
  			
  			
  		}else{
- 			win = _top.jQuery('<div >', {id: winId}).dialog(options);
+ 			win = _top.jQuery('<div ></div>', {id: winId}).dialog(options);
  		}
  		return win;
  	}
- 	
- 	
- 	/**
+
+
+
+	 /**
  	 * 
  	 * 模式窗体
  	 * 
