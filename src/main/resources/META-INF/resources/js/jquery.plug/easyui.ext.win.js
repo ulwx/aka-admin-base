@@ -148,8 +148,8 @@
 	 					if(options.autoHeight){
 	 					  //$(iframe.get(0)).contents().find("body").css("overflow","hidden");
 	 					}
-	 					var titleHeight=win.dialog("header").height()+40;
-	 					
+	 					//var titleHeight=win.dialog("header").height()+40;
+						var titleHeight=win.dialog("header").height();
 	 					var ch= Math.max(ch1, ch2)+titleHeight;
 	 					  
 	 					if(win){
