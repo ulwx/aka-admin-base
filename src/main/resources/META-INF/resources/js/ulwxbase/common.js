@@ -487,6 +487,7 @@ function editRec(datagridSelector, url, reloadGrid, title, data, width, height,o
 	}
 
 	if (records.length > 1) {
+
 		if(options && options.multiple){
 			///
 		}else {

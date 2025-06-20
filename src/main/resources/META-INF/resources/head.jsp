@@ -8,60 +8,60 @@
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/js/jquery.load/css/showLoading2.css" />
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/js/jquery.easyui/themes/metro-gray/easyui.css" />
+	href="<%=request.getContextPath()%>/js/jquery.easyui/themes/metro-gray/easyui.css?v=202630891" />
 
 <link rel="stylesheet" type="text/css"    
-	href="<%=request.getContextPath()%>/js/jquery.easyui/themes/icon.css"/>
+	href="<%=request.getContextPath()%>/js/jquery.easyui/themes/icon.css?v=202630891"/>
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/js/jquery.easyui/themes/color.css"/>
+	href="<%=request.getContextPath()%>/js/jquery.easyui/themes/color.css?v=202630891"/>
 
 <link rel="stylesheet" type="text/css"    
-	href="<%=request.getContextPath()%>/css/page.css?v=20263089" />
+	href="<%=request.getContextPath()%>/css/page.css?v=202630891" />
 	
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/rewrite.css?v=202603069"/>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/rewrite.css?v=2026030691"/>
 
 <script type="text/javascript">
 
   var _global_token="<%=StringUtils.trim(session.getAttribute("token"))%>";
 </script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery/jquery.js"></script>  
+	src="<%=request.getContextPath()%>/js/jquery/jquery.js?v=202630891"></script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery/jquery-migrate.js"></script>
+	src="<%=request.getContextPath()%>/js/jquery/jquery-migrate.js?v=202630891"></script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery.easyui/jquery.easyui.min.js"></script>
+	src="<%=request.getContextPath()%>/js/jquery.easyui/jquery.easyui.min.js?v=202630891"></script>
 	
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery.easyui/locale/easyui-lang-zh_CN.js"></script>
+	src="<%=request.getContextPath()%>/js/jquery.easyui/locale/easyui-lang-zh_CN.js?v=202630891"></script>
 	
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery.plug/template-web.js"></script>
+	src="<%=request.getContextPath()%>/js/jquery.plug/template-web.js?v=202630891"></script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery.plug/jquery.json.js"></script>
+	src="<%=request.getContextPath()%>/js/jquery.plug/jquery.json.js?v=202630891"></script>
 <script type="text/javascript"     
-	src="<%=request.getContextPath()%>/js/jquery.plug/js.cookie.js"></script>
+	src="<%=request.getContextPath()%>/js/jquery.plug/js.cookie.js?v=202630891"></script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery.load/js/jquery.showLoading2.js"></script>
+	src="<%=request.getContextPath()%>/js/jquery.load/js/jquery.showLoading2.js?v=202630891"></script>
 <script type="text/javascript"
 		src="<%=request.getContextPath()%>/js/jquery.plug/jquery.blockUI.js"></script>
 
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery.plug/jquery.namespace.js"></script>
+	src="<%=request.getContextPath()%>/js/jquery.plug/jquery.namespace.js?v=202630891"></script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery.plug/md5.js"></script>
+	src="<%=request.getContextPath()%>/js/jquery.plug/md5.js?v=202630891"></script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery.plug/common.js"></script>	
+	src="<%=request.getContextPath()%>/js/jquery.plug/common.js?v=202630891"></script>
 
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery.plug/easyui.ext.js"></script>  
+	src="<%=request.getContextPath()%>/js/jquery.plug/easyui.ext.js?v=202630891"></script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery.plug/easyui.ext.my.js"></script> 
+	src="<%=request.getContextPath()%>/js/jquery.plug/easyui.ext.my.js?v=202630891"></script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery.plug/easyui.ext.win.js"></script> 
+	src="<%=request.getContextPath()%>/js/jquery.plug/easyui.ext.win.js?v=202630891"></script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery.plug/ext.date.js"></script> 
+	src="<%=request.getContextPath()%>/js/jquery.plug/ext.date.js?v=202630891"></script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/ulwxbase/common.js"></script>
+	src="<%=request.getContextPath()%>/js/ulwxbase/common.js?v=202630891"></script>
 <script type="text/javascript">
 	$.pageRoot = window.location.protocol + "//" + window.location.host + ""+'<%=request.getContextPath()%>';
 	$.ContexPath='<%=request.getContextPath()%>';
