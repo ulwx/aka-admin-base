@@ -485,9 +485,14 @@ function editRec(datagridSelector, url, reloadGrid, title, data, width, height,o
 		$.messager.alert("提示", "请勾选内容", "info");
 		return false;
 	}
+
 	if (records.length > 1) {
-		$.messager.alert("提示", "只能选择一行", "info");
-		return false;
+		if(options && options.multiple){
+			///
+		}else {
+			$.messager.alert("提示", "只能选择一行", "info");
+			return false;
+		}
 	}
 
 	var opt = $.extend({},{
@@ -503,6 +508,7 @@ function editRec(datagridSelector, url, reloadGrid, title, data, width, height,o
 		onLoad : function(dlg) {
 			dlg.reloadGrid = reloadGrid;//
 			dlg.updateRec = records[0];// 修改的时候
+			dlg.updateRecList=records;
 			dlg.data = data;
 			var win = dlg.window;
 			try {
