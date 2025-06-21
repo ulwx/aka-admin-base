@@ -160,6 +160,7 @@
 							win.dialog("restore");
 							win.dialog("resize",{
 								top:0,
+								left:0,
 								height: maxHt-30,
 								width:maxWt
 							});
