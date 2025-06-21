@@ -153,7 +153,7 @@
 
 					options =win.dialog("options");
 					options.onMaximize=function(){
-						if(win && win.top!=win){
+						if(win && _top.top!=_top){
 							//alert(_top.jQuery(_top).height())
 							var maxHt=_top.jQuery(_top).height();
 							var maxWt=_top.jQuery(_top).width();
