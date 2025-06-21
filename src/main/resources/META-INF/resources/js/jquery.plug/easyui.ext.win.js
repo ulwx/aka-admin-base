@@ -64,7 +64,8 @@
      		self: false, //用于框架页面，如果值为true则不跨框架，否则跨框架弹出在框架最顶层页面
      		data: null, //iframe方式下用来父页面向弹出窗体中子页面传递数据
      		content: '',
-     		onLoad: null
+     		onLoad: null,
+			constrain:true
 
  		};
  		
@@ -139,17 +140,7 @@
 	 					}else{
 	 					}
  					};
-					 if(options.maximized){
-						 if(win){
-							// var maxHt=_top.jQuery(_top).height();
-							 win.dialog("resize",{
-								 height: _top.jQuery(_top).height(),
-								 width: _top.jQuery(_top).width()
-							 });
-							 win.dialog("center");
-						 }else{
-						 }
-					 }
+
  					options.onLoad && options.onLoad.call(_this, {
  						data: options.data,
  						window:iframe.get(0).contentWindow,
@@ -161,6 +152,25 @@
  					});
 
 					options =win.dialog("options");
+					options.onMaximize=function(){
+						if(win){
+							//alert(_top.jQuery(_top).height())
+							var maxHt=_top.jQuery(_top).height();
+							var maxWt=_top.jQuery(_top).width();
+							win.dialog("restore");
+							win.dialog("resize",{
+								top:0,
+								height: maxHt-30,
+								width:maxWt
+							});
+							//win.dialog("center");
+							win.dialog("doLayout");
+							var iframeWin = iframe.get(0).contentWindow;
+
+						}else{
+						}
+					}
+
 					if(!options.onClose){
 						options.onClose=function (){
 							var $dialog=win.dialog('dialog');
@@ -176,11 +186,15 @@
 							win.dialog('destroy');
 							$dialog.remove();
 						}
+
 						win.dialog(options);
 					}
  					if(options.autoHeight){
  						autoSizeFunc();
  					}
+					if(options.maximized){
+
+					}
  				};
  				
  				delete options.content;

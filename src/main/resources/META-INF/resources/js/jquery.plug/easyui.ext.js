@@ -493,13 +493,13 @@ function bindTimeOutEvent(linkbutton) {
 
 	};
 	if ($.fn.window) {
-		$.fn.window.defaults.onResize = easyuiPanelOnResize;
-		$.fn.window.defaults.onMove = easyuiPanelOnMove;
+		//$.fn.window.defaults.onResize = easyuiPanelOnResize;
+		//$.fn.window.defaults.onMove = easyuiPanelOnMove;
 	}
 
 	if ($.fn.dialog) {
-		$.fn.dialog.defaults.onResize = easyuiPanelOnResize;
-		$.fn.dialog.defaults.onMove = easyuiPanelOnMove;
+		//$.fn.dialog.defaults.onResize = easyuiPanelOnResize;
+		//$.fn.dialog.defaults.onMove = easyuiPanelOnMove;
 	}
 
 })(jQuery);
