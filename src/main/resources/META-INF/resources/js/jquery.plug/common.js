@@ -83,6 +83,32 @@ function formatDateTime(date) {
 	var seconds = ('0' + date.getSeconds()).slice(-2);
 	return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
 }
+
+function generateOrderNumber(prefix) {
+	// 获取当前日期
+	const now = new Date();
+
+	// 获取年、月、日
+	const year = now.getFullYear();
+	const month = String(now.getMonth() + 1).padStart(2, '0'); // 补零处理
+	const day = String(now.getDate()).padStart(2, '0'); // 补零处理
+	const hours = String(now.getHours()).padStart(2, '0'); // 补零处理
+	const minutes = String(now.getMinutes()).padStart(2, '0'); // 补零处理
+	const seconds = String(now.getSeconds()).padStart(2, '0'); // 补零处理
+	// 格式化日期为 YYYYMMDD
+	const formattedDate = year+month+day+hours+minutes+seconds;
+
+	// 生成5位随机数字
+	const randomDigits =  String(Math.floor(Math.random() * 100000)).padStart(5, '0');
+
+	// 拼接订单号
+	if(!prefix){
+		prefix="";
+	}
+	const orderNumber = prefix+formattedDate+"-"+randomDigits;
+
+	return orderNumber;
+}
 function getDate(date){
 	var myDate
 	if(date){

@@ -39,7 +39,51 @@ function loadCombotree(selector, value, url, multiple, title) {
 		}
 	})
 }
+function exportExcel(gridSelector,prefix,cols){
+	var queryParm=getQueryParm();
+	var url='';
 
+	$.messager.confirm('Confirm','只能导出当前页的记录，确定导出吗?',function(r){
+		if (r){
+			let colums=cols;
+			if(!colums) {
+				colums=getDataGridColums();
+			}
+			let set=new Set();
+			for(let i=0; i<colums[0].length; i++){
+				if(isEmpty(colums[0][i].field)) continue;
+				if(colums[0][i].field=='ck') continue;
+				set.add(colums[0][i].field);
+			}
+			let newArray=[];
+			for(let i=0; i<colums[0].length; i++){
+				let colObj=colums[0][i];
+				if(isEmpty(colObj.field)) continue;
+				if(colObj.field=='ck') continue;
+				if(!colObj.hidden){
+					if(set.has(colObj.field+"_")){
+						////
+					}else{
+						newArray.push(colObj.field);
+					}
+				}else{
+					if(colObj.field.endsWith("_")){
+						newArray.push(colObj.field);
+					}else{
+
+					}
+				}
+
+			}
+			prefix=prefix||'';
+			$(gridSelector).datagrid('toExcel', {
+				filename:prefix+'导出记录'+generateOrderNumber("")+".xls",
+				fields: newArray
+			});
+		}
+	});
+
+}
 var ComboboxLoadFilter=function(excludeFirst,insertFirst){
 
 	return function(data) {
