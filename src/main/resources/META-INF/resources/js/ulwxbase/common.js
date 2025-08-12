@@ -66,7 +66,7 @@ function exportExcel(gridSelector,prefix,cols){
 					}else{
 						newArray.push(colObj.field);
 					}
-				}else{
+				}else{//hidden
 					if(colObj.field.endsWith("_")){
 						newArray.push(colObj.field);
 					}else{
