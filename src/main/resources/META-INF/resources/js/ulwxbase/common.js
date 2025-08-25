@@ -774,8 +774,10 @@ function delRec(url,deleteId,reloadGrid){
 	});
 
 }
-function initDataGrid(selector, url, queryParams, columns, options) {
 
+function initDataGrid(selector, url, queryParams, columns, options) {
+	let pageSizeChanged = false;
+	let firstLoad=false;
 	var opt = $.extend({}, {
 		queryParams : queryParams,
 		url : url,
@@ -792,8 +794,6 @@ function initDataGrid(selector, url, queryParams, columns, options) {
 		singleSelect : false,
 		toolbar : "#top",
 		fit : true,
-		onBeforeSortColumn : function(sort, order) {
-		},
 		loadFilter : function(data) {
 			if (data.data) {
 				if (data.status == 1) {
@@ -805,10 +805,29 @@ function initDataGrid(selector, url, queryParams, columns, options) {
 			} else {
 				return data;
 			}
+		},
+		onBeforeLoad: function(param){
+			if(options.firstNotLoad && !firstLoad){
+				firstLoad=true;
+				return false;
+			}
+
+			if (pageSizeChanged) {
+				pageSizeChanged = false; // 用完清除
+				return false;  // 阻止向后台发请求
+			}
+			return true;
 		}
 	}, (options || {}));
 	var grid=$(selector).mydatagrid(opt);
+	var pager=grid.datagrid('getPager');
+	pager.pagination({
+		onChangePageSize:function(pageSize){
 
+			pageSizeChanged=true;
+		}
+
+	});
 	return grid;
 }
 
