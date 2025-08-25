@@ -807,7 +807,9 @@ function initDataGrid(selector, url, queryParams, columns, options) {
 			}
 		}
 	}, (options || {}));
-	$(selector).mydatagrid(opt);
+	var grid=$(selector).mydatagrid(opt);
+
+	return grid;
 }
 
 function getQueryParm(selector, otherParm) {
