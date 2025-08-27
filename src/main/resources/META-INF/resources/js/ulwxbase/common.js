@@ -60,13 +60,13 @@ function exportExcel(gridSelector,prefix,cols){
 				let colObj=colums[0][i];
 				if(isEmpty(colObj.field)) continue;
 				if(colObj.field=='ck') continue;
-				if(!colObj.hidden){
-					if(set.has(colObj.field+"_")){
+				if(!colObj.hidden){//
+					if(set.has(colObj.field+"_") ){
 						////
 					}else{
 						newArray.push(colObj.field);
 					}
-				}else{//hidden
+				}else{//hidden=true
 					if(colObj.field.endsWith("_")){
 						newArray.push(colObj.field);
 					}else{
