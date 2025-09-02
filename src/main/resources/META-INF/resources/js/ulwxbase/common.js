@@ -807,7 +807,7 @@ function initDataGrid(selector, url, queryParams, columns, options) {
 			}
 		},
 		onBeforeLoad: function(param){
-			if(options.firstNotLoad && !firstLoad){
+			if(options && options.firstNotLoad && !firstLoad){
 				firstLoad=true;
 				return false;
 			}
