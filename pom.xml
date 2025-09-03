@@ -3,6 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>aka-admin-base</artifactId>
 	<packaging>jar</packaging>
+	<name>aka-admin-base</name>
 	<parent>
 		<groupId>com.github.ulwx</groupId>
 		<artifactId>aka-common-parent</artifactId>
