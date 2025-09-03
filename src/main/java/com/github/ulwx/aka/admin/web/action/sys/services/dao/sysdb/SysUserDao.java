@@ -67,8 +67,19 @@ public class SysUserDao extends AkaDaoSupport {
 		user.setEnable(1);
 		return getTemplate().queryOneBy( user);
 	}
-	public  List<AdminUserInfo> getUserList(String userName, String userPhone,String enable, int page,
-											int perPage, PageBean pb)throws Exception{
+	public  List<SysUser> getAccountUserList(String account,String userName)throws Exception{
+		SysUser user=new SysUser();
+		if(StringUtils.hasText(account)) {
+			user.setAccount(account);
+		}
+		if(StringUtils.hasText(userName)) {
+			user.setName(userName);
+		}
+		user.setEnable(1);
+		return getTemplate().queryListBy( user);
+	}
+	public  List<AdminUserInfo> getUserList(String userName, String userPhone,String enable, Integer page,
+											Integer perPage, PageBean pb)throws Exception{
 		Map<String ,Object> arg=new HashMap<>();
 		arg.put("userName", userName);
 		arg.put("userPhone", userPhone);
@@ -76,6 +87,10 @@ public class SysUserDao extends AkaDaoSupport {
 			arg.put("enable", Integer.valueOf(enable));
 		}
 		arg.put("roles",null);
+		if(page==null || perPage==null || pb==null){
+			return getTemplate().queryList(AdminUserInfo.class,
+					MD.md(SysUserDao.class, "getUserList"), arg);
+		}
 		return getTemplate().queryList(AdminUserInfo.class,
 				MD.md(SysUserDao.class, "getUserList"),
 				arg, page, perPage, pb, "");

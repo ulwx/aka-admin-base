@@ -75,175 +75,190 @@ public class UserInfoService   extends AkaServiceSupport implements IUserInfoSer
 
 	}
 	@Override
-	public SessionUserInfo getUserInfo(String account,String userName) throws Exception {
-		SessionUserInfo sessionUser = new SessionUserInfo();
+	public List<SessionUserInfo> getUserInfoList(String account,String userName) throws Exception{
+		List<SessionUserInfo> sessionUserList = new ArrayList<>();
 		try {
-			SysUser suser = beanGet.bean(SysUserDao.class).getAccountUser(account,userName);
-			if(suser==null) {
+			List<SysUser> suserList = beanGet.bean(SysUserDao.class).getAccountUserList(account,userName);
+			if(suserList==null) {
 				return null;
 			}
-			User holdedUser=new User();
-			holdedUser.setId(suser.getSysUserSno()+"");
-			holdedUser.setEnable(suser.getEnable());
-			holdedUser.setName(suser.getName());
-			holdedUser.setNation(suser.getNation());
-			holdedUser.setNikeName(suser.getNikeName());
-			holdedUser.setPassword(suser.getPassword());
-			holdedUser.setPhone(suser.getPhone());
-			holdedUser.setPicUrl(suser.getPicUrl());
-			holdedUser.setSex(suser.getSex());
-			holdedUser.setSign(suser.getSign());
-			holdedUser.setTel(suser.getTel());
-			holdedUser.setUpdateTime(suser.getUpdateTime());
-			holdedUser.setUpdator(suser.getUpdator());
-			holdedUser.setAccount(suser.getAccount());
-			holdedUser.setAddTime(suser.getAddTime());
-			holdedUser.setBirthDay(suser.getBirthDay());
-			holdedUser.setEmail(suser.getEmail());
+			for(SysUser sysUser:suserList) {
+				SysUser suser=sysUser;
+				User holdedUser=new User();
+				holdedUser.setId(suser.getSysUserSno()+"");
+				holdedUser.setEnable(suser.getEnable());
+				holdedUser.setName(suser.getName());
+				holdedUser.setNation(suser.getNation());
+				holdedUser.setNikeName(suser.getNikeName());
+				holdedUser.setPassword(suser.getPassword());
+				holdedUser.setPhone(suser.getPhone());
+				holdedUser.setPicUrl(suser.getPicUrl());
+				holdedUser.setSex(suser.getSex());
+				holdedUser.setSign(suser.getSign());
+				holdedUser.setTel(suser.getTel());
+				holdedUser.setUpdateTime(suser.getUpdateTime());
+				holdedUser.setUpdator(suser.getUpdator());
+				holdedUser.setAccount(suser.getAccount());
+				holdedUser.setAddTime(suser.getAddTime());
+				holdedUser.setBirthDay(suser.getBirthDay());
+				holdedUser.setEmail(suser.getEmail());
+				SessionUserInfo sessionUser=new SessionUserInfo();
 
-			sessionUser.setUser(holdedUser);
+				sessionUserList.add(sessionUser);
+				sessionUser.setUser(holdedUser);
 
-			// 角色类型id
-			List<SysUserRoletype> listRoletypes = beanGet.bean(SysUserRoletypeDao.class).getRoletypes(suser.getSysUserSno());
-			Map<Integer, RoleType> roleTypesMap=new HashMap<>();
-			//RoleTypeClassCode->RoleTypeClass对象的映射，RoleTypeClassCode一般对应部门
-			Map<Integer, RoleTypeClass> roleTypeClassMap=new HashMap<>();
-			List<SysRoletype> sysRoletypeList = beanGet.bean(SysRoletypeDao.class).getAllRoles();
-			List<SysRoletypeclass> sysRoletypeclassList = beanGet.bean(SysRoletypeclassDao.class).getAll();
-			for (int i = 0; i < listRoletypes.size(); i++) {
-				RoleType roleType=new RoleType();
-				roleType.setCode(listRoletypes.get(i).getSysRoletypeCode());
-				for(int j=0; j<sysRoletypeList.size(); j++){
-					if(sysRoletypeList.get(j).getSysRoletypeCode().equals(roleType.getCode())){
-						roleType.setName(sysRoletypeList.get(j).getSysRoletypeName());
-						roleType.setRoleTypeClassCode(sysRoletypeList.get(j).getSysRoletypeclassCode());
-						break;
-					}
-				}
-				for(int n=0; n<sysRoletypeclassList.size(); n++){
-					if(sysRoletypeclassList.get(n).equals(roleType.getRoleTypeClassCode())){
-						RoleTypeClass roleTypeClass=new RoleTypeClass();
-						roleTypeClass.setCode(sysRoletypeclassList.get(n).getCode());
-						roleTypeClass.setName(sysRoletypeclassList.get(n).getClassName());
-						roleTypeClassMap.put(sysRoletypeclassList.get(n).getCode(),roleTypeClass);
-						break;
-
-					}
-				}
-
-				roleTypesMap.put(roleType.getCode(),roleType);
-			}
-
-			sessionUser.setRoleTypesMap(roleTypesMap);
-			sessionUser.setRoleTypeClassMap(roleTypeClassMap);
-			// 判断是否为超级管理员，如果roleTypeCode=0，表明是超级管理员
-			boolean isSuperAdmin=sessionUser.getRoleTypesMap().keySet().contains(0);
-			sessionUser.setSuperAdmin(isSuperAdmin);
-			List<SysUserRole> sysUserRoleList = null;
-			List<SysRole> sysRoles=beanGet.bean(SysRoleDao.class).getAllRoles();
-			if (sessionUser.isSuperAdmin()) {
-				UserRole[] userRoles = new UserRole[sysRoles.size()];
-				for (int i=0; i<sysRoles.size();i++) {
-					SysRole sysRole=sysRoles.get(i);
-					UserRole userRole = new UserRole();
-					userRole.setId(sysRole.getSysRoleSno());
-					userRole.setName(sysRole.getRoleName());
-					//userRole.setRoleTypeCode(sysRole.getRoleTypeCode());
-					userRoles[i] = userRole;
-				}
-				sessionUser.setRoles(userRoles);
-			} else {
-				// 取角色id
-				sysUserRoleList = beanGet.bean(SysUserRoleDao.class).getRoles(suser.getSysUserSno());
-				UserRole[] userRoles = new UserRole[sysUserRoleList.size()];
-				for (int i = 0; i < sysUserRoleList.size(); i++) {
-					for (SysRole sysRole : sysRoles) {
-						if (sysRole.getSysRoleSno().equals(sysUserRoleList.get(i).getSysRoleId())) {
-							UserRole userRole = new UserRole();
-							userRole.setId(sysRole.getSysRoleSno());
-							userRole.setName(sysRole.getRoleName());
-							//userRole.setRoleTypeCode(sysRole.getRoleTypeCode());
-							userRoles[i] = userRole;
+				// 角色类型id
+				List<SysUserRoletype> listRoletypes = beanGet.bean(SysUserRoletypeDao.class).getRoletypes(suser.getSysUserSno());
+				Map<Integer, RoleType> roleTypesMap=new HashMap<>();
+				//RoleTypeClassCode->RoleTypeClass对象的映射，RoleTypeClassCode一般对应部门
+				Map<Integer, RoleTypeClass> roleTypeClassMap=new HashMap<>();
+				List<SysRoletype> sysRoletypeList = beanGet.bean(SysRoletypeDao.class).getAllRoles();
+				List<SysRoletypeclass> sysRoletypeclassList = beanGet.bean(SysRoletypeclassDao.class).getAll();
+				for (int i = 0; i < listRoletypes.size(); i++) {
+					RoleType roleType=new RoleType();
+					roleType.setCode(listRoletypes.get(i).getSysRoletypeCode());
+					for(int j=0; j<sysRoletypeList.size(); j++){
+						if(sysRoletypeList.get(j).getSysRoletypeCode().equals(roleType.getCode())){
+							roleType.setName(sysRoletypeList.get(j).getSysRoletypeName());
+							roleType.setRoleTypeClassCode(sysRoletypeList.get(j).getSysRoletypeclassCode());
 							break;
 						}
 					}
+					for(int n=0; n<sysRoletypeclassList.size(); n++){
+						if(sysRoletypeclassList.get(n).equals(roleType.getRoleTypeClassCode())){
+							RoleTypeClass roleTypeClass=new RoleTypeClass();
+							roleTypeClass.setCode(sysRoletypeclassList.get(n).getCode());
+							roleTypeClass.setName(sysRoletypeclassList.get(n).getClassName());
+							roleTypeClassMap.put(sysRoletypeclassList.get(n).getCode(),roleTypeClass);
+							break;
 
-				}
-				sessionUser.setRoles(userRoles);
-			}
-			if(sessionUser.isSuperAdmin()) {
-				List<SysRight> rights = beanGet.bean(SysRightDao.class).getAllRight();
-				List<UserRight> rightList=new ArrayList<>();
-				for(int i=0; i<rights.size();i++){
-					UserRight userRight=new UserRight();
-					SysRight sysRight=rights.get(i);
-					userRight.setCode(sysRight.getSysRightCode());
-					userRight.setEnable(sysRight.getEnable());
-					userRight.setIcon(sysRight.getIcon());
-					userRight.setOrderCode(sysRight.getOrderCode());
-					userRight.setRightName(sysRight.getSysRightName());
-					userRight.setRightUrl(sysRight.getSysRightUrl());
-					userRight.setUpdateTime(sysRight.getUpdateTime());
-					userRight.setUpdator(sysRight.getUpdator());
-					rightList.add(userRight);
-				}
-				sessionUser.setRights(rightList);
-			}else{
-				Integer[] roleIdArray= Arrays.stream(sessionUser.getRoles()).map(userRole -> {
-					return userRole.getId();
-				}).toArray(Integer[]::new);
-				List<SysRight> rights =
-						beanGet.bean(SysRoleRightDao.class).getRightByRoles(roleIdArray);
-				List<UserRight> rightList=new ArrayList<>();
-				for(int i=0; i<rights.size();i++){
-					UserRight userRight=new UserRight();
-					SysRight sysRight=rights.get(i);
-					userRight.setCode(sysRight.getSysRightCode());
-					userRight.setEnable(sysRight.getEnable());
-					userRight.setIcon(sysRight.getIcon());
-					userRight.setOrderCode(sysRight.getOrderCode());
-					userRight.setRightName(sysRight.getSysRightName());
-					userRight.setRightUrl(sysRight.getSysRightUrl());
-					userRight.setUpdateTime(sysRight.getUpdateTime());
-					userRight.setUpdator(sysRight.getUpdator());
-					rightList.add(userRight);
-				}
-				sessionUser.setRights(rightList);
-			}
-			//添加导出权限控制功能，放session
-			Map<Integer,List<String>> mapList=new HashMap<>();
-			//1.获取权限码
-			Integer userNo=suser.getSysUserSno();//用户id
-			List<SysUserServicePageRight> pagesList=beanGet.bean(SysServiceDao.class).getSysPagesList(userNo);
-			List<UserServiceRight> userServiceRights=new ArrayList<>();
-			for(SysUserServicePageRight sysUserServicePageRight:pagesList){
-				UserServiceRight userServiceRight=new UserServiceRight();
-				userServiceRight.setPageId(sysUserServicePageRight.getPageId());
-				userServiceRight.setPageMatchURL(sysUserServicePageRight.getMatchUrlSuffix());
-				userServiceRight.setPageName(sysUserServicePageRight.getPageName());
-				userServiceRight.setServiceRightCode(sysUserServicePageRight.getServiceRightCode()+"");
-				userServiceRight.setServiceRightName(sysUserServicePageRight.getServiceRightName());
-				userServiceRights.add(userServiceRight);
-			}
-			sessionUser.setServiceRightList(userServiceRights);
+						}
+					}
 
-			String userInfoPlugin= StringUtils.trim(beanGet.bean(CbAppConfigProperties.class)
-					.getLoginConfig().getUserExtInfPlugin());//CbAppConfigProperties.getLoginUserInfPlugin();
-			if(!userInfoPlugin.isEmpty() && !userInfoPlugin.equalsIgnoreCase("NONE")) {
-				LoginUserInfPlugin<?> plugin=(LoginUserInfPlugin<?>)Class.forName(userInfoPlugin).newInstance();
-				TBoolean tValidate=new TBoolean(false);
-				TString tValidateMsg=new TString();
-				Object ret=plugin.contruct(sessionUser,tValidate,tValidateMsg);
-				if(!tValidate.getValue().booleanValue()) {
-					throw new Exception(tValidateMsg.getValue());
+					roleTypesMap.put(roleType.getCode(),roleType);
 				}
-				sessionUser.setExtInfo(ret);
+
+				sessionUser.setRoleTypesMap(roleTypesMap);
+				sessionUser.setRoleTypeClassMap(roleTypeClassMap);
+				// 判断是否为超级管理员，如果roleTypeCode=0，表明是超级管理员
+				boolean isSuperAdmin=sessionUser.getRoleTypesMap().keySet().contains(0);
+				sessionUser.setSuperAdmin(isSuperAdmin);
+				List<SysUserRole> sysUserRoleList = null;
+				List<SysRole> sysRoles=beanGet.bean(SysRoleDao.class).getAllRoles();
+				if (sessionUser.isSuperAdmin()) {
+					UserRole[] userRoles = new UserRole[sysRoles.size()];
+					for (int i=0; i<sysRoles.size();i++) {
+						SysRole sysRole=sysRoles.get(i);
+						UserRole userRole = new UserRole();
+						userRole.setId(sysRole.getSysRoleSno());
+						userRole.setName(sysRole.getRoleName());
+						//userRole.setRoleTypeCode(sysRole.getRoleTypeCode());
+						userRoles[i] = userRole;
+					}
+					sessionUser.setRoles(userRoles);
+				} else {
+					// 取角色id
+					sysUserRoleList = beanGet.bean(SysUserRoleDao.class).getRoles(suser.getSysUserSno());
+					UserRole[] userRoles = new UserRole[sysUserRoleList.size()];
+					for (int i = 0; i < sysUserRoleList.size(); i++) {
+						for (SysRole sysRole : sysRoles) {
+							if (sysRole.getSysRoleSno().equals(sysUserRoleList.get(i).getSysRoleId())) {
+								UserRole userRole = new UserRole();
+								userRole.setId(sysRole.getSysRoleSno());
+								userRole.setName(sysRole.getRoleName());
+								//userRole.setRoleTypeCode(sysRole.getRoleTypeCode());
+								userRoles[i] = userRole;
+								break;
+							}
+						}
+
+					}
+					sessionUser.setRoles(userRoles);
+				}
+				if(sessionUser.isSuperAdmin()) {
+					List<SysRight> rights = beanGet.bean(SysRightDao.class).getAllRight();
+					List<UserRight> rightList=new ArrayList<>();
+					for(int i=0; i<rights.size();i++){
+						UserRight userRight=new UserRight();
+						SysRight sysRight=rights.get(i);
+						userRight.setCode(sysRight.getSysRightCode());
+						userRight.setEnable(sysRight.getEnable());
+						userRight.setIcon(sysRight.getIcon());
+						userRight.setOrderCode(sysRight.getOrderCode());
+						userRight.setRightName(sysRight.getSysRightName());
+						userRight.setRightUrl(sysRight.getSysRightUrl());
+						userRight.setUpdateTime(sysRight.getUpdateTime());
+						userRight.setUpdator(sysRight.getUpdator());
+						rightList.add(userRight);
+					}
+					sessionUser.setRights(rightList);
+				}else{
+					Integer[] roleIdArray= Arrays.stream(sessionUser.getRoles()).map(userRole -> {
+						return userRole.getId();
+					}).toArray(Integer[]::new);
+					List<SysRight> rights =
+							beanGet.bean(SysRoleRightDao.class).getRightByRoles(roleIdArray);
+					List<UserRight> rightList=new ArrayList<>();
+					for(int i=0; i<rights.size();i++){
+						UserRight userRight=new UserRight();
+						SysRight sysRight=rights.get(i);
+						userRight.setCode(sysRight.getSysRightCode());
+						userRight.setEnable(sysRight.getEnable());
+						userRight.setIcon(sysRight.getIcon());
+						userRight.setOrderCode(sysRight.getOrderCode());
+						userRight.setRightName(sysRight.getSysRightName());
+						userRight.setRightUrl(sysRight.getSysRightUrl());
+						userRight.setUpdateTime(sysRight.getUpdateTime());
+						userRight.setUpdator(sysRight.getUpdator());
+						rightList.add(userRight);
+					}
+					sessionUser.setRights(rightList);
+				}
+				//添加导出权限控制功能，放session
+				Map<Integer,List<String>> mapList=new HashMap<>();
+				//1.获取权限码
+				Integer userNo=suser.getSysUserSno();//用户id
+				List<SysUserServicePageRight> pagesList=beanGet.bean(SysServiceDao.class).getSysPagesList(userNo);
+				List<UserServiceRight> userServiceRights=new ArrayList<>();
+				for(SysUserServicePageRight sysUserServicePageRight:pagesList){
+					UserServiceRight userServiceRight=new UserServiceRight();
+					userServiceRight.setPageId(sysUserServicePageRight.getPageId());
+					userServiceRight.setPageMatchURL(sysUserServicePageRight.getMatchUrlSuffix());
+					userServiceRight.setPageName(sysUserServicePageRight.getPageName());
+					userServiceRight.setServiceRightCode(sysUserServicePageRight.getServiceRightCode()+"");
+					userServiceRight.setServiceRightName(sysUserServicePageRight.getServiceRightName());
+					userServiceRights.add(userServiceRight);
+				}
+				sessionUser.setServiceRightList(userServiceRights);
+
+				String userInfoPlugin= StringUtils.trim(beanGet.bean(CbAppConfigProperties.class)
+						.getLoginConfig().getUserExtInfPlugin());//CbAppConfigProperties.getLoginUserInfPlugin();
+				if(!userInfoPlugin.isEmpty() && !userInfoPlugin.equalsIgnoreCase("NONE")) {
+					LoginUserInfPlugin<?> plugin=(LoginUserInfPlugin<?>)Class.forName(userInfoPlugin).newInstance();
+					TBoolean tValidate=new TBoolean(false);
+					TString tValidateMsg=new TString();
+					Object ret=plugin.contruct(sessionUser,tValidate,tValidateMsg);
+					if(!tValidate.getValue().booleanValue()) {
+						throw new Exception(tValidateMsg.getValue());
+					}
+					sessionUser.setExtInfo(ret);
+				}
 			}
+
 
 		} catch (Exception e) {
 			throw e;
 		}
-		return sessionUser;
+		return sessionUserList;
+	}
+	@Override
+	public SessionUserInfo getUserInfo(String account,String userName) throws Exception {
+		List<SessionUserInfo> list=this.getUserInfoList(account,userName);
+		if(list!=null && list.size()>0){
+			return list.get(0);
+		}else{
+			return null;
+		}
 	}
 	@Override
 	public List<AdminUserInfo> getUserList(String userName,
@@ -272,6 +287,8 @@ public class UserInfoService   extends AkaServiceSupport implements IUserInfoSer
 			throw new Exception("**************通过account获取用户信息异常****"+e.getMessage());
 		}
 	}
+
+
 	/**
 	 * 通过手机号获取用户信息
 	 * @param userPhone

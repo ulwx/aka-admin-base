@@ -28,9 +28,9 @@ FROM
 WHERE 1=1 
 
 @if($$:userName){
-AND (a.`name` like #{%userName%} or a.account like #{%userName%} )
-
+AND (a.`name` like #{userName} or a.account like #{userName} )
 @}
+
 @if($$:enable){
 AND a.`enable` =#{enable}
 @}

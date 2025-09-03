@@ -8,7 +8,7 @@ import com.github.ulwx.aka.dbutils.tool.PageBean;
 import java.util.List;
 
 public interface IUserInfoService {
-
+	public List<SessionUserInfo> getUserInfoList(String account,String userName) throws Exception ;
 	public SessionUserInfo getUserInfo(String account,String userName) throws Exception ;
 	public void addUser(AdminUserInfo adminUserInfo)throws Exception ;
 	public void delUser(AdminUserInfo[]  adminUserInfos) throws Exception ;
