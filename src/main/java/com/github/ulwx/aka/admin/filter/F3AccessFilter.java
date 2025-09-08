@@ -161,6 +161,7 @@ public class F3AccessFilter implements Filter  {
             String[] strs = NotFilterURLs;
             if (ArrayUtils.isNotEmpty(strs)) {
                 boolean find=false;
+                log.debug("ruri2=" + ruri);
                 for (int i = 0; i < strs.length; i++) {
                     if (strs[i].startsWith("/")) {
                         if (ruri.startsWith(contextPath + strs[i])) {
@@ -173,7 +174,7 @@ public class F3AccessFilter implements Filter  {
                     }
                     if(find){
                         String[] plugins = accessPlugin.toArray(new String[0]);
-                        log.debug("accessPlugin="+ObjectUtils.toString(plugins));
+                        //log.debug("accessPlugin="+ObjectUtils.toString(plugins));
                         boolean ret=true;
                         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
                         for (int f = 0; f < plugins.length; f++) {
@@ -198,6 +199,8 @@ public class F3AccessFilter implements Filter  {
                         if(ret) {
                             chain.doFilter(req, res);
                             return;
+                        }else{
+                            break;
                         }
 
                     }
