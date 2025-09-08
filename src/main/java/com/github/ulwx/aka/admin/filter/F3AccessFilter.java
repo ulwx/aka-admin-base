@@ -157,6 +157,7 @@ public class F3AccessFilter implements Filter  {
         }
         String contextPath = hreq.getContextPath();
         if (ArrayUtils.isNotEmpty(NotFilterURLs)) {
+            log.debug("NotFilterURLs="+ObjectUtils.toJsonString(NotFilterURLs));
             String[] strs = NotFilterURLs;
             if (ArrayUtils.isNotEmpty(strs)) {
                 boolean find=false;
@@ -177,9 +178,11 @@ public class F3AccessFilter implements Filter  {
                         for (int f = 0; f < plugins.length; f++) {
                             AccessPlugin plugin = null;
                             try {
+                                log.debug("plugin="+plugins[f]);
                                 plugin = (AccessPlugin) Class.forName(plugins[f].trim(),true,classLoader).newInstance();
                                 plugin.setBeanGet(this.beanGet);
                                 ret= plugin.doBeforeDoNotFilterURL(hreq,hres,this);
+                                log.debug("ret="+ret);
                                 if(!ret){
                                     break;
                                 }
