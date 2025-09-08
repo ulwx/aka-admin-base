@@ -173,12 +173,13 @@ public class F3AccessFilter implements Filter  {
                     }
                     if(find){
                         String[] plugins = accessPlugin.toArray(new String[0]);
+                        log.debug("accessPlugin="+ObjectUtils.toString(plugins));
                         boolean ret=true;
                         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
                         for (int f = 0; f < plugins.length; f++) {
                             AccessPlugin plugin = null;
                             try {
-                                log.debug("plugin="+plugins[f]);
+                                log.debug(strs[i]+",plugin="+plugins[f]);
                                 plugin = (AccessPlugin) Class.forName(plugins[f].trim(),true,classLoader).newInstance();
                                 plugin.setBeanGet(this.beanGet);
                                 ret= plugin.doBeforeDoNotFilterURL(hreq,hres,this);
