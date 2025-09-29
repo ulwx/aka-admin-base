@@ -351,10 +351,6 @@ function loadTagbox(selector, url, cvalue, excludeFirst, options,insertFirst) {
 		panelHeight : 260,
 		valueField : 'id',
 		textField : 'text',
-		editable : true,
-		// delay: 100,
-		// filter:ComboboxFilter,
-		limitToList : true,
 		loadFilter : function(data) {
 			if (data.status == 1) {// 判断是否成功
 				if ($.type(data.data) == 'string') {
