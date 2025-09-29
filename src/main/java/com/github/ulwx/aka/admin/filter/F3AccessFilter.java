@@ -180,11 +180,11 @@ public class F3AccessFilter implements Filter  {
                         for (int f = 0; f < plugins.length; f++) {
                             AccessPlugin plugin = null;
                             try {
-                                log.debug(strs[i]+",plugin="+plugins[f]);
+                                //log.debug(strs[i]+",plugin="+plugins[f]);
                                 plugin = (AccessPlugin) Class.forName(plugins[f].trim(),true,classLoader).newInstance();
                                 plugin.setBeanGet(this.beanGet);
                                 ret= plugin.doBeforeDoNotFilterURL(hreq,hres,this);
-                                log.debug("ret="+ret);
+                                //log.debug("ret="+ret);
                                 if(!ret){
                                     break;
                                 }
