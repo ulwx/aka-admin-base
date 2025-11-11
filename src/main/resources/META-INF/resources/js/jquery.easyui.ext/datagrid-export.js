@@ -47,7 +47,7 @@
                 var tdStyle = tdStyle0;
                 tdStyle += ';text-align:'+(col.align||'');
                 data.push(
-                    '<td style="'+tdStyle+'">'+value+'</td>'
+                    '<td style="'+tdStyle+';mso-number-format:\'\@\';">'+value+'</td>'
                 );
             }
             data.push('</tr>');
