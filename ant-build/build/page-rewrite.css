@@ -4353,7 +4353,7 @@ a:active {
   }
  .commonForm-items .form-tips{
 	display:inline-block;
-	color:#bbb;
+	color:red;
 	margin-left: 90px     
 }
 
