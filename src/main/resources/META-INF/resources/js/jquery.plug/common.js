@@ -73,7 +73,16 @@ function isArray(obj){
 	 }
 	 return false;
 }
+function formatDate(date) {
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
+	const hours = String(date.getHours()).padStart(2, '0');
+	const minutes = String(date.getMinutes()).padStart(2, '0');
+	const seconds = String(date.getSeconds()).padStart(2, '0');
 
+	return `\${year}-\${month}-\${day} \${hours}:\${minutes}:\${seconds}`;
+}
 function formatDateTime(date) {
 	var year = date.getFullYear();
 	var month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -357,6 +366,18 @@ function htmlEncode(value){
 //Html解码获取Html实体
 function htmlDecode(value){
 	return $('<div/>').html(value).text();
+}
+function unescapeQuotes(str) {
+	if(isEmpty(str)) return str;
+	return str.replace(/@@1/g, '\\')  // 还原反斜杠
+		.replace(/@@2/g, '"')   // 还原双引号
+		.replace(/@@3/g, "'");  // 还原单引号
+}
+function escapeQuotes(str) {
+	if(isEmpty(str)) return str;
+	return str.replace(/\\/g, '@@1')  // 转义反斜杠
+		.replace(/"/g, '@@2')    // 转义双引号
+		.replace(/'/g, "@@3");   // 转义单引号
 }
 function escapeString(str) {
 	return str
