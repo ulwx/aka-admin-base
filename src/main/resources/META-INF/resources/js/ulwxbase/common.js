@@ -729,20 +729,47 @@ function operRec(datagridSelector, url, reloadGrid) {
 	});
 
 }
+// function showHtmlDialog(html) {
+// 	$('<div>' +html+ '</div>').dialog({
+// 		title: '提示',
+// 		width: 600,
+// 		height: 400,
+// 		closed: false,
+// 		cache: false,
+// 		modal: true,
+// 		onBeforeOpen: function () {
+// 		},
+// 		onClose: function () {
+// 			$(this).dialog('destroy'); // 关闭时销毁对话框
+// 		}
+// 	});
+// }
+// 修复HTML转义问题的通用函数
 function showHtmlDialog(html) {
-	$('<div>' +html+ '</div>').dialog({
-		title: '提示',
+	// 创建对话框容器
+	var dialogDiv = $('<div></div>').appendTo('body');
+
+	// 设置HTML内容（不会被转义）
+	dialogDiv.html(html);
+
+	// 创建对话框
+	dialogDiv.dialog({
+		title: '修复后的对话框',
 		width: 600,
 		height: 400,
 		closed: false,
 		cache: false,
 		modal: true,
-		onBeforeOpen: function () {
+		onBeforeOpen: function() {
+			// 解析EasyUI组件
+			$.parser.parse(dialogDiv);
 		},
-		onClose: function () {
-			$(this).dialog('destroy'); // 关闭时销毁对话框
+		onClose: function() {
+			$(this).dialog('destroy');
 		}
 	});
+
+	return dialogDiv;
 }
 function delRec(url,deleteId,reloadGrid){
 	$.ajax({
