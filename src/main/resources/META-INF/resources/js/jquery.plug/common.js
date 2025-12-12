@@ -140,6 +140,45 @@ function getDate(date){
 	}
 	return year+"-"+month+"-"+day;
 }
+/**
+ * 获取指定日期的年月
+ * @param {string|Date} dateInput - 日期字符串或Date对象
+ * @param {string} format - 输出格式
+ * @returns {string|Object} 格式化后的年月
+ */
+function getYearMonthFromDate(dateInput, format = 'YYYY-MM') {
+	// 处理不同的输入类型
+	let date;
+	if (dateInput instanceof Date) {
+		date = dateInput;
+	} else if (typeof dateInput === 'string') {
+		date = new Date(dateInput);
+		// 检查日期是否有效
+		if (isNaN(date.getTime())) {
+			throw new Error('Invalid date string');
+		}
+	} else {
+		throw new Error('Invalid input type');
+	}
+
+	const year = date.getFullYear();
+	const month = date.getMonth() + 1;
+	const paddedMonth = month.toString().padStart(2, '0');
+
+	const formats = {
+		'YYYYMM': `\${year}\${paddedMonth}`,
+		'YYYY-MM': `\${year}-\${paddedMonth}`,
+		'YYYY年MM月': `\${year}年\${paddedMonth}月`,
+		'YYYY/MM': `\${year}/\${paddedMonth}`,
+		'MM-YYYY': `\${paddedMonth}-\${year}`,
+		'MM/YYYY': `\${paddedMonth}/\${year}`,
+		'object': { year, month: parseInt(paddedMonth, 10) },
+		'en-US': date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
+		'zh-CN': date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long' })
+	};
+
+	return formats[format] || formats['YYYY-MM'];
+}
 function getMonthDay(date){
 	var myDate
 	if(date){
