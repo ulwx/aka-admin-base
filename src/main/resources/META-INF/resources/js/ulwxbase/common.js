@@ -819,7 +819,7 @@ function initDataGrid(selector, url, queryParams, columns, options) {
 		toolbar : "#top",
 		fit : true,
 		loadFilter : function(data) {
-			if (data.data) {
+			if (data && data.data) {
 				if (data.status == 1) {
 					return data.data;
 				} else {
@@ -845,13 +845,15 @@ function initDataGrid(selector, url, queryParams, columns, options) {
 	}, (options || {}));
 	var grid=$(selector).mydatagrid(opt);
 	var pager=grid.datagrid('getPager');
-	pager.pagination({
-		onChangePageSize:function(pageSize){
+	if(pager ) {
+		pager.pagination({
+			onChangePageSize: function (pageSize) {
 
-			pageSizeChanged=true;
-		}
+				pageSizeChanged = true;
+			}
 
-	});
+		});
+	}
 	return grid;
 }
 
