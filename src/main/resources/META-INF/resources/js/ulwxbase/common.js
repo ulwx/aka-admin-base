@@ -1,6 +1,9 @@
 function getUserName() {
 	return window.top.$('.userName').html();
 }
+function createColumnHeader(text, helpText) {
+	return text + '<span class="help-icon-qtr" title="' + helpText + '">?</span>';
+}
 
 function loadCombotree(selector, value, url, multiple, title) {
 	if (multiple == null || multiple == undefined) {
