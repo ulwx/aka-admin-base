@@ -53,14 +53,14 @@ function exportExcel(gridSelector,prefix,cols){
 				colums=getDataGridColums();
 			}
 			let set=new Set();
-			for(let i=0; i<colums[0].length; i++){
-				if(isEmpty(colums[0][i].field)) continue;
-				if(colums[0][i].field=='ck') continue;
-				set.add(colums[0][i].field);
+			for(let i=0; i<colums[colums.length-1].length; i++){
+				if(isEmpty(colums[colums.length-1][i].field)) continue;
+				if(colums[colums.length-1][i].field=='ck') continue;
+				set.add(colums[colums.length-1][i].field);
 			}
 			let newArray=[];
-			for(let i=0; i<colums[0].length; i++){
-				let colObj=colums[0][i];
+			for(let i=0; i<colums[colums.length-1].length; i++){
+				let colObj=colums[colums.length-1][i];
 				if(isEmpty(colObj.field)) continue;
 				if(colObj.field=='ck') continue;
 				if(!colObj.hidden){//
