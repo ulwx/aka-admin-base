@@ -88,7 +88,7 @@ function exportExcel(gridSelector,prefix,cols,sync){
 					fields: newArray
 				});
 			}else{
-				var options = $('#dg').datagrid('options');
+				var options = $(gridSelector).datagrid('options');
 				queryParm.export=1;
 				queryParm.exportColums=newArray;
 				queryParm.exportColumsNames=newArrayTitle;
