@@ -42,7 +42,7 @@ function loadCombotree(selector, value, url, multiple, title) {
 		}
 	})
 }
-function exportExcel(gridSelector,prefix,cols){
+function exportExcel(gridSelector,prefix,cols,sync){
 	var queryParm=getQueryParm();
 	var url='';
 
@@ -59,6 +59,7 @@ function exportExcel(gridSelector,prefix,cols){
 				set.add(colums[colums.length-1][i].field);
 			}
 			let newArray=[];
+			let newArrayTitle=[];
 			for(let i=0; i<colums[colums.length-1].length; i++){
 				let colObj=colums[colums.length-1][i];
 				if(isEmpty(colObj.field)) continue;
@@ -68,10 +69,12 @@ function exportExcel(gridSelector,prefix,cols){
 						////
 					}else{
 						newArray.push(colObj.field);
+						newArrayTitle.push(colObj.title)
 					}
 				}else{//hidden=true
 					if(colObj.field.endsWith("_")){
 						newArray.push(colObj.field);
+						newArrayTitle.push(colObj.title)
 					}else{
 
 					}
@@ -79,10 +82,29 @@ function exportExcel(gridSelector,prefix,cols){
 
 			}
 			prefix=prefix||'';
-			$(gridSelector).datagrid('toExcel', {
-				filename:prefix+'导出记录'+generateOrderNumber("")+".xls",
-				fields: newArray
-			});
+			if(!sync) {
+				$(gridSelector).datagrid('toExcel', {
+					filename: prefix + '导出记录' + generateOrderNumber("") + ".xls",
+					fields: newArray
+				});
+			}else{
+				var options = $('#dg').datagrid('options');
+				queryParm.export=1;
+				queryParm.exportColums=newArray;
+				queryParm.exportColumsNames=newArrayTitle;
+				queryParm.exportPrefix=prefix;
+				var requestUrl = options.url+"?"+objToQueryStr(queryParm);
+				let ret=syncGetJSON(requestUrl);
+				if (ret && ret.message) {
+					if(ret.status==1) {
+						$.messager.alert("提示", "已提交到异步导出任务里，请稍候到异步导出功能里下载！", "info", function () {
+						});
+					}else{
+						$.messager.alert("提示", ret.message, "error", function () {
+						});
+					}
+				}
+			}
 		}
 	});
 
