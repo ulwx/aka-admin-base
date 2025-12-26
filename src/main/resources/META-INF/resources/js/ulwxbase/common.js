@@ -42,11 +42,17 @@ function loadCombotree(selector, value, url, multiple, title) {
 		}
 	})
 }
-function exportExcel(gridSelector,prefix,cols,sync){
+function exportExcel(gridSelector,prefix,cols,async){
 	var queryParm=getQueryParm();
 	var url='';
 
-	$.messager.confirm('Confirm','只能导出当前页的记录，确定导出吗?',function(r){
+	let msg="";
+	if(!async){
+		msg='只能导出当前页的记录，确定导出吗?'
+	}else{
+		msg='确定按当前查询条件导出记录吗?'
+	}
+	$.messager.confirm('Confirm',msg,function(r){
 		if (r){
 			let colums=cols;
 			if(!colums) {
@@ -82,7 +88,7 @@ function exportExcel(gridSelector,prefix,cols,sync){
 
 			}
 			prefix=prefix||'';
-			if(!sync) {
+			if(!async) {
 				$(gridSelector).datagrid('toExcel', {
 					filename: prefix + '导出记录' + generateOrderNumber("") + ".xls",
 					fields: newArray
