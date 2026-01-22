@@ -132,152 +132,156 @@ public class F3AccessFilter implements Filter  {
     public void doFilter(final ServletRequest req, final ServletResponse res, FilterChain chain)
             throws IOException, ServletException {
 
-        HttpServletRequest hreq = (HttpServletRequest) req;
-        HttpServletResponse hres = (HttpServletResponse) res;
-        SessionUserInfo userInfo = (SessionUserInfo) hreq.getSession().getAttribute(UserSeesionKey);
-        String ruri = hreq.getRequestURI();
-        log.debug("ruri=" + ruri);
         try {
-            preHandler(hreq, hres);
-        }catch (Exception e){
-            log.error(""+e,e);
-            if(e instanceof  F3AccessException){
-                F3AccessException f3AccessException=(F3AccessException)e;
-                Object data=f3AccessException.getData();
-                if(data instanceof RequestDispatcher){
-                    RequestDispatcher tmp=(RequestDispatcher)data;
-                    tmp.forward(hreq, hres);
-                    return;
-                }
-            }
-            String login = hreq.getContextPath() + "" + LoginPage;
-            RequestDispatcher rd = this.createMsg(hreq, hres, e.getMessage() + "", 0, login);
-            rd.forward(hreq, hres);
-            return;
-        }
-        String contextPath = hreq.getContextPath();
-        if (ArrayUtils.isNotEmpty(NotFilterURLs)) {
-            log.debug("NotFilterURLs="+ObjectUtils.toJsonString(NotFilterURLs));
-            String[] strs = NotFilterURLs;
-            if (ArrayUtils.isNotEmpty(strs)) {
-                boolean find=false;
-                log.debug("ruri2=" + ruri);
-                for (int i = 0; i < strs.length; i++) {
-                    if (strs[i].startsWith("/")) {
-                        if (ruri.startsWith(contextPath + strs[i])) {
-                            find=true;
-                        }
-                    } else {
-                        if (StringUtils.endsWith(ruri, strs[i], false)) {
-                            find=true;
-                        }
+            HttpServletRequest hreq = (HttpServletRequest) req;
+            HttpServletResponse hres = (HttpServletResponse) res;
+            SessionUserInfo userInfo = (SessionUserInfo) hreq.getSession().getAttribute(UserSeesionKey);
+            String ruri = hreq.getRequestURI();
+            log.debug("ruri=" + ruri);
+            try {
+                preHandler(hreq, hres);
+            } catch (Exception e) {
+                log.error("" + e, e);
+                if (e instanceof F3AccessException) {
+                    F3AccessException f3AccessException = (F3AccessException) e;
+                    Object data = f3AccessException.getData();
+                    if (data instanceof RequestDispatcher) {
+                        RequestDispatcher tmp = (RequestDispatcher) data;
+                        tmp.forward(hreq, hres);
+                        return;
                     }
-                    if(find){
-                        String[] plugins = accessPlugin.toArray(new String[0]);
-                        //log.debug("accessPlugin="+ObjectUtils.toString(plugins));
-                        boolean ret=true;
-                        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-                        for (int f = 0; f < plugins.length; f++) {
-                            AccessPlugin plugin = null;
-                            try {
-                                log.debug(strs[i]+",plugin="+plugins[f]);
-                                plugin = (AccessPlugin) Class.forName(plugins[f].trim(),true,classLoader).newInstance();
-                                log.debug("plugin="+plugin);
-                                plugin.setBeanGet(this.beanGet);
-                                ret= plugin.doBeforeDoNotFilterURL(hreq,hres,this);
-                                log.debug("ret="+ret);
-                                if(!ret){
-                                    break;
-                                }
-                            } catch (Exception e) {
-                                log.error(e + "", e);
-                                String msg=""+e;
-                                this.handErr(hreq,hres,msg);
-                                return;
-
+                }
+                String login = hreq.getContextPath() + "" + LoginPage;
+                RequestDispatcher rd = this.createMsg(hreq, hres, e.getMessage() + "", 0, login);
+                rd.forward(hreq, hres);
+                return;
+            }
+            String contextPath = hreq.getContextPath();
+            if (ArrayUtils.isNotEmpty(NotFilterURLs)) {
+                log.debug("NotFilterURLs=" + ObjectUtils.toJsonString(NotFilterURLs));
+                String[] strs = NotFilterURLs;
+                if (ArrayUtils.isNotEmpty(strs)) {
+                    boolean find = false;
+                    log.debug("ruri2=" + ruri);
+                    for (int i = 0; i < strs.length; i++) {
+                        if (strs[i].startsWith("/")) {
+                            if (ruri.startsWith(contextPath + strs[i])) {
+                                find = true;
                             }
-                        }
-                        if(ret) {
-                            chain.doFilter(req, res);
-                            return;
-                        }else{
-                            break;
-                        }
-
-                    }
-                }
-            }
-
-        }
-        userInfo = (SessionUserInfo) hreq.getSession().getAttribute(UserSeesionKey);
-        if (userInfo != null) {
-            if (CollectionUtils.isNotEmpty(accessPlugin)) {
-                String[] plugins = accessPlugin.toArray(new String[0]);
-                ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-                for (int i = 0; i < plugins.length; i++) {
-                    AccessPlugin plugin = null;
-                    AccessBean ab = null;
-                    try {
-                        plugin = (AccessPlugin) Class.forName(plugins[i].trim(),true,classLoader).newInstance();
-                        ab = plugin.doVerify(hreq, hres, this);
-                        if(ab==null){
-                            continue;
-                        }
-                    } catch (Exception e) {
-                        log.error(e + "", e);
-                        ab = new AccessBean();
-                        ab.setStatus(0);
-                        ab.setMessage("服务器内部处理错误，请联系管理员！" + e + "");
-                    }
-                    if (ab.getStatus() == 1) {//
-                        ///
-                    } else {
-                        if (WebMvcUtils.isAjax(hreq)) {
-                            log.debug("JSON request");
-                            hres.setHeader("sessionstatus", "control");
-                            AccessResult accessResult = new AccessResult();
-                            accessResult.setCode(0);
-                            accessResult.setContent(ab.getMessage());
-                            accessResult.setLogin(hreq.getContextPath() + "" + LoginPage);
-                            accessResult.setExit(ab.getIsExit());
-                            accessResult.setStatus(Status.ERR);
-                            accessResult.setMessage(ab.getMessage());
-                            String result = ObjectUtils.toJsonString(accessResult);
-                            ActionContext.getContext().getRequestUtils(hreq).setString("callback",JSONP(hreq));
-                            hreq.setAttribute(WebMvcCbConstants.ResultKey,
-                                    CbResult.of(Status.ERR,0, ab.getMessage(),accessResult));
-                            RequestDispatcher rd = hreq.getRequestDispatcher( AjaxMessagePage);
-                            rd.forward(hreq, hres);
-
-                            return;
                         } else {
-                            String login =  hreq.getContextPath() + LoginPage;
-                            if (ab.getIsExit() == 1) {
-                                login =  hreq.getContextPath() + LoginPage;
-                            } else {
-                                login="";
+                            if (StringUtils.endsWith(ruri, strs[i], false)) {
+                                find = true;
                             }
-                            MsgResult msgResult=new MsgResult();
-                            msgResult.setMsg(ab.getMessage());
-                            msgResult.setReturnURL(login);
-                            CbResult cbResult =msgResult.getResult(Status.ERR, 0, ab.getMessage());
-                            hreq.setAttribute(WebMvcCbConstants.ResultKey, cbResult);
-                            RequestDispatcher rd = hreq.getRequestDispatcher(MessagePage);
-                            rd.forward(hreq, hres);
-                            return;
+                        }
+                        if (find) {
+                            String[] plugins = accessPlugin.toArray(new String[0]);
+                            //log.debug("accessPlugin="+ObjectUtils.toString(plugins));
+                            boolean ret = true;
+                            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+                            for (int f = 0; f < plugins.length; f++) {
+                                AccessPlugin plugin = null;
+                                try {
+                                    log.debug(strs[i] + ",plugin=" + plugins[f]);
+                                    plugin = (AccessPlugin) Class.forName(plugins[f].trim(), true, classLoader).newInstance();
+                                    log.debug("plugin=" + plugin);
+                                    plugin.setBeanGet(this.beanGet);
+                                    ret = plugin.doBeforeDoNotFilterURL(hreq, hres, this);
+                                    log.debug("ret=" + ret);
+                                    if (!ret) {
+                                        break;
+                                    }
+                                } catch (Exception e) {
+                                    log.error(e + "", e);
+                                    String msg = "" + e;
+                                    this.handErr(hreq, hres, msg);
+                                    return;
+
+                                }
+                            }
+                            if (ret) {
+                                chain.doFilter(req, res);
+                                return;
+                            } else {
+                                break;
+                            }
+
+                        }
+                    }
+                }
+
+            }
+            userInfo = (SessionUserInfo) hreq.getSession().getAttribute(UserSeesionKey);
+            if (userInfo != null) {
+                if (CollectionUtils.isNotEmpty(accessPlugin)) {
+                    String[] plugins = accessPlugin.toArray(new String[0]);
+                    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+                    for (int i = 0; i < plugins.length; i++) {
+                        AccessPlugin plugin = null;
+                        AccessBean ab = null;
+                        try {
+                            plugin = (AccessPlugin) Class.forName(plugins[i].trim(), true, classLoader).newInstance();
+                            ab = plugin.doVerify(hreq, hres, this);
+                            if (ab == null) {
+                                continue;
+                            }
+                        } catch (Exception e) {
+                            log.error(e + "", e);
+                            ab = new AccessBean();
+                            ab.setStatus(0);
+                            ab.setMessage("服务器内部处理错误，请联系管理员！" + e + "");
+                        }
+                        if (ab.getStatus() == 1) {//
+                            ///
+                        } else {
+                            if (WebMvcUtils.isAjax(hreq)) {
+                                log.debug("JSON request");
+                                hres.setHeader("sessionstatus", "control");
+                                AccessResult accessResult = new AccessResult();
+                                accessResult.setCode(0);
+                                accessResult.setContent(ab.getMessage());
+                                accessResult.setLogin(hreq.getContextPath() + "" + LoginPage);
+                                accessResult.setExit(ab.getIsExit());
+                                accessResult.setStatus(Status.ERR);
+                                accessResult.setMessage(ab.getMessage());
+                                String result = ObjectUtils.toJsonString(accessResult);
+                                ActionContext.getContext().getRequestUtils(hreq).setString("callback", JSONP(hreq));
+                                hreq.setAttribute(WebMvcCbConstants.ResultKey,
+                                        CbResult.of(Status.ERR, 0, ab.getMessage(), accessResult));
+                                RequestDispatcher rd = hreq.getRequestDispatcher(AjaxMessagePage);
+                                rd.forward(hreq, hres);
+
+                                return;
+                            } else {
+                                String login = hreq.getContextPath() + LoginPage;
+                                if (ab.getIsExit() == 1) {
+                                    login = hreq.getContextPath() + LoginPage;
+                                } else {
+                                    login = "";
+                                }
+                                MsgResult msgResult = new MsgResult();
+                                msgResult.setMsg(ab.getMessage());
+                                msgResult.setReturnURL(login);
+                                CbResult cbResult = msgResult.getResult(Status.ERR, 0, ab.getMessage());
+                                hreq.setAttribute(WebMvcCbConstants.ResultKey, cbResult);
+                                RequestDispatcher rd = hreq.getRequestDispatcher(MessagePage);
+                                rd.forward(hreq, hres);
+                                return;
+                            }
+
                         }
 
                     }
-
                 }
+
+                chain.doFilter(req, res);
+                return;
+
+            } else { //session为空
+                String msg = "您还没有登录或者您长时间没有使用登录系统，请重新登录系统！";
+                this.handErr(hreq, hres, msg);
             }
+        }finally {
 
-            chain.doFilter(req, res);
-            return;
-
-        } else { //session为空
-            String msg="您还没有登录或者您长时间没有使用登录系统，请重新登录系统！";
-            this.handErr(hreq,hres,msg);
         }
 
     }
