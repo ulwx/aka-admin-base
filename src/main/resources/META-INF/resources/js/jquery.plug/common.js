@@ -140,6 +140,36 @@ function getDate(date){
 	}
 	return year+"-"+month+"-"+day;
 }
+
+
+/**
+ * 获取当前日期时分秒字符串，可选生成N位随机数
+ * @param {number} randomLength - 可选参数，要生成的随机数位数，默认为0（不生成随机数）
+ * @returns {string} 格式化后的日期时间字符串（格式：YYYYMMDDHHmmss[随机数]）
+ */
+function getCurrentDateTimeString(randomLength) {
+	var now = new Date();
+	var year = now.getFullYear();
+	var month = String(now.getMonth() + 1).padStart(2, '0');
+	var day = String(now.getDate()).padStart(2, '0');
+	var hour = String(now.getHours()).padStart(2, '0');
+	var minute = String(now.getMinutes()).padStart(2, '0');
+	var second = String(now.getSeconds()).padStart(2, '0');
+	var dateTimeString = year + month + day + hour + minute + second;
+
+	// 如果需要生成随机数
+	if (randomLength && typeof randomLength === 'number' && randomLength > 0) {
+		// 生成随机数，确保长度足够
+		var randomNum = '';
+		for (var i = 0; i < randomLength; i++) {
+			randomNum += Math.floor(Math.random() * 10);
+		}
+		dateTimeString += randomNum;
+	}
+
+	return dateTimeString;
+}
+
 /**
  * 获取指定日期的年月
  * @param {string|Date} dateInput - 日期字符串或Date对象
