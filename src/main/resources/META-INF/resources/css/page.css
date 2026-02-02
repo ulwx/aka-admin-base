@@ -402,10 +402,30 @@ a:active {
    width:100%;
    margin-left:80px;
   }
- .commonForm-items .form-tips{
-	display:inline-block;
-	color:black;
-	margin-left: 90px
+.commonForm-items .form-tips{
+	display: inline-block;
+	color: #666;
+	margin-left: 90px;
+	font-size: 12px;
+	line-height: 1.3;
+	padding: 4px 8px;
+	background-color: #f8f9fa;
+	border-radius: 2px;
+}
+
+.commonForm-items .form-tips.warning {
+	background-color: #fff3cd;
+	color: #856404;
+}
+
+.commonForm-items .form-tips.error {
+	background-color: #f8d7da;
+	color: #721c24;
+}
+
+.commonForm-items .form-tips.success {
+	background-color: #d4edda;
+	color: #155724;
 }
 
 .commonForm-items  .error-tips{
