@@ -240,8 +240,10 @@ var ComboboxOnLoadSuccess=function(cvalue) {
 
 	}
 }
-function loadCombobox(selector, url, cvalue, excludeFirst, options,insertFirst) {
 
+
+function loadCombobox(selector, url, cvalue, excludeFirst, options,insertFirst) {
+	var oldValue = null;
 	var opt = $.extend({}, {
 		url : url,
 		panelHeight:350,
@@ -822,7 +824,7 @@ function operRec(datagridSelector, url, reloadGrid) {
 // 	});
 // }
 // 修复HTML转义问题的通用函数
-function showHtmlDialog(html) {
+function showHtmlDialog(html,width,height) {
 	// 创建对话框容器
 	var dialogDiv = $('<div></div>').appendTo('body');
 
@@ -831,9 +833,9 @@ function showHtmlDialog(html) {
 
 	// 创建对话框
 	dialogDiv.dialog({
-		title: '修复后的对话框',
-		width: 600,
-		height: 400,
+		title: '提示',
+		width: width||600,
+		height: height||400,
 		closed: false,
 		cache: false,
 		modal: true,
