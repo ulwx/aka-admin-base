@@ -204,6 +204,78 @@ function bindTimeOutEvent(linkbutton) {
 })(jQuery);
 
 (function($) {
+	/**
+	 * 方法四：复制到剪贴板
+	 */
+	$.fn.copyToClipboard = function(showAlert = true) {
+		const $tableClone = this.clone();
+
+		// 添加样式以便粘贴时保留格式
+		$tableClone.find('th').css({
+			'background-color': '#4CAF50',
+			'color': 'white',
+			'font-weight': 'bold'
+		});
+
+		const tempElement = $('<div>')
+			.attr('contenteditable', true)
+			.css({
+				position: 'fixed',
+				left: '-9999px',
+				top: '0'
+			})
+			.html($tableClone[0].outerHTML)
+			.appendTo('body');
+
+		// 选择并复制
+		const selection = window.getSelection();
+		const range = document.createRange();
+		range.selectNodeContents(tempElement[0]);
+		selection.removeAllRanges();
+		selection.addRange(range);
+
+		const success = document.execCommand('copy');
+		selection.removeAllRanges();
+		tempElement.remove();
+
+		if (showAlert) {
+			alert('表格已复制到剪贴板，可直接粘贴到 Excel 中');
+		}
+
+		return success;
+	};
+	$.fn.simpleExportToExcel = function(filename = '表格导出') {
+		const tableHtml = this[0].outerHTML;
+		const htmlContent = `
+                    <html>
+                        <head>
+                            <meta charset="UTF-8">
+                            <title>Export Excel</title>
+                            <style>
+                                th { background-color: #4CAF50; color: white; }
+                                td, th { border: 1px solid #ddd; padding: 8px; }
+                                table { border-collapse: collapse; }
+                            </style>
+                        </head>
+                        <body>
+                            ${tableHtml}
+                        </body>
+                    </html>
+                `;
+
+		const blob = new Blob([htmlContent], { type: 'application/vnd.ms-excel' });
+		const link = document.createElement('a');
+		link.href = URL.createObjectURL(blob);
+		link.download = `${filename}.xls`;
+
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+		URL.revokeObjectURL(link.href);
+
+		return this;
+	};
+
 	if ($.validatebox) {
 		$.extend($.fn.validatebox.defaults.rules, {
 			validateOnCreate : false
