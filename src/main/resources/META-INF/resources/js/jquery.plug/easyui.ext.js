@@ -961,6 +961,14 @@ function addEasyUiInvalidTip(target) {
 
 $(function() {
 	// 全局提示系统
+	let tipHtml=`
+	<div class="tooltip-container" id="global-tooltip">
+		<div class="tooltip-arrow"></div>
+		<div class="tooltip-content"></div>
+	</div>
+	`;
+	$('body').append(tipHtml);
+
 	const $tooltip = $('#global-tooltip');
 	const $tooltipContent = $tooltip.find('.tooltip-content');
 	let currentHelpIcon = null;
@@ -1100,4 +1108,7 @@ $(function() {
 	$('.tooltip').on('click', function(e) {
 		e.stopPropagation();
 	});
+
+
+
 });
