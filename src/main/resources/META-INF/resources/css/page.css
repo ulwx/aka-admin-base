@@ -501,3 +501,108 @@ xmp {
 }
 
 
+/* 基础样式 */
+.help-icon {
+	display: inline-block !important;
+	width: 12px;
+	height: 12px;
+	line-height: 12px;
+	text-align: center;
+	background-color: #6c757d;
+	color: white;
+	border-radius: 50%;
+	font-size: 12px;
+	cursor: pointer;
+	margin: 0 0px;
+	vertical-align: middle;
+}
+
+.help-icon:hover {
+	background-color: #545b62;
+}
+
+/* 不同大小的问号 */
+.help-icon-sm {
+	width: 14px;
+	height: 14px;
+	line-height: 14px;
+	font-size: 12px;
+	text-align: center;
+}
+
+.help-icon-lg {
+	width: 14px;
+	height: 14px;
+	line-height: 14px;
+	font-size: 12px;
+}
+
+/* 提示框容器 */
+.tooltip-container {
+	position: absolute;
+	z-index: 9999;
+	display: none;
+}
+
+.tooltip-container.show {
+	display: block;
+	animation: fadeIn 0.15s ease;
+}
+
+.tooltip-content {
+	padding: 10px 12px;
+	background-color: #333;
+	color: white;
+	border-radius: 6px;
+	font-size: 12px;
+	max-width: 300px;
+	line-height: 1.5;
+	box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+	white-space: normal;
+	word-wrap: break-word;
+}
+
+.tooltip-arrow {
+	position: absolute;
+	width: 0;
+	height: 0;
+	border: 6px solid transparent;
+	border-bottom-color: #333;
+	top: -12px;
+	left: 50%;
+	margin-left: -6px;
+}
+
+/* 不同位置的箭头 */
+.tooltip-container.top .tooltip-arrow {
+	top: auto;
+	bottom: -12px;
+	border-top-color: #333;
+	border-bottom-color: transparent;
+}
+
+.tooltip-container.left .tooltip-arrow {
+	top: 50%;
+	left: auto;
+	right: -12px;
+	margin-top: -6px;
+	margin-left: 0;
+	border-left-color: #333;
+	border-bottom-color: transparent;
+}
+
+.tooltip-container.right .tooltip-arrow {
+	top: 50%;
+	left: -12px;
+	margin-top: -6px;
+	margin-left: 0;
+	border-right-color: #333;
+	border-bottom-color: transparent;
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; transform: translateY(5px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+

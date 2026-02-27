@@ -956,3 +956,148 @@ function addEasyUiInvalidTip(target) {
 	target.find(".validatebox-text").addClass('validatebox-invalid');
 
 }
+
+
+
+$(function() {
+	// 全局提示系统
+	const $tooltip = $('#global-tooltip');
+	const $tooltipContent = $tooltip.find('.tooltip-content');
+	let currentHelpIcon = null;
+
+	// 为所有问号图标绑定事件
+	$(document).on('click', '.help-icon', function(e) {
+		e.stopPropagation();
+
+		const $this = $(this);
+		const content = $this.attr('title') || $this.data('title');
+
+		if (currentHelpIcon === $this[0] && $tooltip.hasClass('show')) {
+			// 点击同一个问号，关闭提示
+			hideTooltip();
+		} else {
+			// 显示新的提示
+			showTooltip($this, content);
+		}
+	});
+
+	// 点击页面其他地方关闭提示
+	$(document).on('click', function(e) {
+		if (!$(e.target).closest('.help-icon').length &&
+			!$(e.target).closest('.tooltip-container').length) {
+			hideTooltip();
+		}
+	});
+
+	// 窗口大小变化时重新定位
+	$(window).on('resize', function() {
+		if ($tooltip.hasClass('show') && currentHelpIcon) {
+			positionTooltip($(currentHelpIcon));
+		}
+	});
+
+	// 显示提示框
+	function showTooltip($icon, content) {
+		// 移除原有提示
+		hideTooltip();
+
+		// 设置当前活动问号
+		currentHelpIcon = $icon[0];
+
+		// 设置内容
+		$tooltipContent.html(content);
+
+		// 显示提示框
+		$tooltip.addClass('show');
+
+		// 定位提示框
+		positionTooltip($icon);
+	}
+
+	// 隐藏提示框
+	function hideTooltip() {
+		$tooltip.removeClass('show');
+		currentHelpIcon = null;
+	}
+
+	// 定位提示框
+	function positionTooltip($icon) {
+		const iconRect = $icon[0].getBoundingClientRect();
+		const tooltipRect = $tooltip[0].getBoundingClientRect();
+		const scrollTop = $(window).scrollTop();
+		const scrollLeft = $(window).scrollLeft();
+
+		// 默认显示在下方
+		let top = iconRect.bottom + scrollTop;
+		let left = iconRect.left + scrollLeft + (iconRect.width / 2) - (tooltipRect.width / 2);
+		let position = 'bottom';
+
+		// 检查是否超出屏幕边界
+		// 检查右侧
+		if (left + tooltipRect.width > window.innerWidth + scrollLeft) {
+			left = window.innerWidth + scrollLeft - tooltipRect.width - 10;
+		}
+
+		// 检查左侧
+		if (left < scrollLeft) {
+			left = scrollLeft + 10;
+		}
+
+		// 检查底部
+		if (top + tooltipRect.height > window.innerHeight + scrollTop) {
+			// 如果底部超出，显示在上方
+			top = iconRect.top + scrollTop - tooltipRect.height - 10;
+			position = 'top';
+		}
+
+		// 检查右侧空间是否足够，不够就显示在左侧
+		if (left + tooltipRect.width > window.innerWidth + scrollLeft - 10) {
+			left = iconRect.left + scrollLeft - tooltipRect.width - 10;
+			position = 'left';
+		}
+
+		// 检查左侧空间是否足够，不够就显示在右侧
+		if (left < scrollLeft + 10) {
+			left = iconRect.right + scrollLeft + 10;
+			position = 'right';
+		}
+
+		// 应用位置
+		$tooltip.css({
+			top: top + 'px',
+			left: left + 'px'
+		});
+
+		// 设置箭头位置
+		$tooltip.removeClass('top bottom left right').addClass(position);
+	}
+
+
+	$('.help-icon-sm').on('click', function(e) {
+		e.stopPropagation();
+
+		const $this = $(this);
+		const $tooltip = $this.siblings('.tooltip');
+		const content = $this.attr('title');
+
+		if ($tooltip.hasClass('show')) {
+			$tooltip.removeClass('show');
+		} else {
+			// 关闭其他可能打开的提示
+			$('.tooltip').removeClass('show');
+
+			// 显示当前提示
+			$tooltip.text(content).addClass('show');
+
+			// 点击页面其他地方关闭
+			$(document).one('click', function() {
+				$tooltip.removeClass('show');
+			});
+		}
+	});
+
+	// 阻止点击提示本身时关闭
+	$('.tooltip').on('click', function(e) {
+		e.stopPropagation();
+	});
+});
