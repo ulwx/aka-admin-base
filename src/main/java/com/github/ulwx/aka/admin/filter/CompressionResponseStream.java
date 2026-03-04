@@ -16,9 +16,10 @@
 */
 package com.github.ulwx.aka.admin.filter;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.WriteListener;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,7 +27,7 @@ import java.io.OutputStream;
 import java.util.zip.GZIPOutputStream;
 
 
-public class CompressionResponseStream extends ServletOutputStream{
+public class CompressionResponseStream extends ServletOutputStream {
 
     protected ByteArrayOutputStream outstream=new ByteArrayOutputStream(1024);
     protected OutputStream gzipstream = new GZIPOutputStream(new BufferedOutputStream(outstream));

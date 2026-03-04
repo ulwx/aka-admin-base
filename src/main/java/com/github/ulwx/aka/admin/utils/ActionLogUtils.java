@@ -3,7 +3,7 @@ package com.github.ulwx.aka.admin.utils;
 import com.github.ulwx.aka.admin.domain.SessionUserInfo;
 import org.apache.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public class ActionLogUtils {
     private static Logger log = Logger.getLogger(ActionLogUtils.class);

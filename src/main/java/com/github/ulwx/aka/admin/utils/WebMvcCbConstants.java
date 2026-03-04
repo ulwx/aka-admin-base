@@ -1,9 +1,10 @@
 package com.github.ulwx.aka.admin.utils;
 
 import com.github.ulwx.aka.dbutils.tool.support.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
+
 
 public class WebMvcCbConstants {
 	private static Logger log = Logger.getLogger(WebMvcCbConstants.class);

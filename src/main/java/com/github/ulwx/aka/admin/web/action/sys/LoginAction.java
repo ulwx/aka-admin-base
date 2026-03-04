@@ -22,8 +22,8 @@ import com.ulwx.tool.StringUtils;
 import com.ulwx.tool.ValidationUtils;
 import org.apache.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;

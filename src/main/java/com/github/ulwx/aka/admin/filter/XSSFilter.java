@@ -3,8 +3,8 @@ package com.github.ulwx.aka.admin.filter;
 import com.ulwx.tool.ArrayUtils;
 import com.ulwx.tool.StringUtils;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
