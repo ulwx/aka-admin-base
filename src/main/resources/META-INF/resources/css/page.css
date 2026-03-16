@@ -549,7 +549,7 @@ xmp {
 	animation: fadeIn 0.15s ease;
 }
 
-.tooltip-content {
+.help-tooltip-content {
 	padding: 10px 12px;
 	background-color: #333;
 	color: white;
@@ -562,7 +562,7 @@ xmp {
 	word-wrap: break-word;
 }
 
-.tooltip-arrow {
+.help-tooltip-arrow {
 	position: absolute;
 	width: 0;
 	height: 0;
@@ -574,14 +574,14 @@ xmp {
 }
 
 /* 不同位置的箭头 */
-.tooltip-container.top .tooltip-arrow {
+.tooltip-container.top .help-tooltip-arrow {
 	top: auto;
 	bottom: -12px;
 	border-top-color: #333;
 	border-bottom-color: transparent;
 }
 
-.tooltip-container.left .tooltip-arrow {
+.tooltip-container.left .help-tooltip-arrow {
 	top: 50%;
 	left: auto;
 	right: -12px;
@@ -591,7 +591,7 @@ xmp {
 	border-bottom-color: transparent;
 }
 
-.tooltip-container.right .tooltip-arrow {
+.tooltip-container.right .help-tooltip-arrow {
 	top: 50%;
 	left: -12px;
 	margin-top: -6px;

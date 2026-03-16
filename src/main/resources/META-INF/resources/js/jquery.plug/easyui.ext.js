@@ -963,14 +963,14 @@ $(function() {
 	// 全局提示系统
 	let tipHtml=`
 	<div class="tooltip-container" id="global-tooltip">
-		<div class="tooltip-arrow"></div>
-		<div class="tooltip-content"></div>
+		<div class="help-tooltip-arrow"></div>
+		<div class="help-tooltip-content"></div>
 	</div>
 	`;
 	$('body').append(tipHtml);
 
 	const $tooltip = $('#global-tooltip');
-	const $tooltipContent = $tooltip.find('.tooltip-content');
+	const $tooltipContent = $tooltip.find('.help-tooltip-content');
 	let currentHelpIcon = null;
 
 	// 为所有问号图标绑定事件
