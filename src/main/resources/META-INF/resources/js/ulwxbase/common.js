@@ -145,7 +145,10 @@ function exportExcel(gridSelector,prefix,cols,async){
 				queryParm.exportColums=newArray;
 				queryParm.exportColumsNames=newArrayTitle;
 				queryParm.exportPrefix=prefix;
-				var requestUrl = options.url+"?"+objToQueryStr(queryParm);
+				var separator = options.url.includes('?') ? '&' : '?';
+				var requestUrl = options.url + separator + objToQueryStr(queryParm);
+
+				//var requestUrl = options.url+"?"+objToQueryStr(queryParm);
 				let ret=syncGetJSON(requestUrl);
 				if (ret && ret.message) {
 					if(ret.status==1) {
