@@ -175,8 +175,10 @@ var ComboboxLoadFilter=function(excludeFirst,insertFirst){
 			if (excludeFirst) {
 				data.data.splice(0, 1);
 			}
-			if (insertFirst) {
-				data.data.splice(0, 0, {id: "", text: "==请选择=="})
+			if(insertFirst===true){
+				data.data.splice(0,0,{id:"",text:"==请选择=="})
+			}else if (insertFirst && typeof insertFirst === 'object' && !Array.isArray(insertFirst)) {
+				data.data.splice(0,0,insertFirst);
 			}
 			return data.data;
 		} else {
@@ -265,9 +267,12 @@ function loadCombobox(selector, url, cvalue, excludeFirst, options,insertFirst) 
 				if (excludeFirst) {
 					data.data.splice(0, 1);
 				}
-				if(insertFirst){
+				if(insertFirst===true){
 					data.data.splice(0,0,{id:"",text:"==请选择=="})
+				}else if (insertFirst && typeof insertFirst === 'object' && !Array.isArray(insertFirst)) {
+					data.data.splice(0,0,insertFirst);
 				}
+
 				return data.data;
 			} else {
 				if(isArray(data)){
@@ -356,8 +361,10 @@ function loadCkCombobox(selector, url, cvalue, excludeFirst, options,insertFirst
 				if (excludeFirst) {
 					data.data.splice(0, 1);
 				}
-				if(insertFirst){
+				if(insertFirst===true){
 					data.data.splice(0,0,{id:"",text:"==请选择=="})
+				}else if (insertFirst && typeof insertFirst === 'object' && !Array.isArray(insertFirst)) {
+					data.data.splice(0,0,insertFirst);
 				}
 				return data.data;
 			} else {
@@ -441,8 +448,10 @@ function loadTagbox(selector, url, cvalue, excludeFirst, options,insertFirst) {
 				if (excludeFirst) {
 					data.data.splice(0, 1);
 				}
-				if(insertFirst){
+				if(insertFirst===true){
 					data.data.splice(0,0,{id:"",text:"==请选择=="})
+				}else if (insertFirst && typeof insertFirst === 'object' && !Array.isArray(insertFirst)) {
+					data.data.splice(0,0,insertFirst);
 				}
 				return data.data;
 			} else {
