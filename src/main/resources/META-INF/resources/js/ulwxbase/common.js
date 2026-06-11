@@ -863,29 +863,34 @@ function showHtmlDialog(html,width,height) {
 	return dialogDiv;
 }
 function delRec(url,deleteId,reloadGrid){
-	$.ajax({
-		type: "POST",
-		dataType: "text",
-		url: url,
-		data: {"deleteId":deleteId},
-		success: function(data){
-			data = $.trim(data);
-			data=$.evalJSON(data);
-			if(data && data.status==1){
-				$.messager.alert("提示", "删除成功！！", "info", function() {
-					if (reloadGrid) {
-						reloadGrid();
+	$.messager.confirm("提示", "您确定要删除吗？", function(b){
+		if(b) {
+			$.ajax({
+				type: "POST",
+				dataType: "text",
+				url: url,
+				data: {"deleteId":deleteId},
+				success: function(data){
+					data = $.trim(data);
+					data=$.evalJSON(data);
+					if(data && data.status==1){
+						$.messager.alert("提示", "删除成功！！", "info", function() {
+							if (reloadGrid) {
+								reloadGrid();
+							}
+						});
+					}else{
+						$.messager.alert("提示", data.message);
+						return;
 					}
-				});
-			}else{
-				$.messager.alert("提示", data.message);
-				return;
-			}
-		},
-		error: function(){
-			$.messager.alert("提示", "网络连接失败!");
+				},
+				error: function(){
+					$.messager.alert("提示", "网络连接失败!");
+				}
+			});
 		}
 	});
+
 
 }
 
