@@ -753,6 +753,7 @@ function addRec(url, reloadGrid, title, data, width, height, options) {
 		resizable : true,
 		modal : true,
 		shadow : true,
+		cache: false,
 
 		onLoad : function(dlg) {
 			dlg.reloadGrid = reloadGrid;
