@@ -959,7 +959,29 @@ function getQueryParm(selector, otherParm) {
 	var result = $.extend({}, parmObject, otherParm)
 	return result;
 }
+function queryParamsObj() {
+	var queryString = window.location.search.substr(1);
+	var pairs = queryString.split('&');
+	var params = {};
 
+	$.each(pairs, function(index, pair) {
+		pair = pair.split('=');
+		var key = decodeURIComponent(pair[0]);
+		var value = pair.length > 1 ? decodeURIComponent(pair[1]) : '';
+
+		// 处理重复参数（转换为数组）
+		if (key in params) {
+			if (!Array.isArray(params[key])) {
+				params[key] = [params[key]];
+			}
+			params[key].push(value);
+		} else {
+			params[key] = value;
+		}
+	});
+
+	return params;
+}
 // alert(getAge("1980-03-22 10:1:2", "1982-03-22 10:1:2"));
 // alert(getAge("1980-06-29", "1984-02-03"));
 // alert(getAge("1980-03-22 10:1:2", "1980-03-23 9:1:1"));
