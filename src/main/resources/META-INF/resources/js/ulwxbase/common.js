@@ -537,7 +537,7 @@ function selectRec(datagridSelector, url, reloadGrid, title, data, width,
 		autoHeight : true,
 		content : 'url:' + url,
 		resizable : true,
-		modal : true,
+		modal : false,
 		shadow : true,
 		onLoad : function(dlg) {
 			dlg.reloadGrid = reloadGrid;//
@@ -681,7 +681,7 @@ function editRec2(datagridSelector, url, reloadGrid, title, data, row, width,
 		autoHeight : false,
 		content : 'url:' + url,
 		resizable : true,
-		modal : true,
+		modal : false,
 		shadow : true,
 		onLoad : function(dlg) {
 			dlg.reloadGrid = reloadGrid;//
@@ -733,7 +733,7 @@ function showHtmlDialog(html,width,height) {
 		height: height&&height>0?height:600,
 		closed: false,
 		cache: false,
-		modal: true,
+		modal: false,
 		onBeforeOpen: function () {
 		},
 		onClose: function () {
@@ -751,8 +751,8 @@ function addRec(url, reloadGrid, title, data, width, height, options) {
 		autoHeight : false,
 		content : 'url:' + url,
 		resizable : true,
-		modal : true,
-		shadow : true,
+		modal : false,
+		shadow : false,
 		cache: false,
 
 		onLoad : function(dlg) {
@@ -851,7 +851,7 @@ function showHtmlDialog(html,width,height) {
 		height: height||400,
 		closed: false,
 		cache: false,
-		modal: true,
+		modal: false,
 		onBeforeOpen: function() {
 			// 解析EasyUI组件
 			$.parser.parse(dialogDiv);
@@ -894,6 +894,34 @@ function delRec(url,deleteId,reloadGrid){
 
 
 }
+function getLastMonthRange() {
+	const now = new Date();
+	const year = now.getFullYear();
+	const month = now.getMonth();
+
+	// 上个月的第一天
+	const startDate = new Date(year, month - 1, 1);
+
+	// 上个月的最后一天
+	const endDate = new Date(year, month, 0);
+
+	return {
+		startDate: startDate,
+		endDate: endDate,
+		startDateStr: formatDate(startDate),
+		endDateStr: formatDate(endDate)
+	};
+}
+
+// 辅助函数：格式化日期为 YYYY-MM-DD
+function formatDate(date) {
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
+	return `${year}-${month}-${day}`;
+}
+
+// 使用示例
 
 function initDataGrid(selector, url, queryParams, columns, options) {
 	let pageSizeChanged = false;
