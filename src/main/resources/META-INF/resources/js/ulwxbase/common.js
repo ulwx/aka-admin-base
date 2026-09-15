@@ -931,6 +931,7 @@ function initDataGrid(selector, url, queryParams, columns, options) {
 		url : url,
 		striped : true,
 		columns : columns,
+		frozenColumns : (options.frozenColumns?options.frozenColumns:null),
 		pageSize:20,
 		border : false,
 		nowrap : false,
