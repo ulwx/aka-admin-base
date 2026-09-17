@@ -544,7 +544,9 @@ function selectRec(datagridSelector, url, reloadGrid, title, data, width,
 			dlg.selectRecs = records;//
 			dlg.data = data;
 			var win = dlg.window;
-			win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
+			if(win["init"]) {
+				win["init"](dlg);
+			}// 调用远程的js的init方法，参数为当前的dlg对象
 		}
 	});
 
@@ -652,7 +654,9 @@ function editRec(datagridSelector, url, reloadGrid, title, data, width, height,o
 						}
 					}
 				};
-				win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
+				if(win["init"]) {
+					win["init"](dlg);
+				}// 调用远程的js的init方法，参数为当前的dlg对象
 				if (win["onBeforeClose"]) {
 					options.onBeforeClose = function () {
 							return win["onBeforeClose"]();
@@ -697,7 +701,9 @@ function editRec2(datagridSelector, url, reloadGrid, title, data, row, width,
 						}
 					}
 				};
-				win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
+				if(win["init"]) {
+					win["init"](dlg);
+				}// 调用远程的js的init方法，参数为当前的dlg对象
 				if (win["onBeforeClose"]) {
 					options.onBeforeClose = function () {
 						return win["onBeforeClose"]();
@@ -768,7 +774,9 @@ function addRec(url, reloadGrid, title, data, width, height, options) {
 						}
 					}
 				};
-				win["init"](dlg);// 调用远程的js的init方法，参数为当前的dlg对象
+				if(win["init"]) {
+					win["init"](dlg);
+				}// 调用远程的js的init方法，参数为当前的dlg对象
 				if (win["onBeforeClose"]) {
 					options.onBeforeClose = function () {
 						return win["onBeforeClose"]();
@@ -931,7 +939,6 @@ function initDataGrid(selector, url, queryParams, columns, options) {
 		url : url,
 		striped : true,
 		columns : columns,
-		frozenColumns : ((options && options.frozenColumns) ?options.frozenColumns:null),
 		pageSize:20,
 		border : false,
 		nowrap : false,
