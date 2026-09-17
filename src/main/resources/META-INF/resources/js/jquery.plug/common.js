@@ -298,7 +298,9 @@ function getMiddlePosition(iHeight, iWidth){
 	position.top=iTop;
 	return position;
 }
-
+function isNumeric(str) {
+	return /^-?\d+(\.\d+)?$/.test(str);
+}
 function parseSearchString(searchStr){
 	var ret = {}, seg = searchStr.replace(/^\?/, '').split('&'), len = seg.length, i = 0, s;
 	for (; i < len; i++) {
