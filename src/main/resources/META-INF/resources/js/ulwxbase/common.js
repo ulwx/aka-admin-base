@@ -847,7 +847,7 @@ function operRec(datagridSelector, url, reloadGrid) {
 // 修复HTML转义问题的通用函数
 function showHtmlDialog(html,width,height) {
 	// 创建对话框容器
-	var dialogDiv = $('<div></div>').appendTo('body');
+	var dialogDiv = $('<div style="white-space: pre-wrap;word-break: break-all;"></div>').appendTo('body');
 
 	// 设置HTML内容（不会被转义）
 	dialogDiv.html(html);
