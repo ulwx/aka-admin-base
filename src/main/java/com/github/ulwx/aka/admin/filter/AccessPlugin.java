@@ -21,7 +21,7 @@ public interface AccessPlugin {
 	 * @param hreq
 	 * @param hres
 	 * @param filter
-	 * @return  返回true则继续后面插件的处理，返回false则终止过滤器
+	 * @return
 	 */
 	default public  void preHandle(HttpServletRequest hreq, HttpServletResponse hres, Filter filter) {
 	};

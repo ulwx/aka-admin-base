@@ -193,6 +193,10 @@ public class F3AccessFilter implements Filter  {
                                 } catch (Exception e) {
                                     log.error(e + "", e);
                                     String msg = "" + e;
+                                    if (e instanceof F3AccessException) {
+                                        return;
+
+                                    }
                                     this.handErr(hreq, hres, msg);
                                     return;
 
