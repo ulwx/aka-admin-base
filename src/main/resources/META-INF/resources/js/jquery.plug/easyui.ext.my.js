@@ -1471,3 +1471,69 @@
 	 });
 
 	})(jQuery);
+
+
+
+ /**
+  * 修复 easyui 在所在 iframe 被隐藏(display:none)期间计算尺寸出错的问题：
+  * 隐藏时文档不布局，按钮、输入框、表格等量到的尺寸为 0，重新显示后 easyui 不会自动重算。
+  * 这里在文档"从隐藏变为可见"时，对整页 easyui 组件重新计算一次尺寸。
+  * 非 iframe 页面文档始终可见，不会触发。
+  */
+ ;(function ($) {
+	 if (!$ || !$.fn || !$.parser || window.__easyuiReflowFix) return;
+	 window.__easyuiReflowFix = true;
+
+	 function rendered() {
+		 var de = document.documentElement;
+		 return de.clientWidth > 0 && de.clientHeight > 0;
+	 }
+
+	 function resizeAll(selector, plugin, method) {
+		 if (!$.fn[plugin]) return;
+		 $(selector).each(function () {
+			 if ($.data(this, plugin)) {
+				 try { $(this)[plugin](method || 'resize'); } catch (e) {}
+			 }
+		 });
+	 }
+
+	 function reflow() {
+		 if (!rendered()) return;
+		 // 1) 固定尺寸组件：布局变化时 easyui 不会自动重算
+		 resizeAll('.textbox-f', 'textbox');      // textbox/combobox/datebox/numberbox 等
+		 resizeAll('a.l-btn', 'linkbutton');
+		 // 2) 整页布局及 fit/百分比组件（layout、panel、tabs、fit 表格），同时通知页面自己的 resize 处理
+		 $(window).trigger('resize');
+		 // 3) 表格：等布局完成后（easyui 布局有 100ms 防抖）重算列宽、行高，包括非 fit 表格和 treegrid
+		 setTimeout(function () {
+			 resizeAll('.datagrid-f', 'datagrid');
+			 resizeAll('.datagrid-f', 'datagrid', 'fixRowHeight');
+		 }, 150);
+	 }
+
+	 var timer = null;
+	 function schedule() {
+		 clearTimeout(timer);
+		 timer = setTimeout(reflow, 50);
+	 }
+
+	 // 文档重新可见：IntersectionObserver 即时响应
+	 $(function () {
+		 if (window.IntersectionObserver) {
+			 new IntersectionObserver(function (entries) {
+				 for (var i = 0; i < entries.length; i++) {
+					 if (entries[i].isIntersecting) { schedule(); break; }
+				 }
+			 }).observe(document.body);
+		 }
+	 });
+
+	 // 兜底：低频检测 隐藏→可见 的切换
+	 var shown = rendered();
+	 setInterval(function () {
+		 var now = rendered();
+		 if (now && !shown) schedule();
+		 shown = now;
+	 }, 500);
+ })(window.jQuery);
