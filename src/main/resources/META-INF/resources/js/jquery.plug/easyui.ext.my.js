@@ -1475,56 +1475,43 @@
 
 
  /**
-  * 修复 easyui 在所在 iframe 被隐藏(display:none)期间计算尺寸出错的问题：
-  * 隐藏时文档不布局，按钮、输入框、表格等量到的尺寸为 0，重新显示后 easyui 不会自动重算。
-  * 这里在文档"从隐藏变为可见"时，对整页 easyui 组件重新计算一次尺寸。
+  * 修复 easyui linkbutton 在所在 iframe 被隐藏(display:none)期间尺寸计算错误：
+  * 隐藏时文档不布局，setSize 量不到 .l-btn-left 高度，margin-top 被算成 ~11px，按钮变高且不会自动恢复。
+  * 这里在文档"从隐藏变为可见"时，对页面声明的 easyui-linkbutton 小号按钮重新 resize（只重算尺寸，不重建）。
   * 非 iframe 页面文档始终可见，不会触发。
   */
  ;(function ($) {
-	 if (!$ || !$.fn || !$.parser || window.__easyuiReflowFix) return;
-	 window.__easyuiReflowFix = true;
+	 if (!$ || !$.fn || !$.fn.linkbutton || window.__lbtnResizeFix) return;
+	 window.__lbtnResizeFix = true;
 
 	 function rendered() {
 		 var de = document.documentElement;
 		 return de.clientWidth > 0 && de.clientHeight > 0;
 	 }
 
-	 function resizeAll(selector, plugin, method) {
-		 if (!$.fn[plugin]) return;
-		 $(selector).each(function () {
-			 if ($.data(this, plugin)) {
-				 try { $(this)[plugin](method || 'resize'); } catch (e) {}
+	 function fix() {
+		 if (!rendered()) return;
+		 $('a.easyui-linkbutton.l-btn-small').each(function () {
+			 var state = $.data(this, 'linkbutton');
+			 if (state && (state.options.width || state.options.height || state.options.fit)) {
+				 $(this).linkbutton('resize');
 			 }
 		 });
-	 }
-
-	 function reflow() {
-		 if (!rendered()) return;
-		 // 1) 固定尺寸组件：布局变化时 easyui 不会自动重算
-		 resizeAll('.textbox-f', 'textbox');      // textbox/combobox/datebox/numberbox 等
-		 resizeAll('a.l-btn', 'linkbutton');
-		 // 2) 整页布局及 fit/百分比组件（layout、panel、tabs、fit 表格），同时通知页面自己的 resize 处理
-		 $(window).trigger('resize');
-		 // 3) 表格：等布局完成后（easyui 布局有 100ms 防抖）重算列宽、行高，包括非 fit 表格和 treegrid
-		 setTimeout(function () {
-			 resizeAll('.datagrid-f', 'datagrid');
-			 resizeAll('.datagrid-f', 'datagrid', 'fixRowHeight');
-		 }, 150);
 	 }
 
 	 var timer = null;
 	 function schedule() {
 		 clearTimeout(timer);
-		 timer = setTimeout(reflow, 50);
+		 timer = setTimeout(fix, 50);
 	 }
 
-	 // 文档重新可见：IntersectionObserver 即时响应
+	 // 文档重新可见：IntersectionObserver 即时响应（跳过 observe 后报告初始状态的首次回调）
 	 $(function () {
 		 if (window.IntersectionObserver) {
+			 var first = true;
 			 new IntersectionObserver(function (entries) {
-				 for (var i = 0; i < entries.length; i++) {
-					 if (entries[i].isIntersecting) { schedule(); break; }
-				 }
+				 if (first) { first = false; return; }
+				 if (entries[entries.length - 1].isIntersecting) schedule();
 			 }).observe(document.body);
 		 }
 	 });
