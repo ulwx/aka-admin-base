@@ -1510,6 +1510,9 @@
 		 setTimeout(function () {
 			 resizeAll('.datagrid-f', 'datagrid');
 			 resizeAll('.datagrid-f', 'datagrid', 'fixRowHeight');
+			 resizeAll('.textbox-f', 'textbox');      // textbox/combobox/datebox/numberbox 等
+			 resizeAll('a.l-btn', 'linkbutton');
+			 $(".easyui-tabs").tabs("resize")
 		 }, 150);
 	 }
 
