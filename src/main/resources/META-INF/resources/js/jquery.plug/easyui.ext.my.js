@@ -1481,9 +1481,8 @@
   * 非 iframe 页面文档始终可见，不会触发。
   */
  ;(function ($) {
-	 window.__easyuiReflowFix = false;
 	 if (!$ || !$.fn || !$.parser || window.__easyuiReflowFix) return;
-
+	 window.__easyuiReflowFix = true;
 	 function rendered() {
 		 var de = document.documentElement;
 		 return de.clientWidth > 0 && de.clientHeight > 0;
