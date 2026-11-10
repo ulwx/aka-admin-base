@@ -1481,8 +1481,8 @@
   * 非 iframe 页面文档始终可见，不会触发。
   */
  ;(function ($) {
+	 window.__easyuiReflowFix = false;
 	 if (!$ || !$.fn || !$.parser || window.__easyuiReflowFix) return;
-	 window.__easyuiReflowFix = true;
 
 	 function rendered() {
 		 var de = document.documentElement;
@@ -1501,18 +1501,24 @@
 	 function reflow() {
 		 if (!rendered()) return;
 		 // 1) 固定尺寸组件：布局变化时 easyui 不会自动重算
-		 resizeAll('.textbox-f', 'textbox');      // textbox/combobox/datebox/numberbox 等
-		 resizeAll('a.l-btn', 'linkbutton');
-		 $(".easyui-tabs").tabs("resize")
-		 // 2) 整页布局及 fit/百分比组件（layout、panel、tabs、fit 表格），同时通知页面自己的 resize 处理
+		// resizeAll('.textbox-f', 'textbox');      // textbox/combobox/datebox/numberbox 等
+		// resizeAll('a.l-btn', 'linkbutton');
 		 $(window).trigger('resize');
+		 $('.easyui-layout').layout('resize');
+		 $(".easyui-tabs").tabs("resize")
+		 $('.easyui-linkbutton').linkbutton('resize',{width: 'auto'});
+		 $('.easyui-datagrid').datagrid('resize');
+		 $('.easyui-panel').panel('resize');
+		 $('.easyui-textbox').textbox('resize');
 		 // 3) 表格：等布局完成后（easyui 布局有 100ms 防抖）重算列宽、行高，包括非 fit 表格和 treegrid
 		 setTimeout(function () {
-			 resizeAll('.datagrid-f', 'datagrid');
-			 resizeAll('.datagrid-f', 'datagrid', 'fixRowHeight');
-			 resizeAll('.textbox-f', 'textbox');      // textbox/combobox/datebox/numberbox 等
-			 resizeAll('a.l-btn', 'linkbutton');
+
+			 $('.easyui-layout').layout('resize');
 			 $(".easyui-tabs").tabs("resize")
+			 $('.easyui-linkbutton').linkbutton('resize',{width: 'auto'});
+			 $('.easyui-datagrid').datagrid('resize');
+			 $('.easyui-panel').panel('resize');
+			 $('.easyui-textbox').textbox('resize');
 		 }, 150);
 	 }
 
@@ -1540,4 +1546,6 @@
 		 if (now && !shown) schedule();
 		 shown = now;
 	 }, 500);
+
+
  })(window.jQuery);
