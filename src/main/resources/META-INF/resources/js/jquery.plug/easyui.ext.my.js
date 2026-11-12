@@ -1475,49 +1475,118 @@
 
 
  /**
-  * 修复 easyui 在所在 iframe 被隐藏(display:none)期间计算尺寸出错的问题：
-  * 隐藏时文档不布局，按钮、输入框、表格等量到的尺寸为 0，重新显示后 easyui 不会自动重算。
-  * 这里在文档"从隐藏变为可见"时，对整页 easyui 组件重新计算一次尺寸。
+  * 修复 easyui 在所在 iframe 被隐藏(display:none)期间尺寸计算错误的问题：
+  * 隐藏时文档不布局，按钮/输入框/表格/弹框等量到的尺寸为 0，重新显示后 easyui 不会自动重算，导致样式错乱。
+  * 在文档"从隐藏变为可见"时：
+  * 1) 只对当前可见的组件重新计算尺寸（不可见组件此时 resize 同样会量错）；
+  * 2) 对关闭中的 panel/window/dialog 打标记，下次 open 时在可见状态下强制重算自身尺寸及内部组件。
+  *    - easyui 的 open 不重算面板自身尺寸；
+  *    - 宽度为 auto 的弹框，隐藏时 header/body 被写成 width:0，外框又由它们撑开，直接 resize 仍量到 0，需先清除；
+  *    - resize 不传参会因外框尺寸未变而短路，传参时需带上原尺寸配置，否则 width/height 会被清空；
+  *    - doLayout 只通知内部 panel 和百分比尺寸组件，输入框（含 filebox【请选择】等内置按钮）和按钮需单独重算。
+  * 3) 隐藏期间弹出、仍处于打开状态的弹框（如 ajax 回调中的 messager），若尺寸已被算成 0，则重算并重新居中。
+  * 按钮：包括页面声明的按钮、分页栏按钮、表格 toolbar 按钮等所有 linkbutton；
+  *    easyui 对不可见按钮会临时挪到 body 下测量，iframe 可见时结果正确，因此不按可见性过滤；
+  *    输入框内置按钮(.textbox-button)依赖输入框尺寸，由 textbox resize 一并处理，这里排除。
   * 非 iframe 页面文档始终可见，不会触发。
   */
  ;(function ($) {
-	 if (!$ || !$.fn || !$.parser || window.__easyuiReflowFix) return;
+	 if (!$ || !$.fn || !$.fn.panel || window.__easyuiReflowFix) return;
 	 window.__easyuiReflowFix = true;
+
 	 function rendered() {
 		 var de = document.documentElement;
 		 return de.clientWidth > 0 && de.clientHeight > 0;
 	 }
 
-	 function resizeAll(selector, plugin, method) {
-		 if (!$.fn[plugin]) return;
+	 // 组件原始元素多为隐藏状态（textbox/datagrid 的原 input/table），以其父容器是否可见为准
+	 function eachVisible(selector, fn) {
 		 $(selector).each(function () {
-			 if ($.data(this, plugin)) {
-				 try { $(this)[plugin](method || 'resize'); } catch (e) {}
+			 if (!$(this).parent().is(':visible')) return;
+			 try { fn($(this)); } catch (e) {}
+		 });
+	 }
+
+	 // 关闭中的 panel/window/dialog 打标记；tab 页、accordion 面板(doSize:false)由各自容器管理尺寸，不处理
+	 function markClosedPanels() {
+		 $('.panel-body').each(function () {
+			 var state = $.data(this, 'panel');
+			 if (state && state.options.closed && state.options.doSize !== false) {
+				 state.__needReflow = true;
 			 }
 		 });
 	 }
 
+	 // 强制重算面板自身尺寸（含 header/body）并重新布局内部组件
+	 function reflowPanel(target) {
+		 var state = $.data(target, 'panel');
+		 var o = state.options;
+		 state.panel.children('.panel-header,.panel-body,.panel-footer').css('width', '');
+		 $(target).panel('resize', {
+			 width: o.width, height: o.height,
+			 minWidth: o.minWidth, maxWidth: o.maxWidth,
+			 minHeight: o.minHeight, maxHeight: o.maxHeight,
+			 left: o.left, top: o.top
+		 });
+		 $(target).panel('doLayout', true);
+		 // textbox resize 会一并重算其内置按钮（如 filebox 的【请选择】）
+		 $(target).find('.textbox-f').each(function () {
+			 try { $(this).textbox('resize'); } catch (e) {}
+		 });
+		 $(target).find('a.l-btn').not('.textbox-button').each(function () {
+			 if (!$.data(this, 'linkbutton')) return;
+			 try { $(this).linkbutton('resize'); } catch (e) {}
+		 });
+	 }
+
+	 // 打开中的弹框：仅处理隐藏期间被算成 0 宽的，重算后重新居中（正常弹框及用户拖动过的位置不动）
+	 function reflowBrokenOpenWindows() {
+		 $('.window-body').each(function () {
+			 var state = $.data(this, 'panel');
+			 if (!state || state.options.closed) return;
+			 var header = state.panel.children('.panel-header')[0];
+			 var broken = parseInt(this.style.width) === 0 || (header && parseInt(header.style.width) === 0);
+			 if (!broken) return;
+			 try {
+				 reflowPanel(this);
+				 if ($.data(this, 'window')) $(this).window('center');
+			 } catch (e) {}
+		 });
+	 }
+
+	 // window/dialog 的 open 最终都走 panel 的 open；在 open 内重算，页面随后的 center/move 按正确尺寸计算
+	 var rawOpen = $.fn.panel.methods.open;
+	 $.fn.panel.methods.open = function (jq, forceOpen) {
+		 var r = rawOpen(jq, forceOpen);
+		 jq.each(function () {
+			 var state = $.data(this, 'panel');
+			 if (state && state.__needReflow && !state.options.closed) {
+				 state.__needReflow = false;
+				 try { reflowPanel(this); } catch (e) {}
+			 }
+		 });
+		 return r;
+	 };
+
 	 function reflow() {
 		 if (!rendered()) return;
-		 // 1) 固定尺寸组件：布局变化时 easyui 不会自动重算
-		// resizeAll('.textbox-f', 'textbox');      // textbox/combobox/datebox/numberbox 等
-		// resizeAll('a.l-btn', 'linkbutton');
+		 markClosedPanels();
+		 // 1) 整页布局（layout/tabs/fit 表格/模态遮罩等），easyui 自身布局有 100ms 防抖
 		 $(window).trigger('resize');
-		 $('.easyui-layout').layout('resize');
-		 $(".easyui-tabs").tabs("resize")
-		 $('.easyui-linkbutton').linkbutton('resize',{width: 'auto'});
-		 $('.easyui-datagrid').datagrid('resize');
-		 $('.easyui-panel').panel('resize');
-		 $('.easyui-textbox').textbox('resize');
-		 // 3) 表格：等布局完成后（easyui 布局有 100ms 防抖）重算列宽、行高，包括非 fit 表格和 treegrid
+		 // 2) 布局完成后重算可见的固定尺寸组件、表格、按钮及隐藏期间弹出的弹框
 		 setTimeout(function () {
-
-			 $('.easyui-layout').layout('resize');
-			 $(".easyui-tabs").tabs("resize")
-			 $('.easyui-linkbutton').linkbutton('resize',{width: 'auto'});
-			 $('.easyui-datagrid').datagrid('resize');
-			 $('.easyui-panel').panel('resize');
-			 $('.easyui-textbox').textbox('resize');
+			 eachVisible('.easyui-tabs', function (t) { t.tabs('resize'); });
+			 eachVisible('.textbox-f', function (t) { t.textbox('resize'); });           // textbox/combobox/datebox/numberbox/filebox 等，含内置按钮
+			 eachVisible('.datagrid-f', function (t) {                                   // 含 JS 初始化的表格、treegrid
+				 t.datagrid('resize');
+				 t.datagrid('fixRowHeight');                                             // 冻结列左右行高对齐
+			 });
+			 // 所有 linkbutton：页面按钮、分页栏按钮、表格 toolbar 按钮等
+			 $('a.l-btn').not('.textbox-button').each(function () {
+				 if (!$.data(this, 'linkbutton')) return;
+				 try { $(this).linkbutton('resize'); } catch (e) {}
+			 });
+			 reflowBrokenOpenWindows();
 		 }, 150);
 	 }
 
@@ -1527,13 +1596,13 @@
 		 timer = setTimeout(reflow, 50);
 	 }
 
-	 // 文档重新可见：IntersectionObserver 即时响应
+	 // 文档重新可见：IntersectionObserver 即时响应（跳过 observe 后报告初始状态的首次回调）
 	 $(function () {
 		 if (window.IntersectionObserver) {
+			 var first = true;
 			 new IntersectionObserver(function (entries) {
-				 for (var i = 0; i < entries.length; i++) {
-					 if (entries[i].isIntersecting) { schedule(); break; }
-				 }
+				 if (first) { first = false; return; }
+				 if (entries[entries.length - 1].isIntersecting) schedule();
 			 }).observe(document.body);
 		 }
 	 });
@@ -1545,6 +1614,4 @@
 		 if (now && !shown) schedule();
 		 shown = now;
 	 }, 500);
-
-
  })(window.jQuery);
